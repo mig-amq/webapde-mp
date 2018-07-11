@@ -18,14 +18,29 @@ module.exports = class mongo {
         this.__mongo_url = "mongodb://" + this.__mongo_ip + ":" + this.__mongo_port + "/" + this.__mongo_db;
     }
 
-    
-    
-    connect () {
+    initialize () {
         console.log("Valid DB:");
-        console.log(this.__mongo_url);
-        client.connect(this.__mongo_url, (err, db) => {
+        client.connect(this.__mongo_url, { useNewUrlParser: true },(err, db) => {
             if (err) throw err;
-            console.log("webapde");
+            console.log(" " + this.__mongo_db);
+            db.close();
+        });
+        
+        console.log("Valid Collections:");
+        client.connect(this.__mongo_url, { useNewUrlParser: true }, (err, db) => {
+            if (err) throw err;
+            let dbo = db.db(this.__mongo_db);
+
+            dbo.createCollection("posts", (err, res) => {
+                if (err) throw err;
+                console.log(" posts");
+            });
+
+            dbo.createCollection("users", (err, res) => {
+                if (err) throw err;
+                console.log(" users");
+                db.close();
+            });
         });
     }
 }

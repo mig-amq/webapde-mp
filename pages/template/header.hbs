@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Meme-A: {{title}}</title>
+    {{#each css}}
+        <link rel="stylesheet" href="css/{{this}}.css">
+    {{/each}}
+</head>
+<body>
+    <nav id="navigation">
+        <div class="title">
+            MEME-A
+        </div>
+        <div class="nav-items">
+            <a href="/" class="nav-item"><span class="nav-sprite home"></span>Home</a>
+            <a href="/random" class="nav-item"><span class="nav-sprite random"></span>Random</a>
+            <a href="/search" class="nav-item"><span class="nav-sprite search"></span>Search</a>
+        </div>
+        <div class="tools">
+            <div class="nav-sprite settings"></div>
+            {{#if user}}
+                <div href="#" id="user">
+                    <img src="{{ img }}" alt="{{ username }}">
+                    <span id="user-options">
+                        <a href="#">Profile</a>
+                        <a href="#">Log Out</a>
+                    </span>
+                </div>
+            {{else}}
+                <div href="#" id="user">
+                    <span class="default"></span>
+                    <div id="user-options">
+                        <form action="#" method="POST">
+                            <div class="input-group">
+                                <label for="uname">Username:</label>
+                                <input type="text" name="uname" id="uname">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="pass">Password:</label>
+                                <input type="password" name="pass" id="pass">
+                            </div>
+
+
+                            <div class="input-group-check">
+                                <label for="rem">
+                                    <input type="checkbox" name="rem" id="rem">
+                                    <span>Remember Me</span>
+                                </label>
+                            </div>
+
+                            <input type="submit" value="Log In">
+                            <a href="#" class="primary">
+                                I don't have an account
+                            </a>
+
+                            <a href="#" class="forgot">
+                                Forgot Password
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+    </nav>

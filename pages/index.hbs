@@ -1,0 +1,131 @@
+{{#getContext '{"title" : "Home", "css" : ["style", "navigation", "index"]}'}}
+    {{> header}}
+    <div class="content">
+        <div class="thermo">
+            <div class="post">
+                <div class="post-header">
+                    Fok
+                </div>
+
+                <div class="post-body">
+                    <div class="post-content">
+                        <img src="img/uploads/soy.jpg" alt="Sample Post">
+                    </div>
+
+                    <div class="post-user">
+                        <div class="details">
+                            <a href="#" class="primary">
+                            <div class="user-details">
+                                <img src="img/uploads/sample_profile.jpg" alt="Sample Profile">
+                                @anonymous
+                            </div>
+                        </a>
+
+                        <div class="post-stats">
+                            <button class="like" data-id="1"><span class="sprite"></span><span class="count">0</span></button>
+                            <button class="dislike" data-id="1"><span class="sprite"></span><span class="count">0</span></button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="post-footer">
+                    <div><b>Tags:</b></div>
+                    <div class="tags">
+                        <span class="tag"><span></span>Comedy</span>
+                        <span class="tag"><span></span>lol</span>
+                        <span class="tag"><span></span>Hahahaha</span>
+                        <span class="tag"><span></span>Is</span>
+                        <span class="tag"><span></span>this</span>
+                        <span class="tag"><span></span>Loss</span>
+                        <span class="tag"><span></span>Oh</span>
+                        <span class="tag"><span></span>wow</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    IS THIS LOSS??
+                </div>
+
+                <div class="post-body">
+                    <div class="post-content">
+                        <img src="img/uploads/sample.jpg" alt="Sample Post">
+                    </div>
+
+                    <div class="post-user">
+                        <div class="details">
+                            <a href="#" class="primary">
+                                <div class="user-details">
+                                    <img src="img/uploads/sample_profile.jpg" alt="Sample Profile">
+                                    @anonymous
+                                </div>
+                            </a>
+
+                            <div class="post-stats">
+                                <button class="like" data-id="1"><span class="sprite"></span><span class="count">0</span></button>
+                                <button class="dislike" data-id="1"><span class="sprite"></span><span class="count">0</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="post-footer">
+                    <div><b>Tags:</b></div>
+                    <div class="tags">
+                        <span class="tag"><span></span>Comedy</span>
+                        <span class="tag"><span></span>lol</span>
+                        <span class="tag"><span></span>Hahahaha</span>
+                        <span class="tag"><span></span>Is</span>
+                        <span class="tag"><span></span>this</span>
+                        <span class="tag"><span></span>Loss</span>
+                        <span class="tag"><span></span>Oh</span>
+                        <span class="tag"><span></span>wow</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel">
+                
+                <form action="/upload" id="fileUpload" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="file" id="file" style="display: none">
+
+                    <div id="uploadMeme">
+                        <span class="sprite upload"></span>
+                        <span id="fileName">Upload</span>
+                    </div>
+
+                    <div id="memeDescription">
+                        <div class="input-group">
+                            <label for="memeName">Meme Title:</label>
+                            <input type="text" name="memeName" id="memeName" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="memeTags">Tags:</label>
+                            <textarea name="memeTags" id="memeTags" required></textarea>
+                            <small>*Separate tags by space</small>
+                        </div>
+
+                        <input type="submit" value="Submit Meme">
+                    </div>
+                </form>
+
+                <div class="top-tags" id="top-tags">
+                    <div class="title">Top Tags</div>
+                    <div class="tags">
+                        <span class="tag"><span></span>Comedy</span>
+                        <span class="tag"><span></span>lol</span>
+                        <span class="tag"><span></span>Hahahaha</span>
+                        <span class="tag"><span></span>Is</span>
+                        <span class="tag"><span></span>this</span>
+                        <span class="tag"><span></span>Loss</span>
+                        <span class="tag"><span></span>Oh</span>
+                        <span class="tag"><span></span>wow</span>
+                    </div>
+                </div>
+            </div>
+    </div>
+    {{> footer}}
+{{/getContext}}
