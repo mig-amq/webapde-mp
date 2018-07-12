@@ -23,7 +23,7 @@ hbs.registerHelper("getContext", (data, opt) => {
 });
 
 // Initialize DB
-(new mongo()).initialize();
+// (new mongo()).initialize();
 
 // Initialize Handlebars
 app.set('view engine', 'html');
