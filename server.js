@@ -79,7 +79,7 @@ var jsonArray = [
     {title: '', user: 2, likes: 1000, dislikes: 123, post: 'img/uploads/Wut.png', 
     tags: ['comedy', 'hahahaha', 'lol']}, 
     
-    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Wii Guy.png, 
+    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Wii Guy.png', 
     tags: ['comedy', 'hahahaha', 'lol']}, 
     
     {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Vaccum.png', 
@@ -119,5 +119,14 @@ var jsonArray = [
     tags: ['comedy', 'hahahaha', 'lol']}, 
     
     {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/sample.Baby powder.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/emiya.jpg', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/boy.jpg', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/ded.jpg', 
     tags: ['comedy', 'hahahaha', 'lol']}, 
 ]
