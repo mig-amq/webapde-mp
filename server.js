@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname, 'pages/public')));
 //     secret: "top secret"
 // }))
 // Start server
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 
 app.get('/', urlencoded, (req, res) => {
     res.render('index.hbs');
