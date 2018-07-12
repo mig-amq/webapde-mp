@@ -38,7 +38,13 @@ $(document).ready(() => {
             processData: false,
             contentType: false,
             success: (response) => {
-                console.log(response);
+                $("#uploadMeme").removeClass('active');
+                $("#memeDescription").css('display', 'none');
+                $("#memeDescription").children('input').each((index, object) => {
+                    $(object).empty();
+                });
+                
+                $("#fileName").text("Upload");
             }
         });
     });

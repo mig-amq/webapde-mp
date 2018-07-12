@@ -21,7 +21,7 @@ body {
     flex: 1 1 auto;
 }
 
-#navigation .nav-items a {
+#navigation .nav-items > * {
     padding-top: 5px;
     padding-bottom: 5px;
     min-width: 150px;
@@ -46,12 +46,25 @@ body {
     text-align: center;
 }
 
-#navigation .nav-items a .nav-sprite {
+#navigation .nav-items > * .nav-sprite {
     background-image: url('../img/spritesheet.png');
     height: 16px;
     width: 16px;
     display: inline-block;
     margin-right: 15px;
+}
+
+#navigation .nav-items input {
+    background-color: #282828;
+    border: 1px solid #282828;
+    color: #ffffff;
+    padding: 5px;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+#navigation .nav-items input:focus {
+    background-color: #333333;
 }
 
 .nav-sprite.home {
