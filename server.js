@@ -76,57 +76,57 @@ var jsonArray = [
     {title: 'Is This Loss???', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/sample.jpg', 
     tags: ['comedy', 'hahahaha', 'lol']}, 
     
-    {title: '', user: 2, likes: 1000, dislikes: 123, post: 'img/uploads/Wut.png', 
+    {title: 'I did it to...', user: 2, likes: 1000, dislikes: 123, post: 'img/uploads/Wut.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'zelda', 'wut']}, 
+    
+    {title: 'Executioner', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Wii Guy.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'wii', 'games']}, 
+    
+    {title: 'Vacuum invention', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Vaccum.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'yes', 'wow', 'lewd']}, 
+    
+    {title: 'Suicide Prevention', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/suicide prevention.png', 
+    tags: ['wut', 'death', 'suicide', 'murder', 'crime']}, 
+    
+    {title: 'Where did you come form?', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Pokemon speech.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'yes', 'games']}, 
+    
+    {title: 'Overclocked', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Overclocked.png', 
     tags: ['comedy', 'hahahaha', 'lol']}, 
     
-    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Wii Guy.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
-    
-    {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Vaccum.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
-    
-    {title: '', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/suicide prevention.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
-    
-    {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Pokemon speech.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
-    
-    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Overclocked.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
-    
-    {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Ouranium.png', 
+    {title: 'Ourainum', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Ouranium.png', 
     tags: ['comedy', 'hahahaha', 'lol']},
     
-    {title: '', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/Not a cop.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
+    {title: 'Not a cop', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/Not a cop.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'crime']}, 
     
-    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/MAX TECH.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
+    {title: 'Civilization players will know this', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/MAX TECH.png', 
+    tags: ['wut', 'civ', 'lol', 'games']}, 
     
-    {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Lets Go.png', 
-    tags: ['comedy', 'hahahaha', 'lol']},
+    {title: 'Lets a go', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Lets Go.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'mario']},
     
-    {title: '', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/IT Interview.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
+    {title: 'IT interview', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/IT Interview.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'wow']}, 
     
-    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Half Life.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
+    {title: 'Half-life', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Half Life.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'facebook', 'games']}, 
     
-    {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/CSGOpng', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
+    {title: 'CS-GO', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/CSGOpng', 
+    tags: ['comedy', 'hahahaha', 'lol', 'wut', 'games']}, 
     
-    {title: '', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/sample.cake.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
+    {title: 'Cake', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/sample.cake.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'wut']}, 
     
     {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/sample.Baby powder.png', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
+    tags: ['comedy', 'hahahaha', 'lol', 'lewd', 'yes']}, 
     
     {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/emiya.jpg', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
+    tags: ['comedy', 'hahahaha', 'lol', 'anime', 'wut']}, 
     
     {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/boy.jpg', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
+    tags: ['comedy', 'hahahaha', 'lol', 'yes', 'savage']}, 
     
     {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/ded.jpg', 
-    tags: ['comedy', 'hahahaha', 'lol']}, 
+    tags: ['comedy', 'hahahaha', 'lol', 'murder', 'crime', 'suicide']}, 
 ]
