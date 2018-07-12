@@ -74,5 +74,50 @@ var jsonUsers = [
 
 var jsonArray = [
     {title: 'Is This Loss???', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/sample.jpg', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 2, likes: 1000, dislikes: 123, post: 'img/uploads/Wut.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Wii Guy.png, 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Vaccum.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/suicide prevention.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Pokemon speech.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Overclocked.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Ouranium.png', 
     tags: ['comedy', 'hahahaha', 'lol']},
+    
+    {title: '', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/Not a cop.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/MAX TECH.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Lets Go.png', 
+    tags: ['comedy', 'hahahaha', 'lol']},
+    
+    {title: '', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/IT Interview.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Half Life.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/CSGOpng', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/sample.cake.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/sample.Baby powder.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
 ]
