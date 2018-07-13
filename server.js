@@ -187,19 +187,20 @@ app.post('/register', urlencoded,(req, res) => {
 });
 
 app.post('/upload', multiform.any(), (req, res) => {
-    let data = req.file;
+    let data = req.files[0];
     let body = req.body;
 
     var meme = {
         'title': body.memeName,
         'tags': body.memeTags.split(' '),
         'user': 1,
-        'file': 'img/uploads/' + data.filename,
+        'post': "img/uploads/" + data.filename,
         'likes': 0,
         'dislikes': 0,
     }
 
-    jsonArray.push(meme);
+    console.log(meme);
+    jsonArray.unshift(meme);
     
     /*res.render("index.hbs", {
         account: account,
