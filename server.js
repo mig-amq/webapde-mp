@@ -5,7 +5,6 @@ const hbs = require('hbs');
 const bps = require('body-parser');
 const multer = require('multer');
 const session = require('express-session');
-const cookieparser = require('cookie-parser');
 
 var memeStorage = multer.diskStorage({
     destination: (req, file, cb) => { cb(null, path.join(__dirname, 'pages/public/img/uploads/')) },
@@ -36,13 +35,11 @@ app.set('views', [path.join(__dirname, 'pages')]);
 
 // Initialize settings
 app.use(express.static(path.join(__dirname, 'pages/public')));
-app.use(cookieparser());
-
 app.use(session({
     name: "user-session",
     resave: true,
     saveUninitialized: true,
-    secret: "top secret",
+    secret: "top secret"
 }))
 
 // Start server
@@ -117,9 +114,6 @@ app.get('/', urlencoded, (req, res) => {
     var account = null;
     if (req.session.user)
         account = getUser(req.session.user);
-    else if (req.cookies.user && parseInt(req.cookies.user) != -1){
-        account = getUser(parseInt(req.cookies.user));
-    }
 
     res.render("index.hbs", {
         account: account,
@@ -129,25 +123,14 @@ app.get('/', urlencoded, (req, res) => {
     });
 });
 
+
+
 app.post('/login', urlencoded, (req, res) => {
     var user;
 
     if (user = userLogin(req.body.uname, req.body.pass)) {
         req.session.user = user.id;
-
-        if (req.body.rem === 'on') {
-            res.cookie('user', user.id, {
-                expires: false,
-                maxAge:  365 * 24 * 60 * 60 * 1000,
-            });
-        }
-    } else {
-        res.redirect('/account', {
-            err: {
-                'login': ['That account cannot be found'],
-                'register': [],
-            }
-        });
+        console.log('hahaha');
     }
 
     res.redirect('/');
@@ -158,50 +141,34 @@ app.get('/logout', urlencoded, (req, res) => {
         if(err) console.log(err);
     });
 
-    res.clearCookie('user').redirect('/');
+    res.redirect('/');
 });
 
-app.post('/register', urlencoded,(req, res) => {
-    let uname = req.body.uname;
-    let pass = req.body.pass;
-    let fname = req.body.fname;
+app.post('/register', multiform.any(), (req, res) => {
 
-    if (userExists(uname)) {
-        res.redirect('/account', {
-            errors: {
-                'login': [],
-                'register': ['Username is already taken'],
-            }
-        });
-    } else {
-        var account = {
-            username: uname,
-            password: pass,
-            name: fname,
-            id: jsonUsers.length + 1,
-        }
-
-        jsonUsers.push(account);
-
-        res.redirect('/success-registration');
-    }
 });
 
 app.post('/upload', multiform.any(), (req, res) => {
-    let data = req.files[0];
+    let data = req.file;
     let body = req.body;
 
     var meme = {
         'title': body.memeName,
         'tags': body.memeTags.split(' '),
         'user': 1,
-        'post': "img/uploads/" + data.filename,
+        'file': data.path,
         'likes': 0,
         'dislikes': 0,
     }
 
-    jsonArray.unshift(meme);
-
+    jsonArray.push(meme);
+    
+    /*res.render("index.hbs", {
+        account: account,
+        post: jsonArray,
+        title: 'Uploaded' + body.memeName,
+        css : ["style", "navigation", "index"],
+    });*/
     res.sendStatus(200);
 });
 
@@ -237,7 +204,13 @@ app.get('/search', (req, res) => {
         css : ["style", "navigation", "index"],
     });
 })
-
+app.get('/profile', (req, res) => {
+    res.render('profile.hbs', {
+        post: randomPost(),
+        title: 'Profile',
+        css : ["style", "navigation", "index"],
+    });
+});
 app.use('*', urlencoded, (req, res) => {
     res.render('errors/404.hbs');
 });
