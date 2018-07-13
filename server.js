@@ -21,7 +21,11 @@ hbs.registerPartials(path.join(__dirname, 'pages/template'));
 hbs.registerHelper("getContext", (data, opt) => {
     return opt.fn(JSON.parse(data));
 });
-
+hbs.registerHelper("getUserDetails", (data, opt) => {
+    for (var i = 0; i < jsonUsers.length; i++)
+        if (data === jsonUsers[i].id)
+            return opt.fn(jsonUsers[i]);
+});
 // Initialize DB
 // (new mongo()).initialize();
 
@@ -108,11 +112,14 @@ var jsonArray = [
 ]
 
 app.get('/', urlencoded, (req, res) => {
-    var account;
+    var account = null;
     if (req.session.id)
         account = getUser(req.session.id);
 
-    res.render('index.hbs', {account: account});
+    res.render("index.hbs", {
+        account: account,
+        post: jsonArray
+    });
 });
 
 app.post('/login', urlencoded, (req, res) => {
@@ -134,10 +141,6 @@ app.post('/logout', urlencoded, (req, res) => {
 });
 
 app.post('/register', multiform.any(), (req, res) => {
-    console.log(jsonArray.length);
-    res.render('index.hbs', {
-        post: jsonArray
-    });
 });
 
 app.post('/upload', multiform.any(), (req, res) => {
