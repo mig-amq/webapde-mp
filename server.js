@@ -180,6 +180,8 @@ app.get('/tag/:tag', (req, res) => {
 app.get('/search', (req, res) => {
     let query = req.query.q;
     var temp = [];
+    temp = filterSearch(query);
+    temp = filterTags(query);
     res.render('index.hbs', {
         post: filterSearch(query),
         title: 'Posts About ' + query,
@@ -230,10 +232,13 @@ function getUser(id) {
 
 function filterTags (tag) {
     var posts = [];
-
-    for (var i = 0; i < jsonArray.length; i++)
+    
+    for (var i = 0; i < jsonArray.length; i++){
+        
         if (jsonArray[i].tags.indexOf(tag) != -1)
             posts.push(jsonArray[i]);
+    }
+        
 
     return posts;
 }
@@ -244,7 +249,16 @@ function filterSearch(query){
     for(var i = 0; i < jsonArray.length; i++){
         if(jsonArray[i].title.toUpperCase().includes(query.toUpperCase()) )
             posts.push(jsonArray[i]);
+        /*var bol = 0;
+        for(var j = 0; j < jsonArray.tags.length; j++){
+            if(jsonArray[i].tags[j].toUpperCase().includes(query.toUpperCase()))
+                bol++;
+        }
+        
+        if(bol > 0)
+            posts.push(jsonArray[i]);*/
     }
         
+    posts = filterTags(query);
     return posts;
 }
