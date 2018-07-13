@@ -58,16 +58,16 @@ var jsonArray = [
     {title: 'I did it to...', user: 2, likes: 1000, dislikes: 123, post: 'img/uploads/Wut.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'zelda', 'wut']}, 
     
-    {title: 'Executioner', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Wii Guy.png', 
+    {title: 'Executioner', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/WiiGuy.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'wii', 'games']}, 
     
     {title: 'Vacuum invention', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Vaccum.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'yes', 'wow', 'lewd']}, 
     
-    {title: 'Suicide Prevention', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/suicide prevention.png', 
+    {title: 'Suicide Prevention', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/suicideprevention.png', 
     tags: ['wut', 'death', 'suicide', 'murder', 'crime']}, 
     
-    {title: 'Where did you come form?', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Pokemon speech.png', 
+    {title: 'Where did you come form?', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Pokemonspeech.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'yes', 'games']}, 
     
     {title: 'Overclocked', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Overclocked.png', 
@@ -76,37 +76,37 @@ var jsonArray = [
     {title: 'Ourainum', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Ouranium.png', 
     tags: ['comedy', 'hahahaha', 'lol']},
     
-    {title: 'Not a cop', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/Not a cop.png', 
+    {title: 'Not a cop', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/Notacop.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'crime']}, 
     
-    {title: 'Civilization players will know this', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/MAX TECH.png', 
+    {title: 'Civilization players will know this', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/MAXTECH.png', 
     tags: ['wut', 'civ', 'lol', 'games']}, 
     
-    {title: 'Lets a go', user: 1, likes: 9001, dislikes: 123, post: "img/uploads/Lets Go.png", 
+    {title: 'Lets a go', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/LetsGo.png',
     tags: ['comedy', 'hahahaha', 'lol', 'mario']},
     
-    {title: 'IT interview', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/IT Interview.png', 
+    {title: 'IT interview', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/ITInterview.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'wow']}, 
     
-    {title: 'Half-life', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Half Life.png', 
+    {title: 'Half-life', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/HalfLife.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'facebook', 'games']}, 
     
-    {title: 'CS-GO', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/CSGOpng', 
+    {title: 'CS-GO', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/CSGO.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'wut', 'games']}, 
     
     {title: 'Cake', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/cake.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'wut']}, 
     
-    {title: 'Babies', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Baby powder.png', 
+    {title: 'Babies', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Babypowder.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'lewd', 'yes']}, 
     
     {title: 'Emiya', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/emiya.jpg', 
     tags: ['comedy', 'hahahaha', 'lol', 'anime', 'wut']}, 
     
-    {title: 'Boy', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/boy.jpg', 
+    {title: 'Boy Scouts', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/boy.jpg', 
     tags: ['comedy', 'hahahaha', 'lol', 'yes', 'savage']}, 
     
-    {title: 'Ded', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/ded.jpg', 
+    {title: 'Ded', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads//ded.jpg', 
     tags: ['comedy', 'hahahaha', 'lol', 'murder', 'crime', 'suicide']}, 
 ]
 
