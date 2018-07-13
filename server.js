@@ -179,6 +179,12 @@ app.get('/tag/:tag', (req, res) => {
 
 app.get('/search', (req, res) => {
     let query = req.query.q;
+    var temp = [];
+    res.render('index.hbs', {
+        post: filterSearch(query),
+        title: 'Posts About ' + query,
+        css : ["style", "navigation", "index"],
+    });
 })
 
 app.use('*', urlencoded, (req, res) => {
@@ -229,5 +235,16 @@ function filterTags (tag) {
         if (jsonArray[i].tags.indexOf(tag) != -1)
             posts.push(jsonArray[i]);
 
+    return posts;
+}
+
+function filterSearch(query){
+    var posts = [];
+    
+    for(var i = 0; i < jsonArray.length; i++){
+        if(jsonArray[i].title.toUpperCase().includes(query.toUpperCase()) )
+            posts.push(jsonArray[i]);
+    }
+        
     return posts;
 }
