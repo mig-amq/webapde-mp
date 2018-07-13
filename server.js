@@ -218,8 +218,24 @@ app.get('/tag/:tag', (req, res) => {
     });
 });
 
+app.get('/random', (req, res) => {
+    res.render('index.hbs', {
+        post: randomPost(),
+        title: 'Random Posts',
+        css : ["style", "navigation", "index"],
+    });
+});
+
 app.get('/search', (req, res) => {
     let query = req.query.q;
+    var temp = [];
+    temp = filterSearch(query);
+    temp = filterTags(query);
+    res.render('index.hbs', {
+        post: filterSearch(query),
+        title: 'Posts About ' + query,
+        css : ["style", "navigation", "index"],
+    });
 })
 
 app.use('*', urlencoded, (req, res) => {
@@ -254,6 +270,7 @@ function userLogin (username, password) {
 }
 
 function getUser(id) {
+    console.log(id);
     for (let i = 0; i < jsonUsers.length; i++) {
         if (jsonUsers[i].id === id)
             return jsonUsers[i];
@@ -264,10 +281,55 @@ function getUser(id) {
 
 function filterTags (tag) {
     var posts = [];
-
-    for (var i = 0; i < jsonArray.length; i++)
+    
+    for (var i = 0; i < jsonArray.length; i++){
+        
         if (jsonArray[i].tags.indexOf(tag) != -1)
             posts.push(jsonArray[i]);
+    }
+        
 
+    return posts;
+}
+
+function filterSearch(query){
+    var posts = [];
+    
+    for(var i = 0; i < jsonArray.length; i++){
+        if(jsonArray[i].title.toUpperCase().includes(query.toUpperCase()) )
+            posts.push(jsonArray[i]);
+        /*var bol = 0;
+        for(var j = 0; j < jsonArray.tags.length; j++){
+            if(jsonArray[i].tags[j].toUpperCase().includes(query.toUpperCase()))
+                bol++;
+        }
+        
+        if(bol > 0)
+            posts.push(jsonArray[i]);*/
+    }
+        
+    posts = filterTags(query);
+    return posts;
+}
+
+function randomPost(){
+    var posts = [];
+    var randNums = [];
+    var num = Math.floor((Math.random() * jsonArray.length));
+    
+    for(var i = 0; i < num; i++){
+        var verify = 0;
+        var randIndex = Math.floor((Math.random() * jsonArray.length));
+        if(randNums != null){
+            for(var j = 0; j < randNums.length; j++){
+                if(randNums[j] == randIndex)
+                    verify++;
+            }
+        }
+        if(verify == 0)
+            posts.push(jsonArray[randIndex]);
+        randNums.push(randIndex);
+    }
+    
     return posts;
 }

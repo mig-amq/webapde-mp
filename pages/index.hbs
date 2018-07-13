@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{> header }}
     <div class="content">
         <div class="thermo">
@@ -99,4 +100,115 @@
                 </div>
             </div>
     </div>
+=======
+{{> header }}
+    <div class="content">
+        <div class="thermo">
+            {{#if post}}
+                {{#each post}}
+                    <div class="post">
+                    <div class="post-header">
+                        {{title}}
+                    </div>
+                
+                    <div class="post-body">
+                        <div class="post-content">
+                            <img src= "/{{post}}" alt="Sample Post">
+                        </div>
+
+                        <div class="post-user">
+                            <div class="details">
+                                <a href="#" class="primary">
+                                <div class="user-details">
+                                    {{#getUserDetails user}}
+                                        <img src="/img/uploads/sample_profile.jpg" alt="Sample Profile">
+                                        <span>
+                                            {{username}}
+                                        </span>
+                                    {{/getUserDetails}}
+                                </div>
+                            </a>
+
+                            <div class="post-stats">
+                                <button class="like" data-id="1"><span class="sprite"></span><span class="count">{{likes}}</span></button>
+                                <button class="dislike" data-id="1"><span class="sprite"></span><span class="count">{{dislikes}}</span></button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-footer">
+                        <div><b>Tags:</b></div>
+                        <div class="tags">
+                            {{#each tags}}
+                                <a href='/tag/{{this}}' class="tag"><span></span>{{this}}</a>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            
+                {{/each}}
+            
+                {{#else}}
+                    <div> Meme not found. Please check the spelling.    </div>
+                {{/else}}
+            {{/if}}
+            
+            
+            
+        </div>
+        <div class="right-panel">
+                {{#if account}}
+                <form action="/upload" id="fileUpload" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="file" id="file" style="display: none" accept="image/*">
+
+                    <div id="uploadMeme" data-var="logged">
+                        <span class="sprite upload"></span>
+                        <span id="fileName">Upload</span>
+                    </div>
+
+                    <div id="memeDescription">
+                        <div class="input-group">
+                            <label for="memeName">Meme Title:</label>
+                            <input type="text" name="memeName" id="memeName" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="memeTags">Tags:</label>
+                            <textarea name="memeTags" id="memeTags" required></textarea>
+                            <small>*Separate tags by space</small>
+                        </div>
+
+                        <input type="submit" value="Submit Meme">
+                    </div>
+                </form>
+                {{else}}
+                    <div id="uploadMeme" data-var="not-logged">
+                        <span class="sprite upload"></span>
+                        <span id="fileName">Upload</span>
+                    </div>
+                    <small>*You must login first before sharing a meme</small>
+                {{/if}}
+
+                <div class="top-tags" id="top-tags">
+                    <div class="title">Top Tags</div>
+                    <div class="tags">
+                        <span class="tag"><span></span>comedy</span>
+                        <span class="tag"><span></span>lol</span>
+                        <span class="tag"><span></span>hahahaha</span>
+                        <span class="tag"><span></span>yes</span>
+                        <span class="tag"><span></span>wut</span>
+                        <span class="tag"><span></span>crime</span>
+                        <span class="tag"><span></span>lewd</span>
+                        <span class="tag"><span></span>wow</span>
+                        <span class="tag"><span></span>mario</span>
+                        <span class="tag"><span></span>anime</span>
+                        <span class="tag"><span></span>suicide</span>
+                        <span class="tag"><span></span>wii</span>
+                        <span class="tag"><span></span>games</span>
+                    </div>
+                </div>
+            </div>
+    </div>
+>>>>>>> 820fae1e863ffa4fc4da11d20d5c19177fb30d0f
     {{> footer}}
