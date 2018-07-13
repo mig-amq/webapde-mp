@@ -5,6 +5,7 @@ const hbs = require('hbs');
 const bps = require('body-parser');
 const multer = require('multer');
 const session = require('express-session');
+const cookieparser = require('cookie-parser');
 
 var memeStorage = multer.diskStorage({
     destination: (req, file, cb) => { cb(null, path.join(__dirname, 'pages/public/img/uploads/')) },
@@ -35,11 +36,13 @@ app.set('views', [path.join(__dirname, 'pages')]);
 
 // Initialize settings
 app.use(express.static(path.join(__dirname, 'pages/public')));
+app.use(cookieparser());
+
 app.use(session({
     name: "user-session",
     resave: true,
     saveUninitialized: true,
-    secret: "top secret"
+    secret: "top secret",
 }))
 
 // Start server
@@ -114,6 +117,9 @@ app.get('/', urlencoded, (req, res) => {
     var account = null;
     if (req.session.user)
         account = getUser(req.session.user);
+    else if (req.cookies.user && parseInt(req.cookies.user) != -1){
+        account = getUser(parseInt(req.cookies.user));
+    }
 
     res.render("index.hbs", {
         account: account,
@@ -128,7 +134,20 @@ app.post('/login', urlencoded, (req, res) => {
 
     if (user = userLogin(req.body.uname, req.body.pass)) {
         req.session.user = user.id;
-        console.log('hahaha');
+
+        if (req.body.rem === 'on') {
+            res.cookie('user', user.id, {
+                expires: false,
+                maxAge:  365 * 24 * 60 * 60 * 1000,
+            });
+        }
+    } else {
+        res.redirect('/account', {
+            err: {
+                'login': ['That account cannot be found'],
+                'register': [],
+            }
+        });
     }
 
     res.redirect('/');
@@ -139,11 +158,33 @@ app.get('/logout', urlencoded, (req, res) => {
         if(err) console.log(err);
     });
 
-    res.redirect('/');
+    res.clearCookie('user').redirect('/');
 });
 
-app.post('/register', multiform.any(), (req, res) => {
+app.post('/register', urlencoded,(req, res) => {
+    let uname = req.body.uname;
+    let pass = req.body.pass;
+    let fname = req.body.fname;
 
+    if (userExists(uname)) {
+        res.redirect('/account', {
+            errors: {
+                'login': [],
+                'register': ['Username is already taken'],
+            }
+        });
+    } else {
+        var account = {
+            username: uname,
+            password: pass,
+            name: fname,
+            id: jsonUsers.length + 1,
+        }
+
+        jsonUsers.push(account);
+
+        res.redirect('/success-registration');
+    }
 });
 
 app.post('/upload', multiform.any(), (req, res) => {
@@ -161,7 +202,7 @@ app.post('/upload', multiform.any(), (req, res) => {
 
     jsonArray.push(meme);
 
-    res.sendStatus(200);
+    res.sendStatus(200).send(meme);
 });
 
 app.get('/account', urlencoded, (req, res) => {
@@ -213,7 +254,6 @@ function userLogin (username, password) {
 }
 
 function getUser(id) {
-    console.log(id);
     for (let i = 0; i < jsonUsers.length; i++) {
         if (jsonUsers[i].id === id)
             return jsonUsers[i];

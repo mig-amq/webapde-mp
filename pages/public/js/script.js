@@ -4,19 +4,6 @@ $(document).ready(() => {
     });
 
     $("#top-tags").stick_in_parent({offset_top: 45});
-    
-    $(".tag").click(() => {
-        console.log("hello");
-        $.ajax({
-            url: '/tag/:tag',
-            method: 'GET',
-            processData: false,
-            contentType: false,
-            success: (response) => {
-                console.log(response[0].title);
-            }
-        });
-    });
 
     $("#uploadMeme").click(() => {
         $("#file").trigger('click');
@@ -42,15 +29,20 @@ $(document).ready(() => {
             $("#rememberMe").css('display', 'none');
             $("#fullName").css('display', 'block');
 
-            $("#switcherType").text('I have an account');
+            $("#switcher").text('I have an account');
             $('#switcherType').val('register');
-
+            
+            $(".tools input[type='submit']").val('Register');
+            $("#login-register").attr('action', '/register');
         } else {
             $("#rememberMe").css('display', 'block');
             $("#fullName").css('display', 'none');
 
-            $("#switcherType").text('I don\'t have an account');
+            $("#switcher").text('I don\'t have an account');
             $('#switcherType').val('login');
+
+            $(".tools input[type='submit']").val('Log In');
+            $("#login-register").attr('action', '/login');
         }
     });
 
