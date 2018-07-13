@@ -140,7 +140,7 @@ app.post('/logout', urlencoded, (req, res) => {
 });
 
 app.post('/register', multiform.any(), (req, res) => {
-    
+
 });
 
 app.post('/upload', multiform.any(), (req, res) => {
@@ -167,7 +167,9 @@ app.get('/account', urlencoded, (req, res) => {
 
 app.get('/tag/:tag', (req, res) => {
     let tag = req.params.tag;
-    res.send(jsonArray);
+    res.render('index.hbs', {
+        post: filterTags(tag)
+    });
 });
 
 app.get('/search', (req, res) => {
@@ -206,4 +208,14 @@ function getUser(id) {
 
 function getUser(id) {
 
+}
+
+function filterTags (tag) {
+    var posts = [];
+
+    for (var i = 0; i < jsonArray.length; i++)
+        if (jsonArray[i].tags.indexOf(tag) != -1)
+            posts.push(jsonArray[i]);
+
+    return posts;
 }
