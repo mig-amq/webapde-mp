@@ -230,13 +230,27 @@ app.get('/search', (req, res) => {
         css : ["style", "navigation", "index"],
     });
 })
-app.get('/profile', (req, res) => {
+
+app.get('/profile/:username', (req, res) => {
+    let uname = req.params.username;
+    
+    var posts = [];
+    for (var x = 0; x < jsonUsers.length; x++)
+        if (jsonUsers[x].username === uname)
+            break;
+
+    for (let i = 0; i < jsonArray.length; i++)
+        if (jsonArray[i].user === jsonUsers[x].id)
+            posts.push(jsonArray[i]);
+
     res.render('profile.hbs', {
-        post: randomPost(),
+        post: posts,
+        user: jsonUsers[x],
         title: 'Profile',
         css : ["style", "navigation", "index"],
     });
 });
+
 app.use('*', urlencoded, (req, res) => {
     var account = null;
     if (req.session.user)

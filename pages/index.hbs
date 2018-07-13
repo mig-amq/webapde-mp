@@ -28,8 +28,8 @@
                             {{/getUserDetails}}
 
                         <div class="post-stats">
-                            <button class="like" data-id="1"><span class="sprite"></span><span class="count">{{likes}}</span></button>
-                            <button class="dislike" data-id="1"><span class="sprite"></span><span class="count">{{dislikes}}</span></button>
+                            <button class="like" data-id="{{@index}}"><span class="sprite"></span><span class="count">{{likes}}</span></button>
+                            <button class="dislike" data-id="{{@index}}"><span class="sprite"></span><span class="count">{{dislikes}}</span></button>
                         </div>
                         </div>
                     </div>
@@ -100,3 +100,12 @@
             </div>
     </div>
     {{> footer}}
+    <script>
+        $(".post-stats").each((index, object) => {
+            $(object).children('button').each((x, obj) => {
+                $(obj).click(function () {
+                    $(obj).children('.count').first().text((parseInt($(obj).children('.count').first().text()) + 1));
+                });
+            });
+        })
+    </script>
