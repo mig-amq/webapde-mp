@@ -211,7 +211,15 @@ app.get('/account', urlencoded, (req, res) => {
 
 app.get('/tag/:tag', (req, res) => {
     let tag = req.params.tag;
+    var account = null;
+    if (req.session.user)
+        account = getUser(req.session.user);
+    else if (req.cookies.user && parseInt(req.cookies.user) != -1){
+        account = getUser(parseInt(req.cookies.user));
+    }
+
     res.render('index.hbs', {
+        account: account,
         post: filterTags(tag),
         title: 'Posts About ' + tag,
         css : ["style", "navigation", "index"],
@@ -219,7 +227,15 @@ app.get('/tag/:tag', (req, res) => {
 });
 
 app.get('/random', (req, res) => {
+    var account = null;
+    if (req.session.user)
+        account = getUser(req.session.user);
+    else if (req.cookies.user && parseInt(req.cookies.user) != -1){
+        account = getUser(parseInt(req.cookies.user));
+    }
+
     res.render('index.hbs', {
+        account: account,
         post: randomPost(),
         title: 'Random Posts',
         css : ["style", "navigation", "index"],
@@ -229,9 +245,19 @@ app.get('/random', (req, res) => {
 app.get('/search', (req, res) => {
     let query = req.query.q;
     var temp = [];
+
+    var account = null;
+    if (req.session.user)
+        account = getUser(req.session.user);
+    else if (req.cookies.user && parseInt(req.cookies.user) != -1){
+        account = getUser(parseInt(req.cookies.user));
+    }
+
+
     temp = filterSearch(query);
     temp = filterTags(query);
     res.render('index.hbs', {
+        account: account,
         post: filterSearch(query),
         title: 'Posts About ' + query,
         css : ["style", "navigation", "index"],
@@ -239,7 +265,19 @@ app.get('/search', (req, res) => {
 })
 
 app.use('*', urlencoded, (req, res) => {
-    res.render('errors/404.hbs');
+    var account = null;
+    if (req.session.user)
+        account = getUser(req.session.user);
+    else if (req.cookies.user && parseInt(req.cookies.user) != -1){
+        account = getUser(parseInt(req.cookies.user));
+    }
+
+    console.log(account);
+
+    res.render('errors/404.hbs', {
+        account: account,
+        title : "Page Not Found",
+        css : ["style", "navigation", "index"]});
 });
 
 function userExists (username) {
@@ -317,18 +355,20 @@ function randomPost(){
     var randNums = [];
     var num = Math.floor((Math.random() * jsonArray.length));
     
-    for(var i = 0; i < num; i++){
-        var verify = 0;
-        var randIndex = Math.floor((Math.random() * jsonArray.length));
-        if(randNums != null){
-            for(var j = 0; j < randNums.length; j++){
-                if(randNums[j] == randIndex)
-                    verify++;
+    while (posts.length === 0) {
+        for(var i = 0; i < num; i++){
+            var verify = 0;
+            var randIndex = Math.floor((Math.random() * jsonArray.length));
+            if(randNums != null){
+                for(var j = 0; j < randNums.length; j++){
+                    if(randNums[j] == randIndex)
+                        verify++;
+                }
             }
+            if(verify == 0)
+                posts.push(jsonArray[randIndex]);
+            randNums.push(randIndex);
         }
-        if(verify == 0)
-            posts.push(jsonArray[randIndex]);
-        randNums.push(randIndex);
     }
     
     return posts;

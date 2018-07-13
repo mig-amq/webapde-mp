@@ -16,16 +16,16 @@
 
                     <div class="post-user">
                         <div class="details">
-                            <a href="#" class="primary">
-                            <div class="user-details">
-                                {{#getUserDetails user}}
-                                    <img src="/img/uploads/sample_profile.jpg" alt="Sample Profile">
-                                    <span>
-                                        {{username}}
-                                    </span>
-                                {{/getUserDetails}}
-                            </div>
-                        </a>
+                            {{#getUserDetails user}}
+                                <a href="/profile/{{username}}" class="primary">
+                                    <div class="user-details">
+                                        <img src="/img/uploads/sample_profile.jpg" alt="Sample Profile">
+                                        <span>
+                                            {{username}}
+                                        </span>
+                                    </div>
+                                </a>
+                            {{/getUserDetails}}
 
                         <div class="post-stats">
                             <button class="like" data-id="1"><span class="sprite"></span><span class="count">{{likes}}</span></button>
