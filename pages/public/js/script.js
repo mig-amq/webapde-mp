@@ -20,7 +20,26 @@ $(document).ready(() => {
             $("#uploadMeme").addClass('active');
             $("#fileName").text(fileName);
         }
-    })
+    });
+
+    $(".tools #switcher").click((e) => {
+        e.preventDefault();
+
+        if ($('#switcherType').val() === "login") {
+            $("#rememberMe").css('display', 'none');
+            $("#fullName").css('display', 'block');
+
+            $("#switcherType").text('I have an account');
+            $('#switcherType').val('register');
+
+        } else {
+            $("#rememberMe").css('display', 'block');
+            $("#fullName").css('display', 'none');
+
+            $("#switcherType").text('I don\'t have an account');
+            $('#switcherType').val('login');
+        }
+    });
 
     $("#fileUpload").submit((e) => {
         e.preventDefault();

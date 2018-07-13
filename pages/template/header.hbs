@@ -17,13 +17,14 @@
         <div class="nav-items">
             <a href="/" class="nav-item"><span class="nav-sprite home"></span>Home</a>
             <a href="/random" class="nav-item"><span class="nav-sprite random"></span>Random</a>
-            <div href="/search" class="nav-item"><span class="nav-sprite search"></span>
-                <input type="text" name="q" id="q" placeholder="Search here...">
+            <div class="nav-item"><span class="nav-sprite search"></span>
+                <form action="/search" method="GET">
+                    <input type="text" name="q" id="q" placeholder="Search here...">
+                </form>
             </div>
         </div>
         <div class="tools">
-            <div class="nav-sprite settings"></div>
-            {{#if user}}
+            {{#if account}}
                 <div href="#" id="user">
                     <img src="{{ img }}" alt="{{ username }}">
                     <span id="user-options">
@@ -36,6 +37,12 @@
                     <span class="default"></span>
                     <div id="user-options">
                         <form action="#" method="POST">
+
+                            <div class="input-group" id="fullName" style="display: none">
+                                <label for="name">Full Name:</label>
+                                <input type="text" name="fname" id="fname">
+                            </div>
+
                             <div class="input-group">
                                 <label for="uname">Username:</label>
                                 <input type="text" name="uname" id="uname">
@@ -46,20 +53,21 @@
                                 <input type="password" name="pass" id="pass">
                             </div>
 
-
-                            <div class="input-group-check">
+            
+                            <div class="input-group-check" id="rememberMe">
                                 <label for="rem">
                                     <input type="checkbox" name="rem" id="rem">
                                     <span>Remember Me</span>
                                 </label>
                             </div>
-
+                            
+                            <input type="hidden" name="type" id="switcherType" value="login">
                             <input type="submit" value="Log In">
-                            <a href="#" class="primary">
+                            <a href="#" class="primary" id="switcher">
                                 I don't have an account
                             </a>
 
-                            <a href="#" class="forgot">
+                            <a href="#" class="forgot" id="forgotPass">
                                 Forgot Password
                             </a>
                         </form>
