@@ -26,17 +26,19 @@
         <div class="tools">
             {{#if account}}
                 <div href="#" id="user">
-                    <img src="{{ img }}" alt="{{ username }}">
+                    <img src="/{{ img }}" alt="{{ username }}">
                     <span id="user-options">
-                        <a href="#">Profile</a>
-                        <a href="#">Log Out</a>
+                        <div class="options">
+                            <a href="#">Profile</a>
+                            <a href="/logout">Log Out</a>
+                        </div>
                     </span>
                 </div>
             {{else}}
                 <div href="#" id="user">
                     <span class="default"></span>
                     <div id="user-options">
-                        <form action="#" method="POST">
+                        <form action="/login" method="POST">
 
                             <div class="input-group" id="fullName" style="display: none">
                                 <label for="name">Full Name:</label>

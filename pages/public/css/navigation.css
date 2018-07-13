@@ -139,7 +139,7 @@ body {
     display: block;
 }
 
-#user-options form {
+#user-options form, #user-options .options {
     color: #333;
     background-color: #ffffff;
     border-radius: 3px;
@@ -152,6 +152,18 @@ body {
 
 #user-options form .input-group, #user-options form .input-group-check {
     margin-top: 10px;
+}
+
+#user-options .options a {
+    display: block;
+    color: #333333;
+    padding: 5px;
+    font-size: 11pt;
+}
+
+#user-options .options a:hover {
+    background-color: #2b84be;
+    color: #ffffff;
 }
 
 #user-options form .input-group label{

@@ -112,26 +112,29 @@ var jsonArray = [
 
 app.get('/', urlencoded, (req, res) => {
     var account = null;
-    if (req.session.id)
-        account = getUser(req.session.id);
+    if (req.session.user)
+        account = getUser(req.session.user);
 
     res.render("index.hbs", {
         account: account,
-        post: jsonArray
+        post: jsonArray,
+        title: 'Home',
+        css : ["style", "navigation", "index"],
     });
 });
 
 app.post('/login', urlencoded, (req, res) => {
     var user;
 
-    if (user = userExists(req.body.uname, req.body.pass)) {
-        req.session.id = user.id;
+    if (user = userLogin(req.body.uname, req.body.pass)) {
+        req.session.user = user.id;
+        console.log('hahaha');
     }
 
     res.redirect('/');
 });
 
-app.post('/logout', urlencoded, (req, res) => {
+app.get('/logout', urlencoded, (req, res) => {
     req.session.destroy((err) => {
         if(err) console.log(err);
     });
@@ -168,7 +171,9 @@ app.get('/account', urlencoded, (req, res) => {
 app.get('/tag/:tag', (req, res) => {
     let tag = req.params.tag;
     res.render('index.hbs', {
-        post: filterTags(tag)
+        post: filterTags(tag),
+        title: 'Posts About ' + tag,
+        css : ["style", "navigation", "index"],
     });
 });
 
@@ -180,7 +185,17 @@ app.use('*', urlencoded, (req, res) => {
     res.render('errors/404.hbs');
 });
 
-function userExists (username, password) {
+function userExists (username) {
+    for (let i = 0; i < jsonUsers.length; i++) {
+        if (username === jsonUsers[i].username) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function userLogin (username, password) {
     var user;
 
     for (let i = 0; i < jsonUsers.length; i++) {
@@ -198,16 +213,13 @@ function userExists (username, password) {
 }
 
 function getUser(id) {
+    console.log(id);
     for (let i = 0; i < jsonUsers.length; i++) {
         if (jsonUsers[i].id === id)
             return jsonUsers[i];
     }
 
     return null;
-}
-
-function getUser(id) {
-
 }
 
 function filterTags (tag) {
