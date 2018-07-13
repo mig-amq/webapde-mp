@@ -40,31 +40,6 @@ app.use(express.static(path.join(__dirname, 'pages/public')));
 // Start server
 app.listen(process.env.PORT || 3000);
 
-app.get('/', urlencoded, (req, res) => {
-    res.render('index.hbs');
-});
-
-app.post('/upload', multiform.any(), (req, res) => {
-    let data = req.file;
-    console.log(data);
-    res.sendStatus(200);
-});
-
-app.get('/account', urlencoded, (req, res) => {
-    res.render('account.hbs');
-});
-
-app.get('/tag/:tag', (req, res) => {
-    let tag = req.params.tag;
-});
-
-app.get('/search', (req, res) => {
-    let query = req.query.q;
-})
-
-app.use('*', urlencoded, (req, res) => {
-    res.render('errors/404.hbs');
-});
 
 var jsonUsers = [
     {id: 1, username: 'migq', password: 'hehehe', name: 'Miguel Quiambao'},
@@ -118,15 +93,45 @@ var jsonArray = [
     {title: 'Cake', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/sample.cake.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'wut']}, 
     
-    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/sample.Baby powder.png', 
+    {title: 'Babies', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/sample.Baby powder.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'lewd', 'yes']}, 
     
-    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/emiya.jpg', 
+    {title: 'Emiya', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/emiya.jpg', 
     tags: ['comedy', 'hahahaha', 'lol', 'anime', 'wut']}, 
     
-    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/boy.jpg', 
+    {title: 'Boy', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/boy.jpg', 
     tags: ['comedy', 'hahahaha', 'lol', 'yes', 'savage']}, 
     
-    {title: '', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/ded.jpg', 
+    {title: 'Ded', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/ded.jpg', 
     tags: ['comedy', 'hahahaha', 'lol', 'murder', 'crime', 'suicide']}, 
 ]
+
+app.get('/', urlencoded, (req, res) => {
+    console.log(jsonArray.length);
+    res.render('index.hbs', {
+        post: jsonArray
+    });
+});
+
+app.post('/upload', multiform.any(), (req, res) => {
+    let data = req.file;
+    console.log(data);
+    res.sendStatus(200);
+});
+
+app.get('/account', urlencoded, (req, res) => {
+    res.render('account.hbs');
+});
+
+app.get('/tag/:tag', (req, res) => {
+    let tag = req.params.tag;
+    res.send(jsonArray);
+});
+
+app.get('/search', (req, res) => {
+    let query = req.query.q;
+})
+
+app.use('*', urlencoded, (req, res) => {
+    res.render('errors/404.hbs');
+});

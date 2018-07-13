@@ -4,6 +4,19 @@ $(document).ready(() => {
     });
 
     $("#top-tags").stick_in_parent({offset_top: 45});
+    
+    $(".tag").click(() => {
+        console.log("hello");
+        $.ajax({
+            url: '/tag/:tag',
+            method: 'GET',
+            processData: false,
+            contentType: false,
+            success: (response) => {
+                console.log(response[0].title);
+            }
+        });
+    });
 
     $("#uploadMeme").click(() => {
         $("#file").trigger('click');
