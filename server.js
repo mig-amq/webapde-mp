@@ -45,7 +45,6 @@ app.use(session({
 // Start server
 app.listen(process.env.PORT || 3000);
 
-
 var jsonUsers = [
     {id: 1, username: 'migq', password: 'hehehe', name: 'Miguel Quiambao'},
     {id: 2, username: 'ernestogo', password: 'hahaha', name: 'Ernie Go'},
@@ -83,7 +82,7 @@ var jsonArray = [
     {title: 'Civilization players will know this', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/MAX TECH.png', 
     tags: ['wut', 'civ', 'lol', 'games']}, 
     
-    {title: 'Lets a go', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Lets Go.png', 
+    {title: 'Lets a go', user: 1, likes: 9001, dislikes: 123, post: "img/uploads/Lets Go.png", 
     tags: ['comedy', 'hahahaha', 'lol', 'mario']},
     
     {title: 'IT interview', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/IT Interview.png', 
@@ -95,10 +94,10 @@ var jsonArray = [
     {title: 'CS-GO', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/CSGOpng', 
     tags: ['comedy', 'hahahaha', 'lol', 'wut', 'games']}, 
     
-    {title: 'Cake', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/sample.cake.png', 
+    {title: 'Cake', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/cake.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'wut']}, 
     
-    {title: 'Babies', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/sample.Baby powder.png', 
+    {title: 'Babies', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Baby powder.png', 
     tags: ['comedy', 'hahahaha', 'lol', 'lewd', 'yes']}, 
     
     {title: 'Emiya', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/emiya.jpg', 
@@ -141,11 +140,24 @@ app.post('/logout', urlencoded, (req, res) => {
 });
 
 app.post('/register', multiform.any(), (req, res) => {
+    
 });
 
 app.post('/upload', multiform.any(), (req, res) => {
     let data = req.file;
-    console.log(data);
+    let body = req.body;
+
+    var meme = {
+        'title': body.memeName,
+        'tags': body.memeTags.split(' '),
+        'user': 1,
+        'file': data.path,
+        'likes': 0,
+        'dislikes': 0,
+    }
+
+    jsonArray.push(meme);
+
     res.sendStatus(200);
 });
 
