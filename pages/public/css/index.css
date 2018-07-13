@@ -55,13 +55,23 @@
 #uploadMeme:hover .sprite, #uploadMeme.active .sprite {
     background-position: 405px 52px;
 }
+
 .profile {
     padding: 15px;
-    height: 500px;
     margin-top: 25px;
+    margin-bottom: 25px;
     background-color: #EBEBEB;
     border-radius: 5px;
+    display: flex;
+    flex-direction: row;
 }
+
+.profile .grouped {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
 .profile .title {
     color: #333333;
     font-weight: bold;
