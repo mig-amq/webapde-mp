@@ -1,15 +1,19 @@
 {{#getContext '{"title" : "Home", "css" : ["style", "navigation", "index"]}'}}
     {{> header}}
+    
     <div class="content">
         <div class="thermo">
-            <div class="post">
+            
+            {{#each this}}
+                
+                <div class="post">
                 <div class="post-header">
-                    Fok
+                    {{this}}
                 </div>
-
+                
                 <div class="post-body">
                     <div class="post-content">
-                        <img src="img/uploads/soy.jpg" alt="Sample Post">
+                        <img src= {{this.post}} alt="Sample Post">
                     </div>
 
                     <div class="post-user">
@@ -17,7 +21,7 @@
                             <a href="#" class="primary">
                             <div class="user-details">
                                 <img src="img/uploads/sample_profile.jpg" alt="Sample Profile">
-                                @anonymous
+                                
                             </div>
                         </a>
 
@@ -43,6 +47,7 @@
                     </div>
                 </div>
             </div>
+            {{/each}}
 
             <div class="post">
                 <div class="post-header">
@@ -115,14 +120,19 @@
                 <div class="top-tags" id="top-tags">
                     <div class="title">Top Tags</div>
                     <div class="tags">
-                        <span class="tag"><span></span>Comedy</span>
+                        <span class="tag"><span></span>comedy</span>
                         <span class="tag"><span></span>lol</span>
-                        <span class="tag"><span></span>Hahahaha</span>
-                        <span class="tag"><span></span>Is</span>
-                        <span class="tag"><span></span>this</span>
-                        <span class="tag"><span></span>Loss</span>
-                        <span class="tag"><span></span>Oh</span>
+                        <span class="tag"><span></span>hahahaha</span>
+                        <span class="tag"><span></span>yes</span>
+                        <span class="tag"><span></span>wut</span>
+                        <span class="tag"><span></span>crime</span>
+                        <span class="tag"><span></span>lewd</span>
                         <span class="tag"><span></span>wow</span>
+                        <span class="tag"><span></span>mario</span>
+                        <span class="tag"><span></span>anime</span>
+                        <span class="tag"><span></span>suicide</span>
+                        <span class="tag"><span></span>wii</span>
+                        <span class="tag"><span></span>games</span>
                     </div>
                 </div>
             </div>

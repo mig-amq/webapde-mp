@@ -41,6 +41,72 @@ app.use(session({
 // Start server
 app.listen(process.env.PORT || 3000);
 
+
+var jsonUsers = [
+    {id: 1, username: 'migq', password: 'hehehe', name: 'Miguel Quiambao'},
+    {id: 2, username: 'ernestogo', password: 'hahaha', name: 'Ernie Go'},
+    {id: 3, username: 'mBONG', password: 'hihihi', name: 'Mitchell Ong'}
+];
+
+var jsonArray = [
+    {title: 'Is This Loss???', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/sample.jpg', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: 'I did it to...', user: 2, likes: 1000, dislikes: 123, post: 'img/uploads/Wut.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'zelda', 'wut']}, 
+    
+    {title: 'Executioner', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Wii Guy.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'wii', 'games']}, 
+    
+    {title: 'Vacuum invention', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Vaccum.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'yes', 'wow', 'lewd']}, 
+    
+    {title: 'Suicide Prevention', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/suicide prevention.png', 
+    tags: ['wut', 'death', 'suicide', 'murder', 'crime']}, 
+    
+    {title: 'Where did you come form?', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Pokemon speech.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'yes', 'games']}, 
+    
+    {title: 'Overclocked', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Overclocked.png', 
+    tags: ['comedy', 'hahahaha', 'lol']}, 
+    
+    {title: 'Ourainum', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Ouranium.png', 
+    tags: ['comedy', 'hahahaha', 'lol']},
+    
+    {title: 'Not a cop', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/Not a cop.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'crime']}, 
+    
+    {title: 'Civilization players will know this', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/MAX TECH.png', 
+    tags: ['wut', 'civ', 'lol', 'games']}, 
+    
+    {title: 'Lets a go', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/Lets Go.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'mario']},
+    
+    {title: 'IT interview', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/IT Interview.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'wow']}, 
+    
+    {title: 'Half-life', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/Half Life.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'facebook', 'games']}, 
+    
+    {title: 'CS-GO', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/CSGOpng', 
+    tags: ['comedy', 'hahahaha', 'lol', 'wut', 'games']}, 
+    
+    {title: 'Cake', user: 2, likes: 9001, dislikes: 123, post: 'img/uploads/sample.cake.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'wut']}, 
+    
+    {title: 'Babies', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/sample.Baby powder.png', 
+    tags: ['comedy', 'hahahaha', 'lol', 'lewd', 'yes']}, 
+    
+    {title: 'Emiya', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/emiya.jpg', 
+    tags: ['comedy', 'hahahaha', 'lol', 'anime', 'wut']}, 
+    
+    {title: 'Boy', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/boy.jpg', 
+    tags: ['comedy', 'hahahaha', 'lol', 'yes', 'savage']}, 
+    
+    {title: 'Ded', user: 3, likes: 9001, dislikes: 123, post: 'img/uploads/ded.jpg', 
+    tags: ['comedy', 'hahahaha', 'lol', 'murder', 'crime', 'suicide']}, 
+]
+
 app.get('/', urlencoded, (req, res) => {
     var account;
     if (req.session.id)
@@ -68,7 +134,10 @@ app.post('/logout', urlencoded, (req, res) => {
 });
 
 app.post('/register', multiform.any(), (req, res) => {
-
+    console.log(jsonArray.length);
+    res.render('index.hbs', {
+        post: jsonArray
+    });
 });
 
 app.post('/upload', multiform.any(), (req, res) => {
@@ -83,6 +152,7 @@ app.get('/account', urlencoded, (req, res) => {
 
 app.get('/tag/:tag', (req, res) => {
     let tag = req.params.tag;
+    res.send(jsonArray);
 });
 
 app.get('/search', (req, res) => {
@@ -92,18 +162,6 @@ app.get('/search', (req, res) => {
 app.use('*', urlencoded, (req, res) => {
     res.render('errors/404.hbs');
 });
-
-var jsonUsers = [
-    {id: 1, username: 'migq', password: 'hehehe', name: 'Miguel Quiambao', photo : 'img/upload/sample_profile.jpg'},
-    {id: 2, username: 'ernestogo', password: 'hahaha', name: 'Ernie Go', photo: 'img/upload/sample_profile.jpg'},
-    {id: 3, username: 'mBONG', password: 'hihihi', name: 'Mitchell Ong', photo: 'img/upload/sample_profile.jpg'}
-];
-
-var jsonArray = [
-    {title: 'Is This Loss???', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/sample.jpg', 
-    tags: ['comedy', 'hahahaha', 'lol']},
-    {}
-]
 
 function userExists (username, password) {
     var user;
