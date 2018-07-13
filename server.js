@@ -130,7 +130,7 @@ app.post('/login', urlencoded, (req, res) => {
 
     if (user = userLogin(req.body.uname, req.body.pass)) {
         req.session.user = user.id;
-        console.log('hahaha');
+        console.log(user.id);
     }
 
     res.redirect('/');
@@ -178,15 +178,7 @@ app.get('/account', urlencoded, (req, res) => {
 
 app.get('/tag/:tag', (req, res) => {
     let tag = req.params.tag;
-    var account = null;
-    if (req.session.user)
-        account = getUser(req.session.user);
-    else if (req.cookies.user && parseInt(req.cookies.user) != -1){
-        account = getUser(parseInt(req.cookies.user));
-    }
-
     res.render('index.hbs', {
-        account: account,
         post: filterTags(tag),
         title: 'Posts About ' + tag,
         css : ["style", "navigation", "index"],
@@ -194,15 +186,7 @@ app.get('/tag/:tag', (req, res) => {
 });
 
 app.get('/random', (req, res) => {
-    var account = null;
-    if (req.session.user)
-        account = getUser(req.session.user);
-    else if (req.cookies.user && parseInt(req.cookies.user) != -1){
-        account = getUser(parseInt(req.cookies.user));
-    }
-
     res.render('index.hbs', {
-        account: account,
         post: randomPost(),
         title: 'Random Posts',
         css : ["style", "navigation", "index"],
@@ -212,45 +196,29 @@ app.get('/random', (req, res) => {
 app.get('/search', (req, res) => {
     let query = req.query.q;
     var temp = [];
-
-    var account = null;
-    if (req.session.user)
-        account = getUser(req.session.user);
-    else if (req.cookies.user && parseInt(req.cookies.user) != -1){
-        account = getUser(parseInt(req.cookies.user));
-    }
-
-
     temp = filterSearch(query);
     temp = filterTags(query);
     res.render('index.hbs', {
-        account: account,
         post: filterSearch(query),
         title: 'Posts About ' + query,
         css : ["style", "navigation", "index"],
     });
 })
 app.get('/profile', (req, res) => {
+    var account = null;
+    if (req.session.user){
+        account = getUser(req.session.user);
     res.render('profile.hbs', {
-        post: randomPost(),
+        profName : account.name,
+        profUsername: account.username, 
+        account: account,
+        post: personSearch(account.id),
         title: 'Profile',
         css : ["style", "navigation", "index"],
-    });
+    });}
 });
 app.use('*', urlencoded, (req, res) => {
-    var account = null;
-    if (req.session.user)
-        account = getUser(req.session.user);
-    else if (req.cookies.user && parseInt(req.cookies.user) != -1){
-        account = getUser(parseInt(req.cookies.user));
-    }
-
-    console.log(account);
-
-    res.render('errors/404.hbs', {
-        account: account,
-        title : "Page Not Found",
-        css : ["style", "navigation", "index"]});
+    res.render('errors/404.hbs');
 });
 
 function userExists (username) {
@@ -323,25 +291,40 @@ function filterSearch(query){
     return posts;
 }
 
+function personSearch(id){
+    var posts = [];
+    
+    for(var i = 0; i < jsonArray.length; i++){
+        if(jsonArray[i].user==id)
+            posts.push(jsonArray[i]);
+        /*var bol = 0;
+        for(var j = 0; j < jsonArray.tags.length; j++){
+            if(jsonArray[i].tags[j].toUpperCase().includes(query.toUpperCase()))
+                bol++;
+        }
+        
+        if(bol > 0)
+            posts.push(jsonArray[i]);*/
+    }
+    return posts;
+}
 function randomPost(){
     var posts = [];
     var randNums = [];
     var num = Math.floor((Math.random() * jsonArray.length));
     
-    while (posts.length === 0) {
-        for(var i = 0; i < num; i++){
-            var verify = 0;
-            var randIndex = Math.floor((Math.random() * jsonArray.length));
-            if(randNums != null){
-                for(var j = 0; j < randNums.length; j++){
-                    if(randNums[j] == randIndex)
-                        verify++;
-                }
+    for(var i = 0; i < num; i++){
+        var verify = 0;
+        var randIndex = Math.floor((Math.random() * jsonArray.length));
+        if(randNums != null){
+            for(var j = 0; j < randNums.length; j++){
+                if(randNums[j] == randIndex)
+                    verify++;
             }
-            if(verify == 0)
-                posts.push(jsonArray[randIndex]);
-            randNums.push(randIndex);
         }
+        if(verify == 0)
+            posts.push(jsonArray[randIndex]);
+        randNums.push(randIndex);
     }
     
     return posts;
