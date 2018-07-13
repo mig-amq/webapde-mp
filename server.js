@@ -160,7 +160,13 @@ app.post('/upload', multiform.any(), (req, res) => {
     }
 
     jsonArray.push(meme);
-
+    
+    /*res.render("index.hbs", {
+        account: account,
+        post: jsonArray,
+        title: 'Uploaded' + body.memeName,
+        css : ["style", "navigation", "index"],
+    });*/
     res.sendStatus(200);
 });
 
@@ -173,6 +179,14 @@ app.get('/tag/:tag', (req, res) => {
     res.render('index.hbs', {
         post: filterTags(tag),
         title: 'Posts About ' + tag,
+        css : ["style", "navigation", "index"],
+    });
+});
+
+app.get('/random', (req, res) => {
+    res.render('index.hbs', {
+        post: randomPost(),
+        title: 'Random Posts',
         css : ["style", "navigation", "index"],
     });
 });
@@ -260,5 +274,27 @@ function filterSearch(query){
     }
         
     posts = filterTags(query);
+    return posts;
+}
+
+function randomPost(){
+    var posts = [];
+    var randNums = [];
+    var num = Math.floor((Math.random() * jsonArray.length));
+    
+    for(var i = 0; i < num; i++){
+        var verify = 0;
+        var randIndex = Math.floor((Math.random() * jsonArray.length));
+        if(randNums != null){
+            for(var j = 0; j < randNums.length; j++){
+                if(randNums[j] == randIndex)
+                    verify++;
+            }
+        }
+        if(verify == 0)
+            posts.push(jsonArray[randIndex]);
+        randNums.push(randIndex);
+    }
+    
     return posts;
 }
