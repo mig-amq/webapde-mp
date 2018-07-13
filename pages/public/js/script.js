@@ -65,10 +65,12 @@ $(document).ready(() => {
                 $("#uploadMeme").removeClass('active');
                 $("#memeDescription").css('display', 'none');
                 $("#memeDescription").children('input').each((index, object) => {
-                    $(object).empty();
+                    $(object).val("");
                 });
                 
                 $("#fileName").text("Upload");
+
+                var 
             }
         });
     });
