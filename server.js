@@ -188,21 +188,21 @@ app.post('/register', urlencoded,(req, res) => {
 });
 
 app.post('/upload', multiform.any(), (req, res) => {
-    let data = req.file;
+    let data = req.files[0];
     let body = req.body;
 
     var meme = {
         'title': body.memeName,
         'tags': body.memeTags.split(' '),
         'user': 1,
-        'file': data.path,
+        'post': "img/uploads/" + data.filename,
         'likes': 0,
         'dislikes': 0,
     }
 
-    jsonArray.push(meme);
+    jsonArray.unshift(meme);
 
-    res.sendStatus(200).send(meme);
+    res.sendStatus(200);
 });
 
 app.get('/account', urlencoded, (req, res) => {

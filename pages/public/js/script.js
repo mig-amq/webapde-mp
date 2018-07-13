@@ -70,7 +70,7 @@ $(document).ready(() => {
                 
                 $("#fileName").text("Upload");
 
-                var 
+                location.reload(true);
             }
         });
     });
