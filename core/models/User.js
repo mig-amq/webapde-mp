@@ -17,7 +17,7 @@ module.exports = {
       cnx.client((err, server) => {
         if (err) reject(err)
 
-        console.log (json._id)
+        console.log (json)
         if (json._id)
           json._id = ObjectId(json._id.toString())
         
