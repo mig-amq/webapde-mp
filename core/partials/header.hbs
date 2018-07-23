@@ -39,7 +39,7 @@
     <div id="header">
       <div class="title">
         <a href="/" class="navbar-brand" style="color: #fff; display: flex; align-items: center;">
-          <img src="img/favicon/favicon-128.png" alt="MEME-A" width="22px" height="22px" style="margin-right: 8px">
+          <img src="/img/favicon/favicon-128.png" alt="MEME-A" width="22px" height="22px" style="margin-right: 8px">
           MEME-A</a>
       </div>
       <div id="hamburger">
@@ -62,7 +62,7 @@
         {{#if account}}
         <!-- Button trigger modal -->
         <div class="user dropdown">
-          <img src="/{{account.img}}" alt="{{account.name}}" class="user-img dropdown-toggle" data-toggle="dropdown">
+          <img src="{{account.img}}" alt="{{account.name}}" class="user-img dropdown-toggle" data-toggle="dropdown">
           <div class="user-info dropdown-menu">
             <span>{{account.name}}</span>
             <a href="/profile/{{account.username}}"><i class="far fa-user-circle"></i>View Profile</a>
@@ -170,7 +170,7 @@
                 <form action="/user/register/nojs/" id="register" method="POST" enctype="multipart/form-data">
                   <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" class="form-control form-control-sm" id="name" placeholder="Enter your full name..." readonly>
+                    <input type="text" class="form-control form-control-sm" id="name" placeholder="Enter your full name..." required>
                   </div>
                   <div class="form-group">
                     <label for="reg_username">Userame</label>

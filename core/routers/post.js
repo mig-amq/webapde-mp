@@ -19,7 +19,7 @@ router.post('/post/share/', (req, res) => {
   let data = {
     title: req.body.memeTitle,
     user: req.session.user,
-    post: req.files[0].path,
+    post: req.files[0].path.replace("public", ""),
     tags: req.body.memeTags.split(" ")
   }
 

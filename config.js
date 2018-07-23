@@ -106,7 +106,8 @@ module.exports.multer = {
    * View https://www.npmjs.com/package/multer#api for additional configuration.
    */
 
-  destination: '/img/uploads',
+  destination: 'public/img/uploads',
+  path: '/img/uploads/',
   allowed_files: [
     /**
      * Append the MIME type of the files that the app

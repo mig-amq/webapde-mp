@@ -41,11 +41,11 @@ app.use(require('express').static(path.join(__dirname, settings.hbs.static_locat
  */
 let multer_storage = multer.diskStorage({ // Adjust file storing according to settings
   destination: (req, file, cb) => {
-    cb(null, settings.multer.destination)
+    cb(null, path.normalize(settings.multer.destination))
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname))
-  }
+  },
 })
 
 let multer_options = {

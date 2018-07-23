@@ -62,6 +62,27 @@ $(document).ready(() => {
     }
   });
 
+  $("#registerForm #register").submit((e) => {
+    e.preventDefault();
+    let data = new FormData();
+
+    data.append('username', $("#reg_username").val());
+    data.append('password', $("#reg_password").val());
+    data.append('name', $("#name").val());
+    data.append('img', $("#img")[0].files[0])
+
+    $.ajax({
+      url: '/user/register/',
+      method: 'POST',
+      data: data,
+      processData: false,
+      contentType: false,
+      success: (res) => {
+        console.log(res);
+      }
+    })
+  })
+
   $("#loginForm #login").submit((e) => {
     e.preventDefault();
     logIn();
@@ -219,7 +240,7 @@ function postToHTML(json) {
     });
 
     get_user.then((result) => {
-      $(card_img).attr("src", "/" + json.post);
+      $(card_img).attr("src", json.post);
       $(card_title).text(json.title);
 
       $(user_img).attr("src", result.img);
