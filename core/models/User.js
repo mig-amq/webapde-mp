@@ -17,7 +17,9 @@ module.exports = {
       cnx.client((err, server) => {
         if (err) reject(err)
 
-        console.log (json)
+        if (json._id.length < 24)
+          reject(Error("Invalid user id"))
+          
         if (json._id)
           json._id = ObjectId(json._id.toString())
         
