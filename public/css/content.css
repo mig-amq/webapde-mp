@@ -2,6 +2,8 @@ body {
   background-color: #e2e2e2;
 }
 
+.lazy-hidden{background:url('img/loading.gif') 50% 50% no-repeat #eee}
+
 #content {
   margin: 80px 35px 100px 35px;
 }

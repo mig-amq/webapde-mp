@@ -247,7 +247,9 @@ function postToHTML(json) {
     });
 
     get_user.then((result) => {
-      $(card_img).attr("src", json.post);
+      $(card_img).attr("data-src", json.post);
+      $(card_img).lazyLoadXT();
+      
       $(card_title).text(json.title);
 
       $(user_img).attr("src", result.img);
