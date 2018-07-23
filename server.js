@@ -31,17 +31,44 @@ app.set('views', [path.join(__dirname, 'pages')]);
 
 // Initialize settings
 app.use(express.static(path.join(__dirname, 'pages/public')));
-// app.use(session({
-//     name: "user-session",
-//     resave: true,
-//     saveUninitialized: true,
-//     secret: "top secret"
-// }))
+app.use(session({
+    name: "user-session",
+    resave: true,
+    saveUninitialized: true,
+    secret: "top secret"
+}))
+
 // Start server
 app.listen(process.env.PORT || 3000);
 
 app.get('/', urlencoded, (req, res) => {
-    res.render('index.hbs');
+    var account;
+    if (req.session.id)
+        account = getUser(req.session.id);
+
+    res.render('index.hbs', {account: account});
+});
+
+app.post('/login', urlencoded, (req, res) => {
+    var user;
+
+    if (user = userExists(req.body.uname, req.body.pass)) {
+        req.session.id = user.id;
+    }
+
+    res.redirect('/');
+});
+
+app.post('/logout', urlencoded, (req, res) => {
+    req.session.destroy((err) => {
+        if(err) console.log(err);
+    });
+
+    res.redirect('/');
+});
+
+app.post('/register', multiform.any(), (req, res) => {
+
 });
 
 app.post('/upload', multiform.any(), (req, res) => {
@@ -67,12 +94,43 @@ app.use('*', urlencoded, (req, res) => {
 });
 
 var jsonUsers = [
-    {id: 1, username: 'migq', password: 'hehehe', name: 'Miguel Quiambao'},
-    {id: 2, username: 'ernestogo', password: 'hahaha', name: 'Ernie Go'},
-    {id: 3, username: 'mBONG', password: 'hihihi', name: 'Mitchell Ong'}
+    {id: 1, username: 'migq', password: 'hehehe', name: 'Miguel Quiambao', photo : 'img/upload/sample_profile.jpg'},
+    {id: 2, username: 'ernestogo', password: 'hahaha', name: 'Ernie Go', photo: 'img/upload/sample_profile.jpg'},
+    {id: 3, username: 'mBONG', password: 'hihihi', name: 'Mitchell Ong', photo: 'img/upload/sample_profile.jpg'}
 ];
 
 var jsonArray = [
     {title: 'Is This Loss???', user: 1, likes: 9001, dislikes: 123, post: 'img/uploads/sample.jpg', 
     tags: ['comedy', 'hahahaha', 'lol']},
+    {}
 ]
+
+function userExists (username, password) {
+    var user;
+
+    for (let i = 0; i < jsonUsers.length; i++) {
+        if (username === jsonUsers[i].username) {
+            user = jsonUsers[i];
+            break;
+        }
+    }
+
+    if (user != null && user.password === password) {
+        return user;
+    }
+
+    return null;
+}
+
+function getUser(id) {
+    for (let i = 0; i < jsonUsers.length; i++) {
+        if (jsonUsers[i].id === id)
+            return jsonUsers[i];
+    }
+
+    return null;
+}
+
+function getUser(id) {
+
+}

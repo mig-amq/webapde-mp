@@ -46,6 +46,11 @@ body {
     text-align: center;
 }
 
+#navigation .title {
+    font-weight: bold;
+    font-size: 20pt;
+}
+
 #navigation .nav-items > * .nav-sprite {
     background-image: url('../img/spritesheet.png');
     height: 16px;
