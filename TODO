@@ -1,0 +1,45 @@
+
+./core/models/Post:
+  ✔ Create a post @done(18-07-21 17:09)
+  ✔ Edit a post (title, tags) @started(18-07-21 17:10) @done(18-07-21 17:23) @lasted(13m27s)
+  ✔ Remove a post @done(18-07-21 17:10)
+  ✔ View a post (user, tag, search, default) @done(18-07-21 17:09)
+
+./core/models/User:
+  ✔ Create a user @done(18-07-21 15:11)
+  ✔ Login a user (just check credentials) @done(18-07-21 15:20)
+  ✔ Edit credentials (password, name, profile) @started(18-07-21 17:39) @done(18-07-21 17:46) @lasted(7m34s)
+
+App Functionalities:
+  1. Views (.hbs):
+    ✔ Homepage @done(18-07-23 16:18)
+    ☐ Profile page
+      ☐ Edit Details page
+    ✔ Login/Register page @done(18-07-23 16:18)
+    ✔ Share-A-Meme page @done(18-07-23 16:18)
+    ✔ Search Post page @done(18-07-23 16:18)
+    ☐ Tag page
+  2. User:
+    ✔ Logging In @done(18-07-23 16:15)
+      ✔ Remember Me @done(18-07-23 16:16)
+      ✔ Default @done(18-07-23 16:16)
+    ☐ Registering
+      ☐ Profile Pic Upload
+      ✔ Regular Registration (default profile pic) @done(18-07-23 16:16)
+    ✔ Log Out @done(18-07-23 16:16)
+    ☐ Editing Details
+      ☐ Changing Name
+      ☐ Changing Password
+  3. Post:
+    ✔ Creating a Post @done(18-07-23 16:16)
+    ☐ Editing a Post:
+      ☐ Changing Title
+      ☐ Editing Tags
+        ☐ Adding Tags
+        ☐ Removing Tags
+    ☐ Deleting a Post
+    ☐ Viewing Posts:
+      ✔ Default View @done(18-07-23 16:16)
+      ☐ User View
+      ☐ Tag View
+      ☐ Search View

@@ -1,0 +1,36 @@
+{
+  "name": "meme-a",
+  "version": "0.1.0",
+  "description": "A meme sharing site, made in partial fulfillment of the requirements for WEBAPDE AY1718T3",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mig-amq/webapde-mp.git"
+  },
+  "keywords": [
+    "meme",
+    "dlsu",
+    "webapde",
+    "nodejs",
+    "mongodb"
+  ],
+  "author": "Quiambao, Miguel; Ong, Mitchell; Go, Ernesto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mig-amq/webapde-mp/issues"
+  },
+  "homepage": "https://github.com/mig-amq/webapde-mp#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "hbs": "^4.0.1",
+    "mongodb": "^3.1.1",
+    "multer": "^1.3.1",
+    "path": "^0.12.7"
+  }
+}
