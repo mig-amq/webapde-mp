@@ -9,6 +9,7 @@ module.exports.db = {
   mongo_db: "webapde",
   mongo_ip: "127.0.0.1",
   mongo_port: "27017",
+  mLab: null,
 
   opt: {
     useNewUrlParser: true
