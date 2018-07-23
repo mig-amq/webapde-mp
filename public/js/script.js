@@ -7,17 +7,24 @@ $(document).ready(() => {
    * This handles the mobile navigation.
    * It expands the height once the hamburger icon is clicked
    */
-  $(".navigation #header #hamburger").click(() => {
+  $(".navigation #header #hamburger, .navigation #header").click((e) => {
+    e.stopPropagation();
     var items = $(".navigation #items");
     if (items.data("expanded")) {
-      items.slideUp();
+      items.slideUp(150);
       items.data("expanded", false);
     } else {
-      items.slideDown();
+      items.slideDown(150);
       items.data("expanded", true);
     }
   })
 
+  $("#content").click((e) => {
+    if ($(".navigation #items").data("expanded")) {
+      $(".navigation #items").slideUp(150);
+      $(".navigation #items").data("expanded", false);
+    }
+  })
   /**
    * This code handles the loading of new posts 
    * at the loading of the page

@@ -10,7 +10,7 @@ body {
   outline: 0;
 }
 
-.dropdown-toggle:after{
+.dropdown-toggle:after {
   display: none;
 }
 
@@ -77,6 +77,81 @@ body {
   background-color: rgb(243, 242, 242);
 }
 
+#posts .card .card-body button {
+  padding: 5px;
+  min-width: 50px;
+  border: 1px solid #e2e2e2;
+  font-size: 14pt;
+  color: #888888;
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+#posts .card .card-body button:last-child {
+  margin-left: 8px;
+}
+
+#posts .card .card-body button:active {
+  background-color: #d6d6d6;
+}
+
+#posts .card .card-body button:hover,
+#posts .card .card-body button.active {
+  color: rgb(53, 142, 201);
+  border: 1px solid rgb(53, 142, 201);
+}
+
+#posts .card .card-body button span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#posts .card .card-body button span:last-child {
+  font-size: 9pt;
+}
+
+#posts .card .card-img-top {
+  border-radius: 0;
+}
+
+#posts .card .card-tags {
+  padding: 0 20px 20px 20px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#posts .card .card-tags>* {
+  margin-right: 5px;
+  margin-bottom: 6px;
+  padding: 5px;
+}
+
+#posts .card .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#posts .card .card-header .user-info img {
+  height: 30px;
+  width: 30px;
+  border-radius: 30px;
+  margin-right: 10px;
+}
+#posts .card .card-header .arrow {
+  color: rgb(41, 108, 163);
+  cursor: pointer;
+  font-size: 14pt;
+}
+#posts .card .card-header .arrow:hover {
+  color: rgb(24, 76, 119);
+}
+#posts .card .card-title h4 {
+  font-size: 10pt !important;
+}
+#posts .card>img {
+  border-bottom: 1px solid #e2e2e2;
+}
 @media (min-width: 1025px) {
   #memeTagList {
     display: flex;
@@ -84,28 +159,23 @@ body {
     flex-wrap: wrap;
     justify-content: center;
   }
-
   #memeTagList .badge {
     margin-left: 5px;
     margin-top: 5px;
     cursor: pointer;
   }
-
   #memeTagList .badge:hover i {
     color: #e2e2e2;
   }
-
   #req-tags.bad {
     color: #c73131;
     font-weight: bold;
   }
-
   label[for="meme"] {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
   }
-
   #posts {
     display: block;
     column-count: 3;
@@ -113,7 +183,6 @@ body {
     width: 85vw;
     margin: 0 auto;
   }
-
   /* #posts {
     -moz-column-count: 3;
     -webkit-column-count: 3;
@@ -123,104 +192,42 @@ body {
     column-gap: 2em;
     width: 85vw;
   }*/
-
   #posts .card {
     border-radius: 8px;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
     display: inline-block;
     margin: 0 1em 2em 0;
   }
-
-  #posts .card .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  #posts .card .card-img-top {
-    border-radius: 0;
-  }
-
-  #posts .card .card-header .user-info img {
-    height: 30px;
-    width: 30px;
-    border-radius: 30px;
-    margin-right: 10px;
-  }
-
-  #posts .card .card-header .arrow {
-    color: rgb(41, 108, 163);
-    cursor: pointer;
-    font-size: 14pt;
-  }
-
-  #posts .card .card-header .arrow:hover {
-    color: rgb(24, 76, 119);
-  }
-
-  #posts .card .card-title h4{
-    font-size: 10pt !important;
-  }
-
-  #posts .card > img {
-    border-bottom: 1px solid #e2e2e2;
-  }
-
   #posts .card .card-body {
     padding: 1rem;
   }
-
-  #posts .card .card-tags {
-    padding: 0 20px 20px 20px;
-    display: flex;
-    flex-flow: row wrap;
-  }
-
-  #posts .card .card-tags > * {
-    margin-right: 5px;
-    margin-bottom: 6px;
-    padding: 5px;
-  }
-
   #posts .card .card-body {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
   }
-
-  #posts .card .card-body h4{
-    width: 60%;
+  #posts .card .card-body h4 {
+    width: 55%;
   }
+}
 
-  #posts .card .card-body button {
-    padding: 5px;
-    min-width: 50px;
-    margin-left: 5px;
-    border: 1px solid #e2e2e2;
-    font-size: 14pt;
-    color: #888888;
-    background-color: #e0e0e0;
-    cursor: pointer;
+@media (max-width: 1024px) {
+  #posts {
+    margin: 40px;
   }
-
-  #posts .card .card-body button:active {
-    background-color: #d6d6d6;
+  #posts .card {
+    display: block;
+    margin-bottom: 25px;
+    border-radius: 8px;
   }
-
-  #posts .card .card-body button:hover,
-  #posts .card .card-body button.active {
-    color: rgb(53, 142, 201);
-    border: 1px solid rgb(53, 142, 201);
+  #posts .card .card-header .user-info img {
+    height: 30px;
+    width: 30px;
   }
-
-  #posts .card .card-body button span{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #posts .card .card-body button span:last-child {
-    font-size: 9pt;
+  #posts .card .card-tags>* {
+    margin-right: 5px;
+    margin-bottom: 6px;
+    padding: 8px;
   }
 }
