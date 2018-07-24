@@ -47,7 +47,9 @@ $(document).ready(() => {
    * after scrolling to the bottom of the page
    */
   $(window).scroll(function () {
-    if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+    if (Math.ceil($(window).scrollTop() + $(window).height()) >= Math.floor($(document).height())) {
+      $("#loadingBottom").css("display", "block");
+
       skip += 5;
 
       $.ajax({
@@ -63,7 +65,9 @@ $(document).ready(() => {
               skip -= 10;
 
             postToHTML(o).then((html) => $("#posts").append(html));
-          })
+          });
+
+          $("#loadingBottom").css("display", "none");
         }
       })
     }
@@ -78,6 +82,8 @@ $(document).ready(() => {
     data.append('name', $("#name").val());
     data.append('img', $("#img")[0].files[0])
 
+    $("#registerForm #register button[type=submit]").attr("disabled", true);
+
     $.ajax({
       url: '/user/register/',
       method: 'POST',
@@ -85,7 +91,7 @@ $(document).ready(() => {
       processData: false,
       contentType: false,
       success: (res) => {
-        console.log(res);
+        $("#registerForm #register button[type=submit]").attr("disabled", false);
       }
     })
   })
@@ -109,14 +115,21 @@ $(document).ready(() => {
 
       memeTags = [];
       post(data);
+      $("#memeTagList").empty();
     } else {
       $("#req-tags").addClass("bad")
     }
   });
 
   $("#meme").change((e) => {
-    $("label[for=meme]").text(e.target.files[0].name);
+    if (e.target.files[0])
+      $("label[for=meme]").text(e.target.files[0].name);
   });
+
+  $("#img").change((e) => {
+    if (e.target.files[0])
+      $("label[for=img]").text(e.target.files[0].name);
+  })
 
   $("#memeTags").keydown((e) => {
     if ([13, 32].indexOf(e.keyCode) >= 0) {
@@ -135,7 +148,6 @@ $(document).ready(() => {
         t.click((e) => {
           t.remove();
           memeTags.splice(memeTags.indexOf(tag), 1);
-          console.log(memeTags);
         });
       }
     }
@@ -249,7 +261,7 @@ function postToHTML(json) {
     get_user.then((result) => {
       $(card_img).attr("data-src", json.post);
       $(card_img).lazyLoadXT();
-      
+
       $(card_title).text(json.title);
 
       $(user_img).attr("src", result.img);
@@ -346,6 +358,7 @@ function logIn() {
   let password = $("#login #password").val();
   let remember = $("#login #remember").is(":checked");
 
+  $("#loginForm #login button[type=submit]").attr("disabled", true);
   $.ajax({
     url: '/user/login',
     data: {
@@ -358,6 +371,7 @@ function logIn() {
       if (!data.exists) {
         location.reload();
       } else {
+        $("#loginForm #login button[type=submit]").attr("disabled", false);
       }
     }
   })

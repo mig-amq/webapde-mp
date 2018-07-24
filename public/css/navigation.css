@@ -1,3 +1,5 @@
+.lazy-hidden{background:url('/img/loading.gif') 50% 50% no-repeat #eee}
+
 .navigation {
   width: 100%;
   position: fixed;
