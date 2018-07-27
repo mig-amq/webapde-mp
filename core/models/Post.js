@@ -253,7 +253,7 @@ module.exports = {
 
       if (!uid) {
         errors.exists = true;
-        errors.uid = "You must be logged in to like/dislike post";
+        errors.uid = "Log in to like/dislike post";
 
         resolve(errors);
       }

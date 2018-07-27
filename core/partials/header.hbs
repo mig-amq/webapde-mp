@@ -75,13 +75,16 @@
           <span>{{account.name}}</span>
           </div>
           
+          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modelId">
+            <i class="far fa-share-square"></i> Share-A-Meme
+          </button>
+        </div>
+
+        <div class="tool-group" style="margin-top: 10px;">
           <div class="user-mobile">
             <a href="/profile/{{account.username}}" class="btn btn-sm btn-secondary"><i class="far fa-user-circle"></i>View Profile</a>
             <a href="/logout/" class="btn btn-sm btn-danger"><i class="fas fa-sign-out-alt"></i>Log Out</a>
           </div>
-          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modelId">
-            <i class="far fa-share-square"></i> Share-A-Meme
-          </button>
         </div>
         {{else}}
         <a href="/user/" id="userLogin" data-toggle="modal" data-target="#loginModal">Login/Register</a>
@@ -170,11 +173,16 @@
                     <label class="custom-control-label" for="remember">Remember Me</label>
                   </div>
 
-                  <div style="text-align:center">
+                  <div style="text-align:center; margin-top: 10px;">
                     <button type="submit" class="btn btn-success" style="margin: 0 auto">Login Now</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   </div>
                 </form>
+
+                <br/>
+                <div id="loginErrors">
+                  
+                </div>
               </div>
 
               <div id="registerForm" class="tab-pane container">
@@ -202,6 +210,11 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   </div>
                 </form>
+
+                <br/>
+                <div id="registerErrors">
+                  
+                </div>
               </div>
             </div>
           </div>

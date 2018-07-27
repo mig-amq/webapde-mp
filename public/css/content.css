@@ -79,7 +79,7 @@ body {
 
 #posts .card .card-body button {
   padding: 5px;
-  min-width: 50px;
+  min-width: 45px;
   border: 1px solid #e2e2e2;
   font-size: 14pt;
   color: #888888;
@@ -177,13 +177,6 @@ body {
     overflow: hidden;
   }
   #posts {
-    display: block;
-    column-count: 3;
-    column-gap: 2em;
-    width: 85vw;
-    margin: 0 auto;
-  }
-  /* #posts {
     -moz-column-count: 3;
     -webkit-column-count: 3;
     column-count: 3;
@@ -191,12 +184,18 @@ body {
     -webkit-column-gap: 2em;
     column-gap: 2em;
     width: 85vw;
-  }*/
+    display: block;
+    margin: 0 auto;
+  }
   #posts .card {
     border-radius: 8px;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
-    display: inline-block;
     margin: 0 1em 2em 0;
+  }
+  #posts:after {
+    content: '';
+    display: block;
+    clear: both;
   }
   #posts .card .card-body {
     padding: 1rem;
@@ -213,9 +212,6 @@ body {
 }
 
 @media (max-width: 1024px) {
-  #posts {
-    margin: 40px;
-  }
   #posts .card {
     display: block;
     margin-bottom: 25px;

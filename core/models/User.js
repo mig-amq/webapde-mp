@@ -81,7 +81,7 @@ module.exports = {
       }
 
       if (!json.img)
-        json.img = 'img/samples/sample_profile.jpg'
+        json.img = '/img/samples/sample_profile.jpg'
 
       if (!errors.exists) {
         json.username = json.username.replace(/\s+/gi, "")

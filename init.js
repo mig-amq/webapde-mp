@@ -78,7 +78,7 @@ init_users.then(() => {
 
   Promise.all([uid1, uid2, uid3]).then((res) => {
     for (let i = 0; i < sample_imgs.length; i++) {
-      let user = res[Math.floor(Math.random() * res.length)]
+      let user = res[Math.floor(Math.random() * (res.length - 1))]
       let num = Math.floor(Math.random() * 5)
 
       post.create({

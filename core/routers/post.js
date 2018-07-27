@@ -54,7 +54,7 @@ router.get('/post/default/', (req, res) => {
   skip = parseInt(skip)
 
   post.get_posts({}, {
-    time: -1, likes: -1
+    likes: -1, time: -1
   }, limit, skip).then((result) => res.send(result))
 
 })

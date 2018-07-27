@@ -19,6 +19,11 @@ $(document).ready(() => {
     }
   })
 
+  /**
+   * This code handles the exit
+   * animation if the mobile menu is open
+   * and the content/body was clicked
+   */
   $("#content").click((e) => {
     if ($(".navigation #items").data("expanded")) {
       $(".navigation #items").slideUp(150);
@@ -50,6 +55,8 @@ $(document).ready(() => {
     if ($(window).scrollTop() + $(window).height() == $(document).height()) {
       skip += 5;
 
+
+      console.log("display0");
       $.ajax({
         url: '/post/default',
         data: {
@@ -58,10 +65,11 @@ $(document).ready(() => {
         },
         method: 'GET',
         success: function (data) {
+
+          console.log(data);
           $.each(data, (i, o) => {
             if (o.length <= 0)
               skip -= 10;
-
             postToHTML(o).then((html) => $("#posts").append(html));
           })
         }
@@ -69,6 +77,9 @@ $(document).ready(() => {
     }
   });
 
+  /**
+   * This handles the registration
+   */
   $("#registerForm #register").submit((e) => {
     e.preventDefault();
     let data = new FormData();
@@ -78,6 +89,8 @@ $(document).ready(() => {
     data.append('name', $("#name").val());
     data.append('img', $("#img")[0].files[0])
 
+    $("#registerForm #register input[type=submit]").attr("disabled", true);
+
     $.ajax({
       url: '/user/register/',
       method: 'POST',
@@ -85,7 +98,12 @@ $(document).ready(() => {
       processData: false,
       contentType: false,
       success: (res) => {
-        console.log(res);
+        if (!res.exists) {
+          $("#loginModal a[href='#loginForm'").tab('show');
+          $("#loginErrors").append(createAlert("Successfully created your account", "success", "Success"));
+        } else {
+          console.log(res);
+        }
       }
     })
   })
@@ -93,7 +111,7 @@ $(document).ready(() => {
   $("#loginForm #login").submit((e) => {
     e.preventDefault();
     logIn();
-  })
+  });
 
   $("#memeshare").submit((e) => {
     e.preventDefault();
@@ -139,7 +157,7 @@ $(document).ready(() => {
         });
       }
     }
-  })
+  });
 });
 
 function updateStats(obj, like = true) {
@@ -175,7 +193,10 @@ function updateStats(obj, like = true) {
           }
         }
       } else {
-        console.log(json);
+        if (json.uid.length > 0) {
+          $("#loginErrors").append(createAlert(json.uid));
+          $("#loginModal").modal();
+        }
       }
     }
   })
@@ -356,7 +377,42 @@ function logIn() {
       if (!data.exists) {
         location.reload();
       } else {
+        var errors = []
+        for (let i = 0; i < data.username.length; i++)
+          errors.push(data.username[i]);
+
+        for (let i = 0; i < data.password.length; i++)
+          errors.push(data.password[i]);
+
+        for (let i = 0; i < errors.length; i++)
+          $("#loginErrors").append(createAlert(errors[i]));
+
       }
     }
   })
+}
+
+function createAlert (message, err = 'danger', strong = "Error") {
+  var div = document.createElement("div");
+  $(div).addClass("alert alert-" + err + " alert-dismissible fade show")
+  $(div).attr("role", "alert");
+
+  var btn = document.createElement("button");
+  $(btn).addClass('close');
+  $(btn).attr('data-dismiss', 'alert');
+
+  var span1 = document.createElement("span");
+  var span2 = document.createElement("span");
+
+  $(span1).append("&times;");
+  $(span1).attr('aria-hidden', true);
+  $(span2).addClass("sr-only");
+  $(span2).append("Close");
+
+  $(btn).append(span1);
+  $(btn).append(span2);
+  $(div).append(btn);
+  $(div).append("<strong>" + strong + ": </strong>" + message);
+
+  return div;
 }
