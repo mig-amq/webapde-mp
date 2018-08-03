@@ -67,7 +67,14 @@ app.use("*", (req, res, next) => {
   if (!req.session.user)
     if (req.cookies.user)
       req.session.user = req.cookies.user
-
+  
+  /**
+   * Disable after development.
+   * Used for testing.
+   */
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  
   next()
 })
 

@@ -1,6 +1,7 @@
-const cnx = require('./Mongo');
+const cnx = require('./Mongo')
 const ObjectId = require('mongodb').ObjectID
 const config = require('../../config')
+const sha = require('sha.js')
 
 module.exports = {
 
@@ -116,6 +117,7 @@ module.exports = {
             } else {
 
               let dbo = server.db(config.db.mongo_db)
+              json.password = sha('sha256').update(json.password).digest('hex');
 
               this.get_account({
                   username: json.username
@@ -189,6 +191,8 @@ module.exports = {
             errors.exists = true
             errors.server = true
           } else {
+            json.password = sha('sha256').update(json.password).digest('hex');
+            
             this.get_account(json)
               .then((res) => {
                 if (!res) {

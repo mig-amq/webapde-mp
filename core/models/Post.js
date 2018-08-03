@@ -191,7 +191,6 @@ module.exports = {
               })
               .then((result) => {
                 if (!result) {
-                  console.log(json.user)
                   errors.exists = true;
                   errors.user = "You have an invalid account";
 
@@ -272,7 +271,6 @@ module.exports = {
         } else {
           let db = server.db(config.db.mongo_db);
 
-          console.log({pid, uid})
           db.collection("users")
             .findOne({
               _id: ObjectId(uid)
