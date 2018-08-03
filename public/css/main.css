@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  padding-bottom: 50px;
+}
+#content::after {
+  content:'';
+  display: block;
+  clear: both;
+}
+
+#navbar {
+  z-index: 10003;
+}
+
+.dimmer.modals {
+  z-index: 10010;
+}
+.tabular .item {
+  cursor: pointer;
+}
+
+form .filename{
+  color: #4a4a4a;
+}
+
+.card .content .header {
+  word-break: break-all;
+  font-size: 16px !important;
+}
+
+.card .content .like {
+  cursor: pointer;
+}
+
+.card .content .like i {
+  margin: 0;
+  margin-left: 5px;
+}
+
+.card .content .like,
+.card .content .liked:hover {
+  color: #4a4a4a;
+}
+
+.card .content .like:hover,
+.card .content .liked {
+  color: #aa1a1a;
+}
+
+.card .content .meta {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.card .content .meta:hover {
+  color: #009c95;
+}
+
+.card .extra.content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.card .extra.content .tag {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}

@@ -5,12 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>{{title}}</title>
-
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
-    crossorigin="anonymous">
-
+  <title>Test</title>
+  
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/img/favicon/apple-touch-icon-57x57.png" />
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/img/favicon/apple-touch-icon-114x114.png" />
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/img/favicon/apple-touch-icon-72x72.png" />
@@ -23,205 +19,128 @@
   <link rel="icon" type="image/png" href="/img/favicon/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/png" href="/img/favicon/favicon-32x32.png" sizes="32x32" />
 
-  {{!-- <link rel="stylesheet" href="css/fa.css"> --}}
-  {{!-- <link rel="stylesheet" href="/css/bootstrap4.1.css"> --}}
-  <link rel="stylesheet" href="/css/navigation.css">
-  <link rel="stylesheet" href="/css/content.css">
-
+  <link rel="stylesheet" href="/semantic/semantic.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/regular.css" media="screen and (min-width: 978px)">
+  <link rel="stylesheet" href="/css/mobile.css" media="screen and (max-width: 977px)">
 </head>
 
 <body>
-  <script>
-    var acc = "{{account._id}}";
-  </script>
-  <nav class="navigation">
-    <div id="header">
-      <div class="title">
-        <a href="/" class="navbar-brand" style="color: #fff; display: flex; align-items: center;">
-          <img src="/img/favicon/favicon-128.png" alt="MEME-A" width="22px" height="22px" style="margin-right: 8px">
-          MEME-A</a>
+
+  <div id="navbar">
+    <div class="nav-item" id="nav-expander">
+      <div class="header">
+        <img src="/img/favicon/favicon-32x32.png" alt="">
+        <span class="mobile">MEME-A</span>
       </div>
-      <div id="hamburger">
-        <i class="fa fa-bars"></i>
+
+      <div class="mobile right" id="expand">
+        <i class="bars icon"></i>
       </div>
     </div>
-    <div id="items" data-expanded="false">
-      <div class="item">
-        <a href="/">
-          <i class="fa fa-home"></i> Home</a>
-        <a href="/random/">
-          <i class="fa fa-random"></i> Random</a>
-        <form action="#">
-          <i class="fa fa-search"></i>
-          <input type="text" name="q" id="q" placeholder="Search here..." />
-        </form>
+
+    <div class="expandable" id="nav-expand">
+      <div class="nav-item">
+        <a href="#" class="active">
+          <i class="home icon"> </i>
+          Home</a>
       </div>
 
-      <div id="tools">
-        {{#if account}}
-        <!-- Button trigger modal -->
-        <div class="user dropdown">
-          <img src="{{account.img}}" alt="{{account.name}}" class="user-img dropdown-toggle" data-toggle="dropdown">
-          <div class="user-info dropdown-menu">
-            <span>{{account.name}}</span>
-            <a href="/profile/{{account.username}}"><i class="far fa-user-circle"></i>View Profile</a>
-            <a href="/logout/"><i class="fas fa-sign-out-alt"></i>Log Out</a>
-          </div>
-        </div>
-        <div class="tool-group">
-          
-          <div class="user-mobile">
-            <img src="{{account.img}}" alt="{{account.name}}" class="user-img dropdown-toggle" data-toggle="dropdown">
-          <span>{{account.name}}</span>
-          </div>
-          
-          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modelId">
-            <i class="far fa-share-square"></i> Share-A-Meme
-          </button>
-        </div>
-
-        <div class="tool-group" style="margin-top: 10px;">
-          <div class="user-mobile">
-            <a href="/profile/{{account.username}}" class="btn btn-sm btn-secondary"><i class="far fa-user-circle"></i>View Profile</a>
-            <a href="/logout/" class="btn btn-sm btn-danger"><i class="fas fa-sign-out-alt"></i>Log Out</a>
-          </div>
-        </div>
-        {{else}}
-        <a href="/user/" id="userLogin" data-toggle="modal" data-target="#loginModal">Login/Register</a>
-        {{/if}}
+      <div class="nav-item">
+        <a href="#">
+          <i class="shuffle icon"></i>
+          Random
+        </a>
       </div>
-    </div>
-  </nav>
 
-  {{#if account}}
-  <!-- Modal -->
-  <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="modelTitleId">Share-A-Meme</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form action="/upload/share/nojs/" id="memeshare" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-              <label for="memeTitle">Meme Title</label>
-              <input type="text" class="form-control" name="memeTitle" id="memeTitle" aria-describedby="helpId" placeholder="Enter meme title..." required>
-            </div>
-            <div class="form-group">
-              <label for="memeTags">Meme Tags</label>
-              <input type="text" class="form-control" name="memeTags" id="memeTags" aria-describedby="memeTag" placeholder="Enter meme tags...">
-              <small id="memeTag" class="form-text text-muted">*Press space or enter to separate tags. <span id="req-tags">There should be at least one tag in a post.</span></small>
-              <div id="memeTagList"></div>
-            </div>
-            <div class="form-group">
-              <div class="custom-file">
-                <input type="file" class="custom-file-input form-control-sm" id="meme" accept="image/*" required>
-                <label class="custom-file-label" for="meme">Choose file</label>
-              </div>
-              <small id="memeHelp" class="form-text text-muted">*You can only upload photos and gifs</small>
-            </div>
-            <br>
-            <div style="text-align: center; margin-top: 15px">
-              <button type="submit" class="btn btn-success">Share My Meme!</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+      <div class="nav-item">
+        <div class="nav-form">
+          <form action="/search/" id="search-form">
+            <i class="search icon"></i>
+            <input type="text" name="q" id="q" placeholder="Search...">
           </form>
         </div>
       </div>
-    </div>
-  </div>
-  {{else}}
 
-  <!-- Modal -->
-  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="loginModalTitle">Login/Register</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="container-fluid">
-            <ul class="nav nav-pills justify-content-center">
-              <li class="nav-item">
-                <a href="#loginForm" class="nav-link active" data-toggle="pill">Log In</a>
-              </li>
-              <li class="nav-item">
-                <a href="#registerForm" class="nav-link" data-toggle="pill">Register</a>
-              </li>
-            </ul>
-
-            <div class="tab-content">
-              <div id="loginForm" class="tab-pane container active">
-                <form action="/user/login/nojs/" id="login" method="POST">
-                  <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control form-control-sm" id="username" placeholder="Enter username..." required>
-                  </div>
-                  <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control form-control-sm" id="password" placeholder="Enter password..." required>
-                  </div>
-
-                  <div class="custom-control custom-checkbox" style="text-align:center">
-                    <input type="checkbox" class="custom-control-input" id="remember">
-                    <label class="custom-control-label" for="remember">Remember Me</label>
-                  </div>
-
-                  <div style="text-align:center; margin-top: 10px;">
-                    <button type="submit" class="btn btn-success" style="margin: 0 auto">Login Now</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  </div>
-                </form>
-
-                <br/>
-                <div id="loginErrors">
-                  
-                </div>
-              </div>
-
-              <div id="registerForm" class="tab-pane container">
-                <form action="/user/register/nojs/" id="register" method="POST" enctype="multipart/form-data">
-                  <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" class="form-control form-control-sm" id="name" placeholder="Enter your full name..." required>
-                  </div>
-                  <div class="form-group">
-                    <label for="reg_username">Userame</label>
-                    <input type="text" class="form-control form-control-sm" id="reg_username" placeholder="Enter username..." required>
-                  </div>
-                  <div class="form-group">
-                    <label for="reg_password">Password</label>
-                    <input type="password" class="form-control form-control-sm" id="reg_password" placeholder="Enter password..." required>
-                  </div>
-
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input form-control-sm" id="img" accept="image/*">
-                    <label class="custom-file-label" for="img">Choose file</label>
-                  </div>
-
-                  <div style="text-align: center; margin-top: 15px">
-                    <button type="submit" class="btn btn-success" style="margin: 0 auto">Register Now</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  </div>
-                </form>
-
-                <br/>
-                <div id="registerErrors">
-                  
-                </div>
-              </div>
-            </div>
+      <div class="nav-item right">
+        <!-- <div class="user-info ui dropdown item">
+          <img src="/img/sample_profile.jpg" class="ui avatar image">
+          <span>Username</span>
+          <div class="menu">
+            <div class="item">Name</div>
+            <a href="#" class="item">View Profile</a>
+            <a href="#" class="item">Log Out</a>
           </div>
+        </div> -->
 
+        <div class="user-login">
+          <button class="ui teal button" id="loginModal">Login / Register</button>
         </div>
       </div>
     </div>
   </div>
+
+  {{#if account}}
+  {{else}}
+  <div id="login" class="ui small modal">
+    <div class="header">Login / Register</div>
+    <div class="content">
+      <div class="ui top attached tabular menu">
+        <div class="active item" id="loginClick">Login</div>
+        <div class="item" id="registerClick">Register</div>
+      </div>
+      <div class="ui bottom attached active tab segment" id="loginTab">
+        <form action="/login/" method="POST" class="ui form">
+          <div class="field">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+          </div>
+  
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+          </div>
+  
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" class="hidden" tabindex="0" id="remember">
+              <label for="remember">Remember Me</label>
+            </div>
+          </div>
+          <input type="submit" value="Login" class="ui green button">
+        </form>
+      </div>
+      <div class="ui bottom attached tab segment" id="registerTab">
+        <form action="/register/" method="POST" class="ui form">
+          <div class="field">
+            <label for="name">Full Name</label>
+            <input type="text" name="name" id="name" required>
+          </div>
+          <div class="field">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+          </div>
+  
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+          </div>
+  
+          <div class="field">
+            <label for="img">Profile Picture</label>
+            <div class="ui right action left icon input">
+              <i class="image icon"></i>
+              <input type="text" id="img-name" readonly="" class="file-name">
+              <input type="file" name="img" id="img" style="display: none" accept="image/*">
+              <div class="ui basic floating button" id="img-browse">Browse</div>
+            </div>
+          </div>
+          <input type="submit" value="Register" class="ui green button">
+        </form>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui cancel button">Close</div>
+    </div>
+  </div>
   {{/if}}
-  <div id="content">

@@ -1,0 +1,80 @@
+#navbar {
+  margin: 50px;
+  width: calc(100% - 100px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-weight: lighter;
+  font-size: 16px; }
+  #navbar .nav-item:first-child {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    margin-left: 25px; }
+  #navbar .expandable {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto; }
+    #navbar .expandable .nav-item {
+      margin-left: 25px; }
+      #navbar .expandable .nav-item:first-child {
+        margin-left: 50px; }
+      #navbar .expandable .nav-item:last-child {
+        margin-left: auto;
+        margin-right: 25px; }
+      #navbar .expandable .nav-item a {
+        color: #4a4a4a;
+        display: inline-block;
+        padding: 20px 50px; }
+        #navbar .expandable .nav-item a:hover, #navbar .expandable .nav-item a.active {
+          content: '';
+          border-bottom: 1px solid #4a4a4a; }
+      #navbar .expandable .nav-item .nav-form input {
+        border: 0;
+        color: #4a4a4a; }
+  #navbar .right {
+    float: right; }
+  #navbar .mobile {
+    display: none; }
+  #navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+  #navbar.sticky {
+    top: 0;
+    left: 0;
+    margin: 0;
+    position: fixed;
+    width: 100%;
+    background-color: #ffffff;
+    z-index: 10001; }
+
+#content {
+  margin: 75px;
+  padding-bottom: 150px; }
+  #content.sticky {
+    margin-top: calc(75px + 61px + 50px); }
+  #content #cards {
+    -webkit-columns: 3;
+    columns: 3;
+    -webkit-column-gap: 5em;
+    column-gap: 5em; }
+    #content #cards .card {
+      vertical-align: top;
+      width: 100%;
+      margin-bottom: 3em; }
