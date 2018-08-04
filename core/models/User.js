@@ -1,5 +1,4 @@
-const cnx = require('./Mongo')
-const ObjectId = require('mongodb').ObjectID
+const Mongo = require('./Mongo.js');
 const config = require('../../config')
 const sha = require('sha.js')
 
@@ -15,33 +14,23 @@ module.exports = {
   get_account(json = {}) {
 
     return new Promise((resolve, reject) => {
-      cnx.client((err, server) => {
+      if (json._id && json._id.length < 24)
+        reject(Error("Invalid user id"))
+
+      if (json._id)
+        json._id = Mongo.ObjectId(json._id.toString())
+
+      for (let i = 0; i < Object.keys(json).length; i++)
+        if (['_id', 'username', 'password', 'name'].indexOf(Object.keys(json)[i]) === -1)
+          delete json[Object.keys(json)[i]]
+
+      Mongo.User.findOne(json, (err, res) => {
         if (err) reject(err)
 
-        if (json._id && json._id.length < 24)
-          reject(Error("Invalid user id"))
-
-        if (json._id)
-          json._id = ObjectId(json._id.toString())
-        
-        for (let i = 0; i < Object.keys(json).length; i++)
-          if (['_id', 'username', 'password', 'name'].indexOf(Object.keys(json)[i]) === -1)
-            delete json[Object.keys(json)[i]]
-
-        let dbo = server.db(config.db.mongo_db)
-
-        dbo.collection('users')
-          .findOne(json)
-          .then((result) => {
-            resolve(result)
-          })
-          .catch((err) => {
-            reject(err)
-          })
-
-        server.close()
-      });
+        resolve(res)
+      })
     })
+
   },
 
   /**
@@ -108,49 +97,35 @@ module.exports = {
         }
 
         if (!errors.exists) {
-          cnx.client((err, server) => {
+          Mongo.User.countDocuments({
+                username: json.username
+              }, (err, res) => {
             if (err) {
               errors.exists = true
-              errors.server = true
+              errors.db = true
 
-              resolve(errors)
+              resolve (errors)
             } else {
+              if (res > 0) {
+                errors.exists = true
+                errors.username = "Username is already taken"
+                
+                resolve(errors)
+              } else {
 
-              let dbo = server.db(config.db.mongo_db)
-              json.password = sha('sha256').update(json.password).digest('hex');
+                // Hash the password
+                json.password = sha('sha256').update(json.password).digest('hex');
 
-              this.get_account({
-                  username: json.username
-                })
-                .then((res) => {
-                  if (!res) {
-                    /**
-                     * Insert account credentials to the DB
-                     */
-                    dbo.collection("users").insertOne(json, (err, res) => {
-                      if (err) {
-                        errors.exists = true
-                        errors.db = true
-                      }
-
-                      resolve(errors)
-                    })
-
-                  } else { // Check if user already exists
+                Mongo.User.create(json, (err, res) => {
+                  if(err) {
                     errors.exists = true
-                    errors.username.push("That username is already taken")
-
-                    resolve(errors)
+                    errors.db = true
                   }
-                }).catch((err) => {
-                  errors.exists = true
-                  errors.db = true
-
+                  
                   resolve(errors)
                 })
-
+              }
             }
-
           })
         }
       } else
@@ -172,7 +147,8 @@ module.exports = {
         username: [],
         password: [],
         exists: false,
-        server: false
+        server: false,
+        db: false,
       }
 
       if (!json.username || (json.username && json.username.replace(/\s+/g, "").length <= 0)) {
@@ -186,35 +162,29 @@ module.exports = {
       }
 
       if (!errors.exists) {
-        cnx.client((err, server) => {
+        json.password = sha('sha256').update(json.password).digest('hex')
+        
+        Object.keys(json).forEach(el => {
+          if (["username", "password"].indexOf(el) === -1)
+            delete json[el]
+        }) 
+
+        Mongo.User.findOne(json, (err, res) => {
           if (err) {
             errors.exists = true
-            errors.server = true
+            errors.db = true
           } else {
-            json.password = sha('sha256').update(json.password).digest('hex');
-            
-            this.get_account(json)
-              .then((res) => {
-                if (!res) {
-                  errors.exists = true
-                  errors.username = ["That account does not exist"]
-                }
+            if (!res) {
+              errors.exists = true
+              errors.username = "Account does not exist"
+            }
 
-                resolve(errors)
-              })
-              .catch((err) => {
-                errors.exists = true
-                errors.db = true
-
-                resolve(errors)
-              })
+            resolve(errors)
           }
-
-          server.close()
         })
       } else
         resolve(errors)
-        
+
     })
   },
 
@@ -224,7 +194,7 @@ module.exports = {
    * @param {string} json.id
    * @param {Object} json.edit
    */
-  edit (json) {
+  edit(json) {
     return new Promise((resolve, reject) => {
       let errors = {
         id: '',
@@ -249,40 +219,20 @@ module.exports = {
           if (!(Object.keys(json.edit)[i] in ['password', 'name', 'img']))
             delete json.edit[Object.keys(json.edit)[i]]
 
-        cnx.client((err, server) => {
+        Mongo.User.findByIdAndUpdate(json.id, json.edit, (err, res) => {
           if (err) {
             errors.exists = true
-            errors.server = true
+            errors.db = true
+          } else {
+            if (!res) {
+              errors.exists = true
+              errors.id = "Account does not exist"
+            }
 
             resolve(errors)
-          } else {
-            let dbo = server.db(config.db.mongo_db)
-
-            dbo.collection('users').findOne({
-              _id: ObjectId(json.id.toString()),
-            }).then((res) => {
-              if (!res) {
-                errors.exists = true
-                errors.id = "Invalid user ID"
-
-                resolve(errors)
-              } else {
-                dbo.collection('users').updateOne({
-                  _id: ObjectId(json.id.toString())
-                }, {$set: json.edit}, (err1, result) => {
-                  if (err1) {
-                    errors.exists = true
-                    errors.db = true
-                  }
-
-                  resolve(errors)
-                })
-              }
-            })
           }
         })
-      } else
-        resolve(errors)
+      }
     })
   },
 }

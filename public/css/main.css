@@ -2,16 +2,26 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Open Sans', sans-serif;
+}
+
+*:not(.icon) {
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 body {
   padding-bottom: 50px;
 }
+
 #content::after {
-  content:'';
+  content: '';
   display: block;
   clear: both;
+}
+
+.card > .content .header,
+#content > .header{
+  color: #636363 !important;
+  font-weight: normal !important;
 }
 
 #navbar {
@@ -21,11 +31,12 @@ body {
 .dimmer.modals {
   z-index: 10010;
 }
+
 .tabular .item {
   cursor: pointer;
 }
 
-form .filename{
+form .filename {
   color: #4a4a4a;
 }
 

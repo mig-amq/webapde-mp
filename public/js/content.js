@@ -8,18 +8,21 @@
    def: 'default',
    search: 'search',
    tag: 'tag',
+   rand: 'random/continue',
  }
 
  async function getData(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
    let p = new Promise ((res, rej) => {
      $.ajax({
        url: '/post/' + type + '/',
+       method: 'GET',
        data: {
          query: query,
          limig: limit,
          skip: skip,
        },
        success: (data) => {
+         console.log(data);
          res(data);
        },
        error: (err) => {
@@ -35,7 +38,7 @@
  function putContent(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
    loader.addClass('active');
 
-   getData(type,query, limit, skip).then((d) => {
+   getData(type, query, limit, skip).then((d) => {
      d.forEach(e => {
        $("#content #cards").append(parsePost(e));
      });
@@ -113,7 +116,7 @@
 
    var user = document.createElement("div");
    user.className = "meta";
-   $(user).text(powner);
+   $(user).text("@" + powner);
 
    var tags = document.createElement("div");
    tags.className = "extra content";
@@ -173,7 +176,7 @@
 
  function getDate(milli) {
    let res = "";
-   milli = Date.now() - milli;
+   milli = Date.now() - Date.parse(milli);
 
    if (milli >= 31556952000) { // 1 year
      res += Math.round(milli / 31556952000.00) + "y ";

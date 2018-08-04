@@ -1,69 +1,54 @@
-const path = require('path')
-
 module.exports.db = {
   /**
-   * Edit these depending on your system's 
+   * Edit these depending on your system's
    * MongoDB settings.
    */
-
   mongo_db: "webapde",
-  mongo_ip: "127.0.0.1", // ds018558.mlab.com
-  mongo_port: "27017", // 18558
-  mLab: null, // migq:123456A
-
+  mongo_ip: "127.0.0.1",
+  mongo_port: "27017",
+  mLab: null,
   opt: {
     useNewUrlParser: true
   },
 }
-
 module.exports.post_opts = {
   /**
-   * DO NOT TOUCH THIS  
+   * DO NOT TOUCH THIS
    * These are the constants that the PostHandler controller uses
    * in filtering out posts.
    */
-
-  regular : 0,
+  regular: 0,
   user: 0,
   search: 0,
   tags: 0,
 }
-
 module.exports.server = {
   port: process.env.PORT || 3000,
 }
-
 module.exports.routes = [
   /**
    * Append the file names of the routes
    * here. (Route files must be placed in /core/routers/)
    */
-  
   'post',
   'user',
 ]
-
 module.exports.hbs = {
   static_location: 'public',
-
   view_locations: [
     /**
      * Append directories that will contain
      * the *.hbs files here.
      */
-
     "views",
   ],
-
   partials: [
-     /**
+    /**
      * Append required partials here.
      * Partials must be placed in /core/partials/
      */
-
     "core/partials",
   ],
-
   helpers: {
     /**
      * DO NOT TOUCH THIS
@@ -80,32 +65,27 @@ module.exports.session = {
    * View https://www.npmjs.com/package/express-session for additional
    * configuration.
    */
-
   name: 'webapde-session',
   resave: true,
   saveUninitialized: true,
   secret: 'webapde-secret',
 }
-
 module.exports.cookie = {
   /**
    * These are the default configuration for cookies in this app.
    * The default expiration for a cookie is 1 year from its creation.
-   * View https://www.npmjs.com/package/cookie#options-1 for additional 
+   * View https://www.npmjs.com/package/cookie#options-1 for additional
    * configuration.
    */
-  
   expires: false,
   maxAge: 365 * 24 * 60 * 60 * 1000,
 }
-
 module.exports.multer = {
   /**
    * These are the default configuration for the multer module in the app.
    * Multer is responsible for the file uploads.
    * View https://www.npmjs.com/package/multer#api for additional configuration.
    */
-
   destination: 'public/img/uploads',
   path: '/img/uploads/',
   allowed_files: [
@@ -114,14 +94,12 @@ module.exports.multer = {
      * will accept when uploading. Check https://mzl.la/2ndnWSQ for a list of
      * MIME types.
      */
-
     'image/jpeg',
     'image/gif',
     'image/png',
     'image/svg+xml',
   ]
 }
-
 module.exports.body_parser = {
   /**
    * These are the default configuration for urlencoded() function in
@@ -129,6 +107,5 @@ module.exports.body_parser = {
    * View https://www.npmjs.com/package/body-parser#options-3
    * for additional configuration.
    */
-  
   extended: true
 }

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Test</title>
+  <title>{{title}}</title>
   
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/img/favicon/apple-touch-icon-57x57.png" />
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/img/favicon/apple-touch-icon-114x114.png" />
@@ -41,13 +41,13 @@
 
     <div class="expandable" id="nav-expand">
       <div class="nav-item">
-        <a href="#" class="active">
+        <a href="/" class="{{#if default}} active {{/if}}">
           <i class="home icon"> </i>
           Home</a>
       </div>
 
       <div class="nav-item">
-        <a href="#">
+        <a href="/post/random/"  class="{{#if random}} active {{/if}}">
           <i class="shuffle icon"></i>
           Random
         </a>
@@ -63,19 +63,23 @@
       </div>
 
       <div class="nav-item right">
-        <!-- <div class="user-info ui dropdown item">
-          <img src="/img/sample_profile.jpg" class="ui avatar image">
-          <span>Username</span>
-          <div class="menu">
-            <div class="item">Name</div>
-            <a href="#" class="item">View Profile</a>
-            <a href="#" class="item">Log Out</a>
+        {{#if account}}
+          {{with account}}
+          <div class="user-info ui dropdown item">
+            <img src="{{this.img}}" class="ui avatar image">
+            <span>{{this.username}}</span>
+            <div class="menu">
+              <div class="item">{{this.name}}</div>
+              <a href="#" class="item">View Profile</a>
+              <a href="#" class="item">Log Out</a>
+            </div>
           </div>
-        </div> -->
-
+          {{/with}}
+        {{else}}
         <div class="user-login">
           <button class="ui teal button" id="loginModal">Login / Register</button>
         </div>
+        {{/if}}
       </div>
     </div>
   </div>
@@ -103,11 +107,13 @@
   
           <div class="field">
             <div class="ui checkbox">
-              <input type="checkbox" class="hidden" tabindex="0" id="remember">
+              <input type="checkbox" class="hidden" tabindex="0" name="remember" id="remember">
               <label for="remember">Remember Me</label>
             </div>
           </div>
           <input type="submit" value="Login" class="ui green button">
+
+          <div class="ui error message"></div>
         </form>
       </div>
       <div class="ui bottom attached tab segment" id="registerTab">
@@ -136,6 +142,7 @@
             </div>
           </div>
           <input type="submit" value="Register" class="ui green button">
+          <div class="ui error message"></div>
         </form>
       </div>
     </div>

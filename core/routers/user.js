@@ -27,7 +27,7 @@ router.post('/user/login/', (req, res) => {
         user.get_account({username: req.body.username}).then((dat) => {
           req.session.user = dat._id.toString();
           
-          if (remember === "true") {
+          if (remember === "on") {
             res.cookie('user', dat._id.toString(), config.cookie)
           }
           

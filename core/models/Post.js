@@ -1,4 +1,4 @@
-const cnx = require('./Mongo');
+const Mongo = require('./Mongo');
 const ObjectId = require('mongodb').ObjectID;
 const config = require('../../config')
 
@@ -14,38 +14,28 @@ module.exports = {
    * of the result
    */
   get_posts(query = {}, sort = {
-    time: -1
+    time: -1,
+    likes: -1,
   }, limiter = 0, skip = 0) {
     return new Promise((resolve, reject) => {
-      cnx.client((err, server) => {
-        if (err) reject(err);
+      if (query.uid && query.uid.length < 24)
+        resolve([]);
+      else if (query.uid)
+        query.uid = ObjectId(query.uid);
 
-        let dbo = server.db(config.db.mongo_db);
+      if (query._id && query._id.length < 24)
+        resolve([]);
+      else if (query._id)
+        query._id = ObjectId(query._id);
 
-        if (query.user && query.user.length < 24)
-          resolve([]);
-        else if (query.user)
-          query.user = ObjectId(query.user);
-
-        if (query._id && query._id.length < 24)
-          resolve([]);
-        else if (query._id)
-          query._id = ObjectId(query._id);
-
-        dbo.collection("posts")
-          .find(query)
-          .sort(sort)
-          .limit(limiter)
-          .skip(skip)
-          .toArray()
-          .then((result) => {
-            if (result.length)
-              resolve(result);
-            else
-              resolve([]);
-          })
-          .catch((s_err) => reject(s_err));
-      });
+      Mongo.Post
+        .find(query)
+        .sort(sort)
+        .skip(skip)
+        .limit(limiter)
+        .exec((err, res) => {
+          resolve(res)
+        })
     });
   },
 
@@ -61,7 +51,8 @@ module.exports = {
    */
   get_posts_time(query = {}, desc = true, limiter = 0, skip = 0) {
     return this.get_posts(query, {
-      time: (desc) ? -1 : 1
+      time: (desc) ? -1 : 1,
+      likes: (desc) ? -1 : 1,
     }, limiter, skip);
   },
 
@@ -78,9 +69,10 @@ module.exports = {
    */
   get_posts_user(user_id = "", desc = true, limiter = 0, skip = 0) {
     return this.get_posts({
-      user: user_id
+      uid: user_id
     }, {
-      time: (desc) ? -1 : 1
+      time: (desc) ? -1 : 1,
+      likes: (desc) ? -1 : 1,
     }, limiter, skip);
   },
 
@@ -108,7 +100,8 @@ module.exports = {
     return this.get_posts({
       $or: queries
     }, {
-      time: (desc) ? -1 : 1
+      time: (desc) ? -1 : 1,
+      likes: (desc) ? -1 : 1,
     }, limiter, skip);
   },
 
@@ -125,8 +118,28 @@ module.exports = {
         $in: tags
       }
     }, {
-      time: (desc) ? -1 : 1
+      time: (desc) ? -1 : 1,
+      likes: (desc) ? -1 : 1,
     }, limiter, skip);
+  },
+
+  get_random_tag(desc = true) {
+    return new Promise((res, rej) => {
+      Mongo.Post.countDocuments().exec((err, count) => {
+        let random = Math.floor(Math.random() * count)
+
+        let random_post = this.get_posts({}, {
+          time: (desc) ? -1 : 1,
+          likes: (desc) ? -1 : 1,
+        }, 1, random)
+
+        random_post.then((post) => {
+          let random_tag = Math.floor(Math.random() * post[0].tags.length)
+
+          res(post[0].tags[random_tag])
+        })
+      })
+    })
   },
 
   /**
@@ -176,57 +189,30 @@ module.exports = {
       }
 
       if (!errors.exists) {
-        cnx.client((err, server) => {
+        Mongo.User.findById(json.user, (err, res) => {
           if (err) {
-            errors.exists = true;
-            errors.server = true;
-
-            resolve(errors)
+            errors.exists = true
+            errors.db = true
           } else {
-            let db = server.db(config.db.mongo_db);
+            if (!res) {
+              errors.exists = true
+              errors.user = "You must be logged in to post a meme"
 
-            db.collection('users')
-              .findOne({
-                _id: ObjectId(json.user.toString())
-              })
-              .then((result) => {
-                if (!result) {
-                  errors.exists = true;
-                  errors.user = "You have an invalid account";
+              resolve(res)
+            } else {
+              json.uid = ObjectId(res._id)
+              json.user = res.username
 
-                  resolve(errors)
-                } else {
-                  db.collection('posts')
-                    .insertOne({
-                      title: json.title,
-                      post: json.post,
-                      tags: json.tags,
-
-                      likes: 0,
-                      dislikes: 0,
-
-                      likers: [],
-                      dislikers: [],
-
-                      user: result._id,
-                      time: Date.now()
-                    })
-                    .then((result1) => resolve(errors))
-                    .catch((err1) => {
-                      errors.exists = true;
-                      errors.db = true;
-
-                      resolve(errors)
-                    });
+              Mongo.Post.create(json, (err, res) => {
+                if (err) {
+                  errors.exists = true
+                  errors.db = true
                 }
+
+                console.log(res)
+                resolve(res)
               })
-              .catch((err1) => {
-                errors.exists = true;
-                errors.db = true;
-
-                resolve(errors)
-              });
-
+            }
           }
         })
       } else
@@ -234,172 +220,85 @@ module.exports = {
     });
   },
 
-  /**
-   * Updates a specific post's stats (likes/dislikes)
-   * @param {Object} uid 
-   * @param {Object} pid 
-   * @param {boolean} like 
-   */
-  update_stats(uid, pid, like = true) {
+  update_stats(uid, pid) {
     return new Promise((resolve, reject) => {
       let errors = {
         uid: "",
         pid: "",
         exists: false,
         server: false,
-        db: false
-      };
+        db: false,
+      }
 
       if (!uid) {
-        errors.exists = true;
-        errors.uid = "Log in to like/dislike post";
+        errors.exists = true
+        errors.uid = "Log in to like/dislike post"
 
-        resolve(errors);
+        resolve(errors)
       }
 
       if (!pid) {
-        errors.exists = true;
-        errors.pid = "Invalid post id";
+        errors.exists = true
+        errors.pid = "Invalid post id"
 
-        resolve(errors);
+        resolve(errors)
       }
 
-      cnx.client((err, server) => {
+      Model.User.findById(uid, (err, user) => {
         if (err) {
-          errors.exists = true;
-          errors.server = true;
+          errors.exists = true
+          errors.db = true
+
+          resolve(errors)
         } else {
-          let db = server.db(config.db.mongo_db);
+          if (!res) {
+            errors.exists = true
+            errors.uid = "You must be logged in to like/dislike a post"
 
-          db.collection("users")
-            .findOne({
-              _id: ObjectId(uid)
-            })
-            .then((result) => {
-              if (result === null) {
-                errors.exists = true;
-                errors.uid = "You must be logged in to like/dislike a post";
+            resolve(errors)
+          } else {
+            Mode.Post.findById(pid, (err, post) => {
+              if (err) {
+                errors.exists = true
+                errors.db = true
 
-                resolve(errors);
+                resolve(errors)
               } else {
-                db.collection("posts")
-                  .findOne({
-                    _id: ObjectId(pid.toString()),
-                  })
-                  .then((result_1) => {
-                    if (result_1 === null) {
-                      errors.exists = true;
-                      errors.pid = "Post ID is invalid";
+                if (!res) {
+                  errors.exists = true
+                  errors.uid = "Post does not exist"
 
-                      resolve(errors);
-                    } else {
-                      let done = false;
-                      let was = false;
+                  resolve(errors)
+                } else {
+                  let like = false
 
-                      if (like) {
-                        result_1.likers.some((elem) => {
-                          if (elem.toString() === uid.toString()) {
-                            done = true;
-                          }
+                  if (user.uid in post.likers) {
+                    like = true
+                  }
 
-                          return done;
-                        });
+                  if (like) {
+                    post.likers.push(user._id)
+                    post.likes += 1
+                  } else {
+                    post.likers.splice(post.likers.indexOf(user._id, 1))
+                    post.likes -= 1
+                  }
 
-                        result_1.dislikers.some((elem) => {
-                          if (elem.toString() === uid.toString()) {
-                            was = true;
-                          }
-
-                          return done;
-                        });
-                      } else {
-                        result_1.dislikers.some((elem) => {
-                          if (elem.toString() === uid.toString()) {
-                            done = true;
-                          }
-
-                          return done;
-                        });
-
-                        result_1.likers.some((elem) => {
-                          if (elem.toString() === uid.toString()) {
-                            was = true;
-                          }
-
-                          return was;
-                        });
-                      }
-
-                      if (!done) {
-                        if (like)
-                          db.collection('posts')
-                          .updateOne({
-                            _id: ObjectId(pid),
-                          }, {
-                            $inc: {
-                              likes: 1,
-                              dislikes: (was) ? -1 : 0
-                            },
-                            $push: {
-                              likers: ObjectId(uid)
-                            },
-                            $pull: {
-                              dislikers: ObjectId(uid),
-                            }
-                          })
-                          .then((result) => resolve(errors))
-                          .catch((db_err) => {
-                            errors.exists = true;
-                            errors.db = true;
-
-                            resolve(errors);
-                          });
-                        else
-                          db.collection('posts')
-                          .updateOne({
-                            _id: ObjectId(pid),
-                          }, {
-                            $inc: {
-                              likes: (was) ? -1 : 0,
-                              dislikes: 1
-                            },
-                            $push: {
-                              dislikers: ObjectId(uid)
-                            },
-                            $pull: {
-                              likers: ObjectId(uid),
-                            }
-                          })
-                          .then((result) => resolve(errors))
-                          .catch((db_err) => {
-                            errors.exists = true;
-                            errors.db = true;
-                          });
-                      } else {
-                        errors.exists = true;
-                        errors.uid = "You've already liked/disliked this post";
-
-                        resolve(errors);
-                      }
+                  post.save((err, updated) => {
+                    if (err) {
+                      errors.exists = true
+                      errors.db = true
                     }
-                  })
-                  .catch((db_err) => {
-                    errors.exists = true;
-                    errors.db = true;
 
-                    resolve(errors);
-                  });
+                    resolve(errors)
+                  })
+                }
               }
             })
-            .catch((db_err) => {
-              errors.exists = true;
-              errors.db = true;
-
-              resolve(errors);
-            })
+          }
         }
       })
-    });
+    })
   },
 
   /**
@@ -528,9 +427,11 @@ module.exports = {
                 dbo.collection('posts').updateOne({
                   _id: ObjectId(json.pid.toString()),
                   user: ObjectId(json.uid.toString()),
-                }, {$set: json.edit}, (err, result) => {
+                }, {
+                  $set: json.edit
+                }, (err, result) => {
                   if (err) {
-                    errors.exists= true
+                    errors.exists = true
                     errors.db = true
                   }
 
@@ -540,7 +441,7 @@ module.exports = {
             })
           }
         })
-      } else 
+      } else
         resolve(errors)
 
     })
