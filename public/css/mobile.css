@@ -61,17 +61,17 @@
       color: #4a4a4a; }
       #navbar .expandable .nav-item:first-child {
         border-top: 1px solid #d2d2d2; }
-      #navbar .expandable .nav-item a, #navbar .expandable .nav-item .nav-form {
+      #navbar .expandable .nav-item > a, #navbar .expandable .nav-item .nav-form {
         display: block;
         width: 100%;
         color: #4a4a4a;
         padding: 15px;
         border-bottom: 1px solid #d2d2d2; }
-        #navbar .expandable .nav-item a > i, #navbar .expandable .nav-item .nav-form > i {
+        #navbar .expandable .nav-item > a > i, #navbar .expandable .nav-item .nav-form > i {
           margin-right: 10px; }
-        #navbar .expandable .nav-item a:hover, #navbar .expandable .nav-item a:focus, #navbar .expandable .nav-item a:active, #navbar .expandable .nav-item .nav-form:hover, #navbar .expandable .nav-item .nav-form:focus, #navbar .expandable .nav-item .nav-form:active {
+        #navbar .expandable .nav-item > a:hover, #navbar .expandable .nav-item > a:focus, #navbar .expandable .nav-item > a:active, #navbar .expandable .nav-item .nav-form:hover, #navbar .expandable .nav-item .nav-form:focus, #navbar .expandable .nav-item .nav-form:active {
           background-color: #ddd; }
-          #navbar .expandable .nav-item a:hover input, #navbar .expandable .nav-item a:focus input, #navbar .expandable .nav-item a:active input, #navbar .expandable .nav-item .nav-form:hover input, #navbar .expandable .nav-item .nav-form:focus input, #navbar .expandable .nav-item .nav-form:active input {
+          #navbar .expandable .nav-item > a:hover input, #navbar .expandable .nav-item > a:focus input, #navbar .expandable .nav-item > a:active input, #navbar .expandable .nav-item .nav-form:hover input, #navbar .expandable .nav-item .nav-form:focus input, #navbar .expandable .nav-item .nav-form:active input {
             background-color: #ddd; }
       #navbar .expandable .nav-item .nav-form {
         cursor: pointer; }

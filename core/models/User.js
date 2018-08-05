@@ -14,11 +14,11 @@ module.exports = {
   get_account(json = {}) {
 
     return new Promise((resolve, reject) => {
-      if (json._id && json._id.length < 24)
-        reject(Error("Invalid user id"))
-
       if (json._id)
-        json._id = Mongo.ObjectId(json._id.toString())
+        if (json._id.length < 24)
+          resolve([])
+        else
+          json._id = Mongo.ObjectId(json._id.toString())
 
       for (let i = 0; i < Object.keys(json).length; i++)
         if (['_id', 'username', 'password', 'name'].indexOf(Object.keys(json)[i]) === -1)

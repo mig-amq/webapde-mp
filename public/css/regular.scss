@@ -1,4 +1,3 @@
-
 #navbar {
   margin: 50px;
   width: calc(100% - 100px);
@@ -7,7 +6,6 @@
   align-items: center;
   font-weight: lighter;
   font-size: 16px;
-
   .nav-item:first-child {
     flex: 0 1 auto;
     margin-left: 25px;
@@ -17,6 +15,7 @@
     align-items: center;
     flex: 1 0 auto;
     .nav-item {
+      clear: both;
       margin-left: 25px;
       &:first-child {
         margin-left: 50px;
@@ -25,21 +24,49 @@
         margin-left: auto;
         margin-right: 25px;
       }
-      a {
+      >a {
         color: #4a4a4a;
         display: inline-block;
         padding: 20px 50px;
-
         &:hover,
         &.active {
-          content: '';
           border-bottom: 1px solid #4a4a4a;
         }
       }
-
-      .nav-form input {
-        border: 0;
-        color: #4a4a4a;
+      &.active {
+        border-bottom: 1px solid #4a4a4a;
+      }
+      .user-info {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        >img {
+          margin-right: 10px;
+        }
+        #user-menu {
+          clear: both;
+          min-width: 100%;
+          border: 0;
+          box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+          .red {
+            color: #ffffff;
+            background-color: #a32020;
+            border-radius: 0 0 4px 4px;
+            &:hover {
+              background-color: #801515;
+            }
+          }
+        }
+      }
+      .nav-form {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        input {
+          border: 0;
+          color: #4a4a4a;
+        }
       }
     }
   }
@@ -57,9 +84,8 @@
     height: 100%;
     width: 100%;
     z-index: -1;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid #dddddd;
   }
-
   &.sticky {
     top: 0;
     left: 0;
@@ -67,7 +93,13 @@
     position: fixed;
     width: 100%;
     background-color: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
     z-index: 10001;
+    .nav-item a.active,
+    .nav-item a:hover {
+      border-bottom: 0;
+      background-color: #f1efef;
+    }
   }
 }
 
@@ -76,24 +108,20 @@
   &.sticky {
     margin-top: calc(75px + 61px + 50px);
   }
-  padding-bottom: 150px;
-
-  > .header {
+  padding-bottom: 100px;
+  >.header {
     margin: -35px 50px 50px 50px;
     text-align: center;
     padding-bottom: 10px;
     font-size: 1.999em;
-    border-bottom: 1px solid #e9e9e9;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.025);
   }
   #cards {
     columns: 3;
-    column-gap: 5em;
-
+    column-gap: 100px;
     .card {
       vertical-align: top;
       width: 100%;
-      margin-bottom: 3em;
+      margin-bottom: 100px;
     }
   }
 }

@@ -1,5 +1,4 @@
 const Mongo = require('./Mongo');
-const ObjectId = require('mongodb').ObjectID;
 const config = require('../../config')
 
 module.exports = {
@@ -21,39 +20,23 @@ module.exports = {
       if (query.uid && query.uid.length < 24)
         resolve([]);
       else if (query.uid)
-        query.uid = ObjectId(query.uid);
+        query.uid = Mongo.ObjectId(query.uid);
 
       if (query._id && query._id.length < 24)
         resolve([]);
       else if (query._id)
-        query._id = ObjectId(query._id);
+        query._id = Mongo.ObjectId(query._id);
 
       Mongo.Post
         .find(query)
         .sort(sort)
         .skip(skip)
         .limit(limiter)
+        .lean()
         .exec((err, res) => {
           resolve(res)
         })
     });
-  },
-
-  /**
-   * Returns a Promise that will contain an array of posts
-   * ordered by time (descending by default).
-   * @param {Object} query - the query used to filter out posts
-   * @param {boolean} desc - dictates whether the posts are in ascending 
-   * or descending order (default: true)
-   * @param {number} limiter - the number of posts to return (0 means no limit)
-   * @param {number} skip - the number of posts to skip from the start
-   * of the result
-   */
-  get_posts_time(query = {}, desc = true, limiter = 0, skip = 0) {
-    return this.get_posts(query, {
-      time: (desc) ? -1 : 1,
-      likes: (desc) ? -1 : 1,
-    }, limiter, skip);
   },
 
   /**
@@ -200,7 +183,7 @@ module.exports = {
 
               resolve(res)
             } else {
-              json.uid = ObjectId(res._id)
+              json.uid = Mongo.ObjectId(res._id)
               json.user = res.username
 
               Mongo.Post.create(json, (err, res) => {
@@ -244,48 +227,50 @@ module.exports = {
         resolve(errors)
       }
 
-      Model.User.findById(uid, (err, user) => {
+      Mongo.User.findById(uid, (err, user) => {
         if (err) {
           errors.exists = true
           errors.db = true
 
           resolve(errors)
         } else {
-          if (!res) {
+          if (!user) {
             errors.exists = true
             errors.uid = "You must be logged in to like/dislike a post"
 
             resolve(errors)
           } else {
-            Mode.Post.findById(pid, (err, post) => {
-              if (err) {
+            Mongo.Post.findById(pid, (err0, post) => {
+              if (err0) {
                 errors.exists = true
                 errors.db = true
 
                 resolve(errors)
               } else {
-                if (!res) {
+                if (!post) {
                   errors.exists = true
                   errors.uid = "Post does not exist"
 
                   resolve(errors)
                 } else {
-                  let like = false
+                  let liked = false
 
-                  if (user.uid in post.likers) {
-                    like = true
-                  }
+                  post.likers.forEach(el => {
+                    if (el.toString() === user._id.toString())
+                      liked = true
+                  })
 
-                  if (like) {
+                  if (!liked) {
                     post.likers.push(user._id)
+
                     post.likes += 1
                   } else {
                     post.likers.splice(post.likers.indexOf(user._id, 1))
                     post.likes -= 1
                   }
 
-                  post.save((err, updated) => {
-                    if (err) {
+                  post.save((err1, updated) => {
+                    if (err1) {
                       errors.exists = true
                       errors.db = true
                     }
@@ -328,29 +313,20 @@ module.exports = {
       }
 
       if (!errors.exists) {
-        cnx.client((err, server) => {
+        Mongo.Post.findById(json.pid, (err, res) => {
           if (err) {
             errors.exists = true
-            errors.server = true
+            errors.db = true
 
             resolve(errors)
-          }
-          let dbo = db.db(config.db.mongo_db)
+          } else if (!res) {
+            errors.exists = true
+            errors.post = "Can't find that post!"
 
-          dbo.collection('posts').findOne({
-            _id: ObjectId(json.pid.toString()),
-            user: ObjectId(json.uid.toString()),
-          }).then((result) => {
-            if (!result) {
-              errors.exists = true
-              errors.user = "You do not own this post"
-
-              resolve(errors)
-            } else {
-              dbo.collection('posts').deleteOne({
-                _id: ObjectId(json.pid.toString()),
-                user: ObjectId(json.uid.toString()),
-              }, (err, obj) => {
+            resolve(errors)
+          } else {
+            if (res._id.toString() === json.pid) {
+              Mongo.Post.findByIdAndRemove(json.pid, (err, res) => {
                 if (err) {
                   errors.exists = true
                   errors.db = true
@@ -358,8 +334,13 @@ module.exports = {
 
                 resolve(errors)
               })
+            } else {
+              errors.exists = true
+              errors.user = "Oops! You don't ownt that post"
+
+              resolve(errors)
             }
-          })
+          }
         })
       } else
         resolve(errors)
@@ -415,8 +396,8 @@ module.exports = {
             let dbo = server.db(config.db.mongo_db)
 
             dbo.collection('posts').findOne({
-              _id: ObjectId(json.pid.toString()),
-              user: ObjectId(json.uid.toString()),
+              _id: Mongo.ObjectId(json.pid.toString()),
+              user: Mongo.ObjectId(json.uid.toString()),
             }).then((res) => {
               if (!res) {
                 errors.exists = true
@@ -425,8 +406,8 @@ module.exports = {
                 resolve(errors)
               } else {
                 dbo.collection('posts').updateOne({
-                  _id: ObjectId(json.pid.toString()),
-                  user: ObjectId(json.uid.toString()),
+                  _id: Mongo.ObjectId(json.pid.toString()),
+                  user: Mongo.ObjectId(json.uid.toString()),
                 }, {
                   $set: json.edit
                 }, (err, result) => {

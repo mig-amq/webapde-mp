@@ -3,8 +3,8 @@ $.ajax({
   method: 'GET',
 }).then((res) => {
   var title = document.createElement("div");
-  title.className = "ui large center header";
-  $(title).append("Random Tag: " + res);
+  title.className = "ui large center header horizontal divider";
+  $(title).append(res);
   $("#content").prepend(title);
 
   // Run at page load to get initial posts

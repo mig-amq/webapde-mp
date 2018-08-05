@@ -91,7 +91,7 @@ for (let i = 0; i < settings.routes.length; i++) {
 
 app.use('*', (req, res) => {
     user.get_account({
-      _id: req.session.user
+      _id: req.session.user._id
     }).then((result) => {
       let account = result;
 

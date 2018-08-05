@@ -48,3 +48,5 @@ $("#nav-expander, body").click((e) => {
     if ($(e.target).is("#nav-expander *, #nav-expander"))
       $("#nav-expand").addClass('active');
 });
+
+$('.ui.dropdown').dropdown();

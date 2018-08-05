@@ -30,8 +30,11 @@
   <div id="navbar">
     <div class="nav-item" id="nav-expander">
       <div class="header">
+        <a href="/">
         <img src="/img/favicon/favicon-32x32.png" alt="">
-        <span class="mobile">MEME-A</span>
+        </a>
+        <span class="mobile">
+          MEME-A</span>
       </div>
 
       <div class="mobile right" id="expand">
@@ -53,7 +56,7 @@
         </a>
       </div>
 
-      <div class="nav-item">
+      <div class="nav-item {{#if search}} active {{/if}}">
         <div class="nav-form">
           <form action="/search/" id="search-form">
             <i class="search icon"></i>
@@ -62,19 +65,22 @@
         </div>
       </div>
 
-      <div class="nav-item right">
+      <div class="nav-item {{#if user}} active {{/if}} right">
         {{#if account}}
-          {{with account}}
-          <div class="user-info ui dropdown item">
-            <img src="{{this.img}}" class="ui avatar image">
-            <span>{{this.username}}</span>
-            <div class="menu">
-              <div class="item">{{this.name}}</div>
-              <a href="#" class="item">View Profile</a>
-              <a href="#" class="item">Log Out</a>
-            </div>
+        <div class="user-info ui dropdown">
+          <img src="{{account.img}}" class="ui avatar image">
+          <span>{{account.name}}</span>
+          <div class="menu" id="user-menu">
+            <a href="/user/{{account._id}}" class="item">
+            <i class="user circle outline icon"></i> View Profile</a>
+            <a href="/user/{{account._id}}/edit/" class="item">
+            <i class="edit outline icon"></i>
+              Update Profile</a>
+            <a href="/user/logout/" class="ui red item">
+            <i class="power off icon"></i>
+            Log Out</a>
           </div>
-          {{/with}}
+        </div>
         {{else}}
         <div class="user-login">
           <button class="ui teal button" id="loginModal">Login / Register</button>

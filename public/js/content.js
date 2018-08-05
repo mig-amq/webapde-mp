@@ -18,7 +18,7 @@
        method: 'GET',
        data: {
          query: query,
-         limig: limit,
+         limit: limit,
          skip: skip,
        },
        success: (data) => {
@@ -43,19 +43,48 @@
        $("#content #cards").append(parsePost(e));
      });
 
-     $('.image').dimmer({
+     $('.card .image').dimmer({
        on: 'hover'
      });
 
-     $('.image').blur((e) => $('.image').dimmer('hide'));
+     $('.card .image').blur((e) => $('.image').dimmer('hide'));
 
      loader.removeClass('active');
    });
  }
 
  // @TODO
- function update_status (pid, elem) {
-   alert(pid);
+ function update_status (pid, elems) {
+   $.ajax({
+     url: '/post/like/',
+     method: 'POST',
+     data: {
+       id: pid
+     },
+     success: (d) => {
+       if (!d.exists) {
+         // elems[0] is the top info
+         // elems[1] is the dimmer info
+
+         let likesTop = parseInt($(elems[0]).find('span').text());
+         let elemTemp;
+
+         if ($(elems[0]).find('.icon').hasClass('red')) {
+           $(elems[0]).find('.icon').removeClass('red');
+           $(elems[0]).find('span').text(likesTop - 1);
+
+           $(elems[1]).find('.header > .heart').removeClass('red');
+           $(elems[1]).find('.header > span').text("Like!");
+         } else {
+           $(elems[0]).find('.icon').addClass('red');
+           $(elems[0]).find('span').text(likesTop + 1);
+           
+           $(elems[1]).find('.header > .heart').addClass('red');
+           $(elems[1]).find('.header > span').text("Dislike :(");
+         }
+       }
+     }
+   })
  }
 
  /**
@@ -87,12 +116,12 @@
    var image_dheader = document.createElement("div");
    image_dheader.className = "ui inverted icon header";
    var image_dicon = document.createElement("i");
-   image_dicon.className = + ((pliked) ? "red" : "") + " heart icon";
+   image_dicon.className = ((pliked) ? "red" : " ") + " heart icon";
 
    image_dheader.appendChild(image_dicon);
    image_dcontent.appendChild(image_dheader);
    image_dimmer.appendChild(image_dcontent);
-   $(image_dheader).append((pliked) ? "Dislike :(" : "Like!");
+   $(image_dheader).append("<span>" + ((pliked) ? "Dislike :(" : "Like!") + "</span>");
 
    var img = document.createElement("img"); // post image
    img.src = pcont;
@@ -130,14 +159,14 @@
    });
 
    $(heart).click((e) => {
-     update_status(pid, heart);
+     update_status(pid, [heart, image_dcontent]);
    });
 
    $(image_dimmer).click((e) => {
-     update_status(pid, image_dcontent);
+     update_status(pid, [heart, image_dcontent]);
    });
 
-   $(heart).append(getLikeText(plikes));
+   $(heart).append("<span>" + getLikeText(plikes) + "</span>");
    $(heart).append(heart_icon);
 
    $(user).click((e) => {

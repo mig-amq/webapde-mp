@@ -25,10 +25,10 @@ router.post('/user/login/', (req, res) => {
     user.login(req.body).then((result) => {
       if(!result.exists) {
         user.get_account({username: req.body.username}).then((dat) => {
-          req.session.user = dat._id.toString();
+          req.session.user = dat;
           
           if (remember === "on") {
-            res.cookie('user', dat._id.toString(), config.cookie)
+            res.cookie('user', dat, config.cookie)
           }
           
           res.send(result)
@@ -55,7 +55,7 @@ router.post('/user/register/', (req, res) => {
     user.create(data).then((result) => res.send(result))
 })
 
-router.get('/logout/', (req, res) => {
+router.get('/user/logout/', (req, res) => {
   req.session.destroy((err) => {
     if (err) console.log(err)
   })
