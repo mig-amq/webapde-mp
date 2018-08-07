@@ -31,7 +31,7 @@ $("#loginTab form").form({ // Validation Handling for Login
 
           if (status.server) {
             $(list).append("<li> Oh Noes! The server broke! </li>");
-          } else if (status.db) {
+          } else if (status.db) { 
             $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
           } else {
             if (status.username)
