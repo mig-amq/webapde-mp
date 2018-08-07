@@ -3,7 +3,7 @@ const post = require('../models/Post')
 const user = require('../models/User')
 
 router.get('/', (req, res) => {
-  let account = req.session.user;
+  let account = req.session.user
 
   res.render('index.hbs', {
     account,
@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
  * This route handles the posts retrieval
  */
 router.use('/post/:type/:func?', (req, res, next) => {
+  let account = req.session.user
   let limit = req.query.limit || 5
   let skip = req.query.skip || 0
 
@@ -39,15 +40,23 @@ router.use('/post/:type/:func?', (req, res, next) => {
         next()
       break;
     case "search":
-      if (req.params.func === 'get') {
-        let q = req.query.q || ""
+      let q = req.query.q || ""
+      
+      if (req.params.func === "get") {
+        q = req.query.query.q || "";
 
         post.get_posts_search(q, true, limit, skip).then((result) => {
           add_prop_liked(result, req.session.user)
           res.send(result)
         })
-      } else 
-        next()
+      } else {
+        res.render('index.hbs', {
+          title: "MEME-A: Searching for " + q,
+          search: q,
+          csrf: req.csrfToken(),
+          account,
+        })
+      }
         break;
     case "user":
       if (req.params.func) {

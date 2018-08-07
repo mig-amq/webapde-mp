@@ -10,7 +10,7 @@ $.ajax({
   // Run at page load to get initial posts
   putContent(_TYPES.rand, {
     tag: res,
-  }, 5, 0);
+  }, limit, skip);
   skip += 5;
 
   // Load new posts if user is near bottom of the page

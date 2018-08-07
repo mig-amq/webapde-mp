@@ -59,7 +59,7 @@
 
       <div class="nav-item {{#if search}} active {{/if}}">
         <div class="nav-form">
-          <form action="/search/" id="search-form">
+          <form action="/post/search/" id="search-form">
             <i class="search icon"></i>
             <input type="text" name="q" id="q" placeholder="Search...">
           </form>
@@ -139,11 +139,11 @@
   <div id="login" class="ui small modal">
     <div class="header">Login / Register</div>
     <div class="content">
-      <div class="ui top attached tabular menu">
+      <div class="ui top tabular menu">
         <div class="active item" id="loginClick">Login</div>
         <div class="item" id="registerClick">Register</div>
       </div>
-      <div class="ui bottom attached active tab segment" id="loginTab">
+      <div class="ui bottom active tab" id="loginTab">
         <form action="/login/" method="POST" class="ui form">
           <input type="hidden" name="_csrf" value="{{csrf}}">
 
@@ -168,7 +168,7 @@
           <div class="ui error message"></div>
         </form>
       </div>
-      <div class="ui bottom attached tab segment" id="registerTab">
+      <div class="ui bottom  tab" id="registerTab">
         <form action="/register/" method="POST" class="ui form">
           <input type="hidden" name="_csrf" value="{{csrf}}">
 

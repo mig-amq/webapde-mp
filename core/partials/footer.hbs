@@ -20,6 +20,14 @@
         <script src="/js/userpage.js/" defer></script>
     {{/if}}
 
+    {{#if search}}
+        <script>
+            var q = "{{search}}";
+        </script>
+
+        <script src="/js/search.js" defer></script>
+    {{/if}}
+
     {{#if account}}
         <script src="/js/post.js" defer></script>
     {{/if}}

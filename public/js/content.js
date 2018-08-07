@@ -6,7 +6,7 @@
  
  const _TYPES = {
    def: 'default',
-   search: 'search',
+   search: 'search/get/',
    tag: 'tag',
    rand: 'random/continue',
  }
