@@ -9,6 +9,7 @@
    search: 'search/get/',
    tag: 'tag/get/',
    rand: 'random/continue',
+   user: 'user',
  }
 
  async function getData(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
@@ -37,7 +38,7 @@
 
  function putContent(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
    loader.addClass('active');
-
+   
    getData(type, query, limit, skip).then((d) => {
      d.forEach(e => {
        $("#content #cards").append(parsePost(e));

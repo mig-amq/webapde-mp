@@ -67,4 +67,35 @@ router.get('/user/logout/', (req, res) => {
   res.clearCookie('user').redirect('/')
 })
 
+router.get('/user/:data', (req, res) => {
+  if (!req.params.data) {
+    res.redirect('/')
+  } else {
+    user.get_account({_id: req.params.data}).then((data) => {
+      res.render('profile.hbs', {
+        title: "Meme-A: @" + data.username,
+        account: req.session.user,
+        profile: data,
+        mine: req.session.user._id == data._id,
+        csrf: req.csrfToken(),
+      })
+    }).catch((err) => 
+      res.redirect('/')
+    )
+  }
+})
+
+router.get('/user/:data/edit/', (req, res) => {
+  if (!req.session.user) {
+    res.redirect('/')
+  } else {
+    res.render('profile_update.hbs', {
+      title: "Meme-A: Update Profile",
+      account: req.session.user,
+      user: true,
+      csrf: req.csrfToken(),
+    })
+  }
+})
+
 module.exports = router

@@ -3,7 +3,7 @@ $.ajax({
   method: 'GET',
 }).then((res) => {
   var title = document.createElement("div");
-  title.className = "ui large center header horizontal divider";
+  title.className = "ui large center header";
   $(title).append(res);
   $("#content").prepend(title);
 

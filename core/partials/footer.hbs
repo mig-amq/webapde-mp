@@ -20,8 +20,12 @@
         <script src="/js/tag.js" defer></script>
     {{/if}}
 
-    {{#if userpage}}
-        <script src="/js/userpage.js/" defer></script>
+    {{#if profile}}
+        <script>
+            var user = "{{profile._id}}";
+        </script>
+
+        <script src="/js/userpage.js" defer></script>
     {{/if}}
 
     {{#if search}}

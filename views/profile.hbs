@@ -1,0 +1,25 @@
+{{> header}}
+<div id="content" class="ui special">
+  <div class="user">
+    <img src="{{profile.img}}" alt="" class="ui small circular image">
+    <div class="details">
+      <h1 class="ui header">
+        {{profile.name}}
+        <div class="sub header">
+          
+          {{#if mine}}
+          <a href="/user/{{account._id}}/edit/" class="ui tiny button teal">
+            <i class="edit icon"></i>
+            Update Details
+          </a>
+          {{/if}}
+        </div>
+      </h1>
+    </div>
+  </div>
+  <div id="cards"></div>
+  <div class="ui centered inline active text indeterminate loader" id="post-loader">
+    Getting yo memes...
+  </div>
+</div>
+{{> footer}}

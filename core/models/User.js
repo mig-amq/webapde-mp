@@ -27,7 +27,8 @@ module.exports = {
       Mongo.User.findOne(json, (err, res) => {
         if (err) reject(err)
 
-        resolve(res)
+        if (!res) reject(null)
+        else resolve(res)
       })
     })
 

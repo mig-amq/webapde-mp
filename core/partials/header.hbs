@@ -57,7 +57,7 @@
         </a>
       </div>
 
-      <div class="nav-item {{#if search}} active {{/if}}">
+      <div class="nav-item {{#if search }} active {{else}} {{#if tag}} active {{/if}} {{/if}}">
         <div class="nav-form">
           <form action="/post/search/" id="search-form">
             <i class="search icon"></i>
@@ -66,9 +66,9 @@
         </div>
       </div>
 
-      <div class="nav-item {{#if user}} active {{/if}} right">
+      <div class="nav-item right">
         {{#if account}}
-        <div class="user-info ui dropdown">
+        <div class="{{#if mine}} active2 {{/if}} user-info ui dropdown">
           <img src="{{account.img}}" class="ui avatar image">
           <span>{{account.name}}</span>
           <div class="menu" id="user-menu">

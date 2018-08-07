@@ -23,6 +23,7 @@ router.use('/post/:type/:func?', (req, res, next) => {
 
   limit = parseInt(limit)
   skip = parseInt(skip)
+  
   switch (req.params.type) {
     case "random":
       if (req.params.func === 'continue') {
@@ -36,8 +37,14 @@ router.use('/post/:type/:func?', (req, res, next) => {
         post.get_random_tag(true).then((result) => {
           res.send(result)
         })
-      } else
-        next()
+      } else {
+          res.render('index.hbs', {
+            account,
+            random: true,
+            title: "Meme-A: Random Tag!",
+            csrf: req.csrfToken(),
+          })
+      }
       break;
     case "search":
       let q = req.query.q || ""
@@ -77,16 +84,14 @@ router.use('/post/:type/:func?', (req, res, next) => {
       }
       break;
     case "user":
-      if (req.params.func) {
-        let id = req.params.func
+      let user = req.query.query.user || ""
 
-        post.get_posts_user(id, true, limit, skip).then((result) => {
-          add_prop_liked(result, req.session.user)
-          res.send(result)
-        })
-      } else 
-        next()
-        break;
+      post.get_posts_user(user, true, limit, skip).then((result) => {
+        add_prop_liked(result, req.session.user)
+
+        res.send(result)
+      })
+      break;
     case "default":
       post.get_posts({}, {
         likes: -1,
@@ -101,19 +106,6 @@ router.use('/post/:type/:func?', (req, res, next) => {
       next()
   }
 
-})
-
-router.get('/post/random/', (req, res) => {
-  console.log("rand");
-  
-  let account = req.session.user
-
-  res.render('random.hbs', {
-    account,
-    random: true,
-    title: "Meme-A: Random Tag!",
-    csrf: req.csrfToken(),
-  })
 })
 
 router.post('/post/share/', (req, res) => {

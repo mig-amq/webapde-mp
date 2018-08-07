@@ -19,14 +19,10 @@ module.exports = {
     return new Promise((resolve, reject) => {
       if (query.uid && query.uid.length < 24)
         resolve([]);
-      else if (query.uid)
-        query.uid = Mongo.ObjectId(query.uid);
 
       if (query._id && query._id.length < 24)
         resolve([]);
-      else if (query._id)
-        query._id = Mongo.ObjectId(query._id);
-
+      
       Mongo.Post
         .find(query)
         .sort(sort)
@@ -34,6 +30,10 @@ module.exports = {
         .limit(limiter)
         .lean()
         .exec((err, res) => {
+          if (err) resolve([])
+
+          if (!res) resolve([])
+
           resolve(res)
         })
     });
@@ -79,6 +79,12 @@ module.exports = {
         title: new RegExp(elem, "gi")
       });
     });
+    
+    queries.push({
+      tags: {
+        $in: strings
+      }
+    })
 
     return this.get_posts({
       $or: queries
