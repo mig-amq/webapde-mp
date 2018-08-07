@@ -59,7 +59,8 @@
      url: '/post/like/',
      method: 'POST',
      data: {
-       id: pid
+       id: pid,
+       _csrf: $("meta[name=global-csrf]").attr('content'),
      },
      success: (d) => {
        if (!d.exists) {
@@ -82,23 +83,23 @@
            $(elems[1]).find('.header > span').text("Dislike :(");
          }
        } else {
-         $("#loginModal").modal('show');
+         $("#login").modal('show');
 
          var list = document.createElement("ul");
          $("#loginTab form").addClass("error");
 
          list.className = "list";
 
-         if (status.server) {
+         if (d.server) {
            $(list).append("<li> Oh Noes! The server broke! </li>");
-         } else if (status.db) {
+         } else if (d.db) {
            $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
          } else {
-           if (status.uid)
-             $(list).append("<li>" + status.uid + "</li>");
+           if (d.uid)
+             $(list).append("<li>" + d.uid + "</li>");
 
-           if (status.pid)
-             $(list).append("<li>" + status.pid + "</li>");
+           if (d.pid)
+             $(list).append("<li>" + d.pid + "</li>");
          }
 
          $("#loginTab form .ui.error.message").append(list);
