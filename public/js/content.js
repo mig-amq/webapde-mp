@@ -67,7 +67,6 @@
          // elems[1] is the dimmer info
 
          let likesTop = parseInt($(elems[0]).find('span').text());
-         let elemTemp;
 
          if ($(elems[0]).find('.icon').hasClass('red')) {
            $(elems[0]).find('.icon').removeClass('red');
@@ -82,6 +81,27 @@
            $(elems[1]).find('.header > .heart').addClass('red');
            $(elems[1]).find('.header > span').text("Dislike :(");
          }
+       } else {
+         $("#loginModal").modal('show');
+
+         var list = document.createElement("ul");
+         $("#loginTab form").addClass("error");
+
+         list.className = "list";
+
+         if (status.server) {
+           $(list).append("<li> Oh Noes! The server broke! </li>");
+         } else if (status.db) {
+           $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
+         } else {
+           if (status.uid)
+             $(list).append("<li>" + status.uid + "</li>");
+
+           if (status.pid)
+             $(list).append("<li>" + status.pid + "</li>");
+         }
+
+         $("#loginTab form .ui.error.message").append(list);
        }
      }
    })
