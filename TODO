@@ -18,7 +18,7 @@ App Functionalities:
     ✔ Login/Register page @done(18-07-23 16:18)
     ✔ Share-A-Meme page @done(18-07-23 16:18)
     ✔ Search Post page @done(18-07-23 16:18)
-    ☐ Tag page
+    ✔ Tag page @done(18-08-07 19:58)
   2. User:
     ✔ Logging In @done(18-07-23 16:15)
       ✔ Remember Me @done(18-07-23 16:16)
@@ -41,5 +41,5 @@ App Functionalities:
     ☐ Viewing Posts:
       ✔ Default View @done(18-07-23 16:16)
       ☐ User View
-      ☐ Tag View
-      ☐ Search View
+      ✔ Tag View @done(18-08-07 19:58)
+      ✔ Search View @done(18-08-07 19:58)

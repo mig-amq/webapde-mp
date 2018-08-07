@@ -7,7 +7,7 @@
  const _TYPES = {
    def: 'default',
    search: 'search/get/',
-   tag: 'tag',
+   tag: 'tag/get/',
    rand: 'random/continue',
  }
 
@@ -173,7 +173,7 @@
 
    ptags.forEach((e) => {
      let tag = document.createElement("a");
-     tag.href = "/post/tag/" + e;
+     tag.href = "/post/tag/?tag=" + e;
      tag.className = "ui label";
      tag.text = e;
      tags.appendChild(tag);

@@ -58,6 +58,24 @@ router.use('/post/:type/:func?', (req, res, next) => {
         })
       }
         break;
+    case "tag":
+      let tag = req.query.tag || ""
+
+      if (req.params.func === "get") {
+        tag = req.query.query.tag || "";
+
+        post.get_posts_tag([tag], true, limit, skip).then((result) => {
+          add_prop_liked(result, req.session.user)
+          res.send(result)
+        })
+      } else {
+        res.render('index.hbs', {
+          title: "MEME-A: " + tag + " posts" ,
+          csrf: req.csrfToken(),
+          account, tag,
+        })
+      }
+      break;
     case "user":
       if (req.params.func) {
         let id = req.params.func
