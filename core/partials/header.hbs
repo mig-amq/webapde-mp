@@ -81,6 +81,11 @@
             Log Out</a>
           </div>
         </div>
+        <div class="user-share">
+          <button class="ui purple tiny button" id="shareModal">
+            <i class="share icon"></i>
+            Share-A-Meme</button>
+        </div>
         {{else}}
         <div class="user-login">
           <button class="ui teal button" id="loginModal">Login / Register</button>
@@ -91,6 +96,44 @@
   </div>
 
   {{#if account}}
+  <div id="share" class="ui small modal">
+    <div class="header">Share-A-Meme</div>
+    <div class="content" id="shareForm">
+      <form action="/post/share/" method="POST" class="ui form">
+          <input type="hidden" name="_csrf" value="{{csrf}}">
+          
+        <div class="field">
+          <label for="title">Title</label>
+          <input type="text" name="title" id="title" required>
+        </div>
+      
+        <div class="field">
+          <label for="tags">Tags</label>
+          <select class="ui search fluid dropdown" multiple="" name="tags" id="tags" placeholder="Press enter or space to add a tag..." required>
+          </select>
+          <small class="muted">Press space or enter to separate tags.</small>
+        </div>
+      
+        <div class="field">
+          <div class="field">
+            <label for="img">Meme</label>
+            <div class="ui right action left icon input">
+              <i class="image icon"></i>
+              <input type="text" id="img-name" readonly="" class="file-name">
+              <input type="file" name="img" id="img" style="display: none" accept="image/*">
+              <div class="ui basic floating button" id="img-browse">Browse</div>
+            </div>
+          </div>
+        </div>
+        <input type="submit" class="ui green button" value="Share Now">
+      
+        <div class="ui error message"></div>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui cancel button">Close</div>
+    </div>
+  </div>
   {{else}}
   <div id="login" class="ui small modal">
     <div class="header">Login / Register</div>
@@ -101,6 +144,8 @@
       </div>
       <div class="ui bottom attached active tab segment" id="loginTab">
         <form action="/login/" method="POST" class="ui form">
+          <input type="hidden" name="_csrf" value="{{csrf}}">
+
           <div class="field">
             <label for="username">Username</label>
             <input type="text" name="username" id="username" required>
@@ -117,13 +162,15 @@
               <label for="remember">Remember Me</label>
             </div>
           </div>
-          <input type="submit" value="Login" class="ui green button">
+          <input type="submit" value="Log In" class="ui green button">
 
           <div class="ui error message"></div>
         </form>
       </div>
       <div class="ui bottom attached tab segment" id="registerTab">
         <form action="/register/" method="POST" class="ui form">
+          <input type="hidden" name="_csrf" value="{{csrf}}">
+
           <div class="field">
             <label for="name">Full Name</label>
             <input type="text" name="name" id="name" required>
@@ -147,7 +194,7 @@
               <div class="ui basic floating button" id="img-browse">Browse</div>
             </div>
           </div>
-          <input type="submit" value="Register" class="ui green button">
+          <input value="Register" type="submit" class="ui green button">
           <div class="ui error message"></div>
         </form>
       </div>

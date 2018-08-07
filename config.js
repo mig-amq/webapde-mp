@@ -109,3 +109,12 @@ module.exports.body_parser = {
    */
   extended: true
 }
+module.exports.csurf = {
+  /**
+   * These are the default configuration used for the csrf protection
+   * of post requests in the app.
+   * View https: //github.com/expressjs/csurf#api
+   * for additional configuration.
+   */
+  cookie: false,
+}

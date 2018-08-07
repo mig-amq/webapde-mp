@@ -19,30 +19,38 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
     -webkit-box-flex: 1;
-    -ms-flex: 1 0 auto;
-    flex: 1 0 auto; }
+    -ms-flex-positive: 1;
+    flex-grow: 1; }
     #navbar .expandable .nav-item {
-      clear: both;
-      margin-left: 25px; }
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+      flex-grow: 0;
+      margin-right: 25px; }
       #navbar .expandable .nav-item:first-child {
         margin-left: 50px; }
       #navbar .expandable .nav-item:last-child {
-        margin-left: auto;
-        margin-right: 25px; }
+        margin-left: auto; }
+        #navbar .expandable .nav-item:last-child > div:first-child {
+          margin-right: 25px; }
       #navbar .expandable .nav-item > a {
         color: #4a4a4a;
         display: inline-block;
-        padding: 20px 50px; }
+        padding: 20px 50px;
+        text-align: center; }
         #navbar .expandable .nav-item > a:hover, #navbar .expandable .nav-item > a.active {
           border-bottom: 1px solid #4a4a4a; }
       #navbar .expandable .nav-item.active {
         border-bottom: 1px solid #4a4a4a; }
       #navbar .expandable .nav-item .user-info {
         height: 60px;
+        min-width: 170px;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -122,3 +130,19 @@
       vertical-align: top;
       width: 100%;
       margin-bottom: 100px; }
+
+@media screen and (min-width: 961px) and (max-width: 1091px) {
+  #navbar {
+    top: 0;
+    left: 0;
+    margin: 0;
+    position: fixed;
+    width: 100%;
+    background-color: #ffffff;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+    z-index: 10001; }
+    #navbar .nav-item a.active,
+    #navbar .nav-item a:hover {
+      border-bottom: 0;
+      background-color: #f1efef; } }

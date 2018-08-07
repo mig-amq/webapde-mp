@@ -1,4 +1,4 @@
-$("#loginTab form").form({
+$("#loginTab form").form({ // Validation Handling for Login
   fields: {
     username: {
       rules: [{
@@ -9,7 +9,7 @@ $("#loginTab form").form({
     password: {
       rules: [{
         type: "empty",
-        prompt: "Oh noes! What's ur secret thingy?"
+        prompt: "Oh noes! What's ur secret passcode?"
       }]
     }
   },
@@ -49,3 +49,90 @@ $("#loginTab form").form({
     });
   }
 });
+
+$("#registerTab form").form({
+  fields: {
+    name: {
+      rules: [{
+        type: 'empty',
+        prompt: "U have no name?? Whoah"
+      }]
+    },
+    username: {
+      rules: [{
+        type: 'empty',
+        prompt: "U need a username!"
+      }]
+    },
+    password: {
+      rules: [{
+          type: 'empty',
+          prompt: "You can't have an empty password >:("
+        },
+        {
+          type: 'minLength[8]',
+          prompt: "You need at least 8 characters for a password >:("
+        },
+      ]
+    }
+  },
+  onSuccess: (event, fields) => {
+    event.preventDefault();
+    $("#registerTab form .ui.error.message").empty();
+
+    /**
+     * Use FormData to retrieve forms with file inputs,
+     * because Semantic UI's .form() returns fake path string value of files,
+     * not the file object itself.
+     */
+    let data = new FormData();
+
+    data.append('username', fields.username);
+    data.append('password', fields.password);
+    data.append('name', fields.name);
+    data.append('img', $("#registerTab form input[type=file]")[0].files[0])
+    data.append('_csrf', fields._csrf);
+    
+    $.ajax({
+      url: '/user/register/',
+      method: "POST",
+      data: data,
+      processData: false,
+      contentType: false,
+      success: function (status) {
+
+        if (status.exists) {
+          var list = document.createElement("ul");
+          $("#registerTab form").addClass("error");
+
+          list.className = "list";
+
+          if (status.server) {
+            $(list).append("<li> Oh Noes! The server broke! </li>");
+          } else if (status.db) {
+            $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
+          } else {
+            if (status.username)
+              $(list).append("<li>" + status.username + "</li>");
+
+            if (status.password)
+              $(list).append("<li>" + status.password + "</li>");
+
+            if (status.name)
+              $(list).append("<li>" + status.name + "</li>");
+          }
+
+          $("#registerTab form .ui.error.message").append(list);
+        } else {
+          $("#registerTab, #registerClick").removeClass('active');
+          $("#loginTab, #loginClick").addClass('active');
+
+          $("#loginTab").form('reset');
+          $("#loginTab").form('set values', {
+            username: $("#registerTab form").form('get value', 'username')
+          });
+        }
+      }
+    });
+  }
+})

@@ -1,6 +1,7 @@
 // External modules
 const hbs = require('hbs')
 const path = require('path')
+const csurf = require('csurf')
 const app = require('express')()
 const multer = require('multer')
 const bparser = require('body-parser')
@@ -58,6 +59,9 @@ let multer_options = {
   }
 }
 
+app.use(multer(multer_options).any())
+
+app.use(csurf(settings.csurf))
 
 app.use("*", (req, res, next) => {
   /**
@@ -78,8 +82,6 @@ app.use("*", (req, res, next) => {
   next()
 })
 
-app.use(multer(multer_options).any())
-
 /**
  * This loop is used to go through the routes array which then
  * allows the app to require the express.Router() objects that 
@@ -90,13 +92,8 @@ for (let i = 0; i < settings.routes.length; i++) {
 }
 
 app.use('*', (req, res) => {
-    user.get_account({
-      _id: req.session.user._id
-    }).then((result) => {
-      let account = result;
-
-      res.render('err/404.hbs', {
-        account
-      })
-    })
+  res.render('err/404.hbs', {
+    account: req.session.user,
+    title: "Meme-A: Error 404",
+  })
 })

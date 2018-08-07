@@ -40,19 +40,23 @@ router.post('/user/login/', (req, res) => {
 })
 
 router.post('/user/register/', (req, res) => {
-  let file = (req.files.length > 0) ? req.files[0].path.replace("public", "") : null;
-
-  let data = {
-    name: req.body.name,
-    username: req.body.username,
-    password: req.body.password,
-    img: file || path.normalize("img/samples/sample_profile.jpg"),
-  }
-
   if (req.session.user)
-    res.send({})
-  else
-    user.create(data).then((result) => res.send(result))
+    res.send({errors: true, username: "You're already logged in!"})
+  else {
+    let file = (req.files.length > 0) ? req.files[0].path.replace("public", "") : null;
+
+    let data = {
+      name: req.body.name,
+      username: req.body.username,
+      password: req.body.password,
+      img: file || path.normalize("img/samples/sample_profile.jpg"),
+    }
+
+    if (req.session.user)
+      res.send({})
+    else
+      user.create(data).then((result) => res.send(result))
+  } 
 })
 
 router.get('/user/logout/', (req, res) => {

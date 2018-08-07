@@ -1,6 +1,7 @@
 var bar_loc = $("#navbar").offset().top + 5;
 
 $("#loginModal").click(() => $("#login").modal('show'));
+$("#shareModal").click(() => $("#share").modal('show'));
 
 $(window).on('scroll', (e) => {
   if($(window).scrollTop() >= bar_loc)
@@ -49,4 +50,14 @@ $("#nav-expander, body").click((e) => {
       $("#nav-expand").addClass('active');
 });
 
-$('.ui.dropdown').dropdown();
+$('.ui.dropdown').dropdown({
+  allowAdditions: true,
+  keys: {
+    delimiter: 32,
+  }
+});
+
+$('.ui.dropdown.search').on('keypress', (e) => {
+  if (e.keyCode === 13)
+    e.preventDefault();
+})

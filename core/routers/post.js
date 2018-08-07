@@ -2,6 +2,17 @@ const router = require('express').Router()
 const post = require('../models/Post')
 const user = require('../models/User')
 
+router.get('/', (req, res) => {
+  let account = req.session.user;
+
+  res.render('index.hbs', {
+    account,
+    default: true,
+    title: "Meme-A: Home Page",
+    csrf: req.csrfToken(),
+  })
+})
+
 /**
  * This route handles the posts retrieval
  */
@@ -11,7 +22,6 @@ router.use('/post/:type/:func?', (req, res, next) => {
 
   limit = parseInt(limit)
   skip = parseInt(skip)
-
   switch (req.params.type) {
     case "random":
       if (req.params.func === 'continue') {
@@ -66,33 +76,25 @@ router.use('/post/:type/:func?', (req, res, next) => {
 
 })
 
-router.get('/', (req, res) => {
-  let account = req.session.user;
-
-  res.render('index.hbs', {
-    account,
-    default: true,
-    title: "Meme-A: Home Page"
-  })
-})
-
 router.get('/post/random/', (req, res) => {
+  console.log("rand");
+  
   let account = req.session.user
 
   res.render('random.hbs', {
     account,
     random: true,
-    title: "Meme-A: Random Tag!"
+    title: "Meme-A: Random Tag!",
+    csrf: req.csrfToken(),
   })
 })
 
 router.post('/post/share/', (req, res) => {
-
   let data = {
-    title: req.body.memeTitle,
+    title: req.body.title,
     user: req.session.user,
     post: req.files[0].path.replace("public", ""),
-    tags: req.body.memeTags.split(" ")
+    tags: req.body.tags
   }
 
   post.create(data).then((result) => {
