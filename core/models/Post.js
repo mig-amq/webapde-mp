@@ -209,6 +209,11 @@ module.exports = {
     });
   },
 
+  /**
+   * Updates the like status of a specific post.
+   * @param {String|Object} uid the user's _id
+   * @param {String|Object} pid the post's _id
+   */
   update_stats(uid, pid) {
     return new Promise((resolve, reject) => {
       let errors = {
@@ -293,12 +298,11 @@ module.exports = {
   },
 
   /**
-   * 
-   * @param {Object} json 
-   * @param {string} json.uid
-   * @param {string} json.pid
+   * Deletes a certain post from the db
+   * @param {Object|String} uid the user's id (currently logged in)
+   * @param {Object|String} pid the post's id
    */
-  delete(json) {
+  delete(uid, pid) {
     return new Promise((resolve, reject) => {
       let errors = {
         user: '',
@@ -308,18 +312,18 @@ module.exports = {
         server: false,
       }
 
-      if (!json.uid) {
+      if (!uid) {
         errors.exists = true
         errors.user = "You must be logged in to delete a post"
       }
 
-      if (!json.pid) {
+      if (!pid) {
         errors.exists = true
         errors.post = "Invalid post to delete"
       }
 
       if (!errors.exists) {
-        Mongo.Post.findById(json.pid, (err, res) => {
+        Mongo.Post.findById(pid, (err, res) => {
           if (err) {
             errors.exists = true
             errors.db = true
@@ -331,8 +335,8 @@ module.exports = {
 
             resolve(errors)
           } else {
-            if (res._id.toString() === json.pid) {
-              Mongo.Post.findByIdAndRemove(json.pid, (err, res) => {
+            if (res._id.toString() === pid) {
+              Mongo.Post.findByIdAndRemove(pid, (err, res) => {
                 if (err) {
                   errors.exists = true
                   errors.db = true
@@ -342,7 +346,7 @@ module.exports = {
               })
             } else {
               errors.exists = true
-              errors.user = "Oops! You don't ownt that post"
+              errors.user = "Oops! You don't own that post"
 
               resolve(errors)
             }
@@ -355,11 +359,12 @@ module.exports = {
   },
 
   /**
-   * 
-   * @param {Object} json 
-   * @param {string} json.uid
-   * @param {string} json.pid
-   * @param {Object} json.edit
+   * Edits a Post document in the db
+   * @param {Object} json contains the constraints and properties to be updated
+   * @param {string} json.uid the user's default id
+   * @param {string} json.pid the post's default id
+   * @param {Object} json.edit the properties to edit in the Post document, acceptable 
+   * properties are tags (string array) and title (string)
    */
   edit(json) {
     return new Promise((resolve, reject) => {
@@ -392,40 +397,32 @@ module.exports = {
           if (!(Object.keys(json.edit)[i] in ['tags', 'title']))
             delete json.edit[Object.keys(json.edit)[i]]
 
-        cnx.client((err, server) => {
+        Mongo.Post.findOne({
+          _id: Mongo.ObjectId(json.pid),
+          uid: Mongo.ObjectId(json.uid),
+        }, (err, res) => {
           if (err) {
             errors.exists = true
-            errors.server = true
-
-            resolve(errors)
+            errors.db = true
           } else {
-            let dbo = server.db(config.db.mongo_db)
-
-            dbo.collection('posts').findOne({
-              _id: Mongo.ObjectId(json.pid.toString()),
-              user: Mongo.ObjectId(json.uid.toString()),
-            }).then((res) => {
-              if (!res) {
-                errors.exists = true
-                errors.post = "You do not own this post"
-
-                resolve(errors)
-              } else {
-                dbo.collection('posts').updateOne({
-                  _id: Mongo.ObjectId(json.pid.toString()),
-                  user: Mongo.ObjectId(json.uid.toString()),
-                }, {
-                  $set: json.edit
-                }, (err, result) => {
-                  if (err) {
+            if (!res) {
+              errors.exists = true
+              errors.post = "Post does not exist"
+            } else {
+              Mongo.Post.findOneAndUpdate(res._id, json.edit, (err, res) => {
+                if (err) {
+                  errors.exists = true
+                  errors.db = true
+                } else {
+                  if (!res) {
                     errors.exists = true
-                    errors.db = true
-                  }
-
+                    errors.post = "Post does not exist"
+                  } 
+                  
                   resolve(errors)
-                })
-              }
-            })
+                }
+              })
+            }
           }
         })
       } else
