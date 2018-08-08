@@ -23,37 +23,37 @@ router.use('/post/:type/:func?', (req, res, next) => {
 
   limit = parseInt(limit)
   skip = parseInt(skip)
-  
+
   switch (req.params.type) {
     case "random":
       if (req.params.func === 'continue') {
         let tag = req.query.query.tag || ""
-        
+
         post.get_posts_tag([tag], true, limit, skip).then((result) => {
-          add_prop_liked(result, req.session.user)
+          add_props(result, req.session.user)
           res.send(result)
         })
-      } else if(req.params.func === 'init') {
+      } else if (req.params.func === 'init') {
         post.get_random_tag(true).then((result) => {
           res.send(result)
         })
       } else {
-          res.render('index.hbs', {
-            account,
-            random: true,
-            title: "Meme-A: Random Tag!",
-            csrf: req.csrfToken(),
-          })
+        res.render('index.hbs', {
+          account,
+          random: true,
+          title: "Meme-A: Random Tag!",
+          csrf: req.csrfToken(),
+        })
       }
       break;
     case "search":
       let q = req.query.q || ""
-      
+
       if (req.params.func === "get") {
         q = req.query.query.q || "";
 
         post.get_posts_search(q, true, limit, skip).then((result) => {
-          add_prop_liked(result, req.session.user)
+          add_props(result, req.session.user)
           res.send(result)
         })
       } else {
@@ -64,7 +64,7 @@ router.use('/post/:type/:func?', (req, res, next) => {
           account,
         })
       }
-        break;
+      break;
     case "tag":
       let tag = req.query.tag || ""
 
@@ -72,14 +72,15 @@ router.use('/post/:type/:func?', (req, res, next) => {
         tag = req.query.query.tag || "";
 
         post.get_posts_tag([tag], true, limit, skip).then((result) => {
-          add_prop_liked(result, req.session.user)
+          add_props(result, req.session.user)
           res.send(result)
         })
       } else {
         res.render('index.hbs', {
-          title: "MEME-A: " + tag + " posts" ,
+          title: "MEME-A: " + tag + " posts",
           csrf: req.csrfToken(),
-          account, tag,
+          account,
+          tag,
         })
       }
       break;
@@ -87,7 +88,7 @@ router.use('/post/:type/:func?', (req, res, next) => {
       let user = req.query.query.user || ""
 
       post.get_posts_user(user, true, limit, skip).then((result) => {
-        add_prop_liked(result, req.session.user)
+        add_props(result, req.session.user)
 
         res.send(result)
       })
@@ -97,7 +98,7 @@ router.use('/post/:type/:func?', (req, res, next) => {
         likes: -1,
         time: -1
       }, limit, skip).then((result) => {
-        add_prop_liked(result, req.session.user)
+        add_props(result, req.session.user)
 
         res.send(result)
       })
@@ -130,16 +131,20 @@ router.post('/post/like/', (req, res) => {
   })
 })
 
-function add_prop_liked(post, user) {
+function add_props(post, user) {
   for (i = 0; i < post.length; i++) {
+    if (post[i].uid.toString() === user._id.toString())
+      post[i].owned = true
+      
     if (post[i].likers.length > 0) {
       for (x = 0; x < post[i].likers.length; x++) {
         if (user && post[i].likers[x].toString() === user._id.toString()) {
           post[i].liked = true
         }
       }
-    }else
+    } else {
       post[i].liked = false
+    }
   }
 }
 module.exports = router

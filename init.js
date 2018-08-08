@@ -81,7 +81,7 @@ Mongo.Connection.then((res) => {
           post: '/img/samples/' + sample_imgs[i],
           title: 'Test Post #' + i,
           tags: ['tag', 'tag' + num]
-        }).then((errors) => console.log((errors.exists) ? "Post Error: Cannot add to " + user.username : "Post added to " + user.username))
+        }).then((errors) => console.log((errors && errors.exists) ? "Post Error: Cannot add to " + user.username : "Post added to " + user.username))
       }
     })
   })

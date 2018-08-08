@@ -12,6 +12,20 @@ body {
   padding-bottom: 50px;
 }
 
+.ui.dropdown .red {
+  color: #ffffff !important;
+  background-color: #a32020;
+  border-radius: 0 0 4px 4px;
+}
+
+.ui.dropdown {
+  border: 0;
+}
+
+.ui.dropdown .red:hover {
+  background-color: #801515 !important;
+}
+
 #content::after {
   content: '';
   display: block;
