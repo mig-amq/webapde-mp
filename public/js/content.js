@@ -138,13 +138,7 @@ function parsePost(data) {
     settings_menu.className = "menu";
     $(settings_menu).append(edit)
     $(settings_menu).append(del)
-
-
-    $(del).click(() => {
-      console.log("1")
-      $("#delete").modal("show")
-    })
-
+     $(del).click(() => showDelete(pid)); 
     $(edit).click((e) => showEdit(pid));
 
     $(settings).append(settings_icon);
@@ -280,6 +274,54 @@ function getDate(milli) {
   return res;
 }
 
+function showDelete(pid){
+    $("#delForm form").form('reset');
+    $("#delForm form").attr('data-post', pid);
+    $("#delete").modal("show")
+    
+    
+    
+    $("#delBtn").click(()=>{
+        let pid = $("#editForm form").attr('data-post');
+        $.ajax({
+            url: "/post/delete",
+            method: "PUT",
+            data: {
+                id: pid,
+                _csrf: $("meta[name=global-csrf]").attr('content'),
+            },
+            success: (status)=>{
+                if (status.exists) {
+                  var list = document.createElement("ul");
+                  $("#editForm form").addClass("error");
+
+                  list.className = "list";
+
+                  if (status.server) {
+                    $(list).append("<li> Oh Noes! The server broke! </li>");
+                  } else if (status.db) {
+                    $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
+                  } else {
+                    if (status.user)
+                      $(list).append("<li>" + status.user + "</li>");
+
+                    if (status.post)
+                      $(list).append("<li>" + status.post + "</li>");
+
+                    if (status.edit)
+                      $(list).append("<li>" + status.edit + "</li>");
+                  }
+
+                  $("#editForm form .ui.error.message").append(list);
+              }else{
+                  let parent = $(".card[data-post=" + pid + "]");
+                  $(this).closest(parent).hide()
+              }   
+        }
+        })    
+    })
+}
+
 function showEdit(pid) {
   $("#editForm form").form('reset');
   $("#editForm form").attr('data-post', pid);
@@ -290,7 +332,7 @@ function showEdit(pid) {
     success: (result) => {
       $("#editTitle").val(result[0].title);
       $("#editTags").dropdown("set selected", result[0].tags)
-
+    
       $("#edit").modal('show');
 
     },
