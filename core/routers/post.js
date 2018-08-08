@@ -132,18 +132,20 @@ router.post('/post/like/', (req, res) => {
 })
 
 function add_props(post, user) {
-  for (i = 0; i < post.length; i++) {
-    if (post[i].uid.toString() === user._id.toString())
-      post[i].owned = true
-      
-    if (post[i].likers.length > 0) {
-      for (x = 0; x < post[i].likers.length; x++) {
-        if (user && post[i].likers[x].toString() === user._id.toString()) {
-          post[i].liked = true
+  if (user) {
+    for (i = 0; i < post.length; i++) {
+      if (post[i].uid.toString() === user._id.toString())
+        post[i].owned = true
+
+      if (post[i].likers.length > 0) {
+        for (x = 0; x < post[i].likers.length; x++) {
+          if (user && post[i].likers[x].toString() === user._id.toString()) {
+            post[i].liked = true
+          }
         }
+      } else {
+        post[i].liked = false
       }
-    } else {
-      post[i].liked = false
     }
   }
 }
