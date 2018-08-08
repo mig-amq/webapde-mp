@@ -156,6 +156,14 @@ router.put('/post/edit/', (req, res) => {
   })
 })
 
+router.put('/post/delete/', (req, res)=>{
+    var uid = req.session.user._id
+    var pid = req.body.id
+    post.delete(uid, pid).then((result)=>{
+        res.send(result)
+    })
+})
+
 function add_props(post, user) {
   if (user) {
     for (i = 0; i < post.length; i++) {

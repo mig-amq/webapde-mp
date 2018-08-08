@@ -284,7 +284,7 @@ function showDelete(pid){
     $("#delBtn").click(()=>{
         let pid = $("#editForm form").attr('data-post');
         $.ajax({
-            url: "/post/delete",
+            url: "/post/delete/",
             method: "PUT",
             data: {
                 id: pid,
