@@ -1,5 +1,6 @@
 var limit = 5;
 var skip = 0;
+var fetching = false;
 
 let loader = $("#post-loader");
 
@@ -36,6 +37,7 @@ async function getData(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
 
 function putContent(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
   loader.addClass('active');
+  fetching = true;
 
   getData(type, query, limit, skip).then((d) => {
     d.forEach(e => {
@@ -49,6 +51,7 @@ function putContent(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
     $('.card .image').blur((e) => $('.image').dimmer('hide'));
 
     loader.removeClass('active');
+    fetching = false;
   });
 }
 
@@ -122,10 +125,10 @@ function parsePost(data) {
     ptags = data.tags,
     powned = data.owned,
     ptime = getDate(data.time);
-  
-    var settings = document.createElement("div");
-    console.log(data);
-    
+
+  var settings = document.createElement("div");
+  console.log(data);
+
   if (powned) {
     settings.className = "ui dropdown";
     var settings_icon = document.createElement("i");
@@ -223,7 +226,7 @@ function parsePost(data) {
   card.appendChild(content);
   card.appendChild(image_content);
   $(settings).dropdown();
-  
+
   tags.append(settings);
   card.appendChild(tags);
 
