@@ -135,6 +135,59 @@
       <div class="ui cancel button">Close</div>
     </div>
   </div>
+    
+  <div id="edit" class="ui small modal">
+    <div class="header">Edit-A-Meme</div>
+    <div class="content" id="editForm">
+      <form action="/post/edit/" method="POST" class="ui form">
+          <input type="hidden" name="_csrf" value="{{csrf}}">
+          
+        <div class="field">
+          <label for="title">Title</label>
+          <input type="text" name="title" id="editTitle" required>
+        </div>
+      
+        <div class="field">
+          <label for="tags">Tags</label>
+          <select class="ui search fluid dropdown" multiple="" name="tags" id="editTags" value="aa" required>
+          </select>
+          <small class="muted">Press space or enter to separate tags.</small>
+        </div>
+      
+        
+        <input type="submit" class="ui green button" id="editBtn"value="Edit Now">
+      
+        <div class="ui error message"></div>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui cancel button">Close</div>
+    </div>
+      
+  </div>
+    
+ <div id="delete" class="ui small modal">
+    <div class="header"></div>
+    <div class="content" id="editForm">
+      <form action="/post/edit/" method="POST" class="ui form">
+          <input type="hidden" name="_csrf" value="{{csrf}}">
+          
+        <div class="field">
+          <label for="title">Are you sure?</label>
+        </div>
+            
+        
+        <input type="submit" class="ui green button" id="delBtn"value="Delete">
+      
+        <div class="ui error message"></div>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui cancel button">Close</div>
+    </div>
+      
+  </div>
+    
   {{else}}
   <div id="login" class="ui small modal">
     <div class="header">Login / Register</div>

@@ -63,6 +63,6 @@ $("#shareForm form").form({
           $("#shareForm form .ui.error.message").append(list);
         }
       }
-    })
+    })  
   }
 });

@@ -130,14 +130,53 @@ function parsePost(data) {
   console.log(data);
 
   if (powned) {
+    var edit = $("<div id='editModal' class='item'><i class='edit outline icon'></i>Edit Post</div>");
+    var del = $("<div id='delModal' class='ui red item'><i class='exclamation circle icon'></i>Delete Post</div>");
     settings.className = "ui dropdown";
     var settings_icon = document.createElement("i");
     settings_icon.className = "cog icon";
     var settings_menu = document.createElement("div");
     settings_menu.className = "menu";
-    $(settings_menu).append("<div id='editModal' class='item' data-id='" + pid + "'><i class='edit outline icon'></i>Edit Post</div>")
-    $(settings_menu).append("<div id='delModal' class='ui red item' data-id='" + pid + "'><i class='exclamation circle icon'></i>Delete Post</div>")
-
+    $(settings_menu).append(edit)
+    $(settings_menu).append(del)
+    
+      
+    $(del).click(()=>{
+        console.log("1")
+        $("#delete").modal("show")
+    })
+    $(edit).click((e) => {
+        /*alert(pid);*/
+        $.ajax({
+            url: "/post/"+pid+"/",
+            method: "get",
+            success: (result)=>{
+                console.log(result);
+                $("#editTitle").val(result[0].title);
+                $("#editTags").dropdown("set selected", result[0].tags)
+                console.log($("#editTags").dropdown("get values"))
+            },
+        })
+        
+        $("#edit").modal('show');
+    })
+      
+    $("#editBtn").click((e)=>{
+        $.ajax({
+            url: "/post/edit/",
+            method: "post",
+            data: {
+                id: pid,
+                title: $("#editTitle").val(),
+                tags: $("#editTags").dropdown("get values"),
+                _csrf: $("meta[name=global-csrf]").attr('content'),
+            },
+            success: ()=>{
+                console.log("Success")
+            }
+        })
+    })
+    
     $(settings).append(settings_icon);
     $(settings).append(settings_menu);
   }

@@ -131,6 +131,30 @@ router.post('/post/like/', (req, res) => {
   })
 })
 
+router.get('/post/:id/', (req, res)=>{
+    post.get_posts({_id: req.params.id},{likes: -1, time:-1}, 5, 0).then((result)=>{
+        res.send(result)
+    })
+    
+})
+
+router.post('/post/edit/', (req, res)=>{
+    var uid = req.session.user
+    var pid = req.body.id
+    console.log(pid)
+    var title = req.body.title
+    var tags = req.body.tags
+    var json = {
+      title: title,
+      tags: tags
+    }  
+    
+    /*post.edit(uid, pid, json).then((result)=>{
+        console.log(result)
+        res.send(result)
+    })*/
+})
+
 function add_props(post, user) {
   if (user) {
     for (i = 0; i < post.length; i++) {
