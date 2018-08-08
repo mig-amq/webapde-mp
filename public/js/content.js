@@ -127,7 +127,6 @@ function parsePost(data) {
     ptime = getDate(data.time);
 
   var settings = document.createElement("div");
-  console.log(data);
 
   if (powned) {
     var edit = $("<div id='editModal' class='item'><i class='edit outline icon'></i>Edit Post</div>");
@@ -139,50 +138,22 @@ function parsePost(data) {
     settings_menu.className = "menu";
     $(settings_menu).append(edit)
     $(settings_menu).append(del)
-    
-      
-    $(del).click(()=>{
-        console.log("1")
-        $("#delete").modal("show")
+
+
+    $(del).click(() => {
+      console.log("1")
+      $("#delete").modal("show")
     })
-    $(edit).click((e) => {
-        /*alert(pid);*/
-        $.ajax({
-            url: "/post/"+pid+"/",
-            method: "get",
-            success: (result)=>{
-                console.log(result);
-                $("#editTitle").val(result[0].title);
-                $("#editTags").dropdown("set selected", result[0].tags)
-                console.log($("#editTags").dropdown("get values"))
-            },
-        })
-        
-        $("#edit").modal('show');
-    })
-      
-    $("#editBtn").click((e)=>{
-        $.ajax({
-            url: "/post/edit/",
-            method: "post",
-            data: {
-                id: pid,
-                title: $("#editTitle").val(),
-                tags: $("#editTags").dropdown("get values"),
-                _csrf: $("meta[name=global-csrf]").attr('content'),
-            },
-            success: ()=>{
-                console.log("Success")
-            }
-        })
-    })
-    
+
+    $(edit).click((e) => showEdit(pid));
+
     $(settings).append(settings_icon);
     $(settings).append(settings_menu);
   }
 
   var card = document.createElement("div");
   card.className = "ui card";
+  $(card).attr('data-post', pid);
 
   var image_content = document.createElement("div");
   image_content.className = "ui fluid blurring dimmable image";
@@ -221,7 +192,7 @@ function parsePost(data) {
 
   var title = document.createElement("div"); // post title
   title.className = "header";
-  $(title).text(ptitle);
+  $(title).append("<span>" + ptitle + "</span>");
 
   var user = document.createElement("div");
   user.className = "meta";
@@ -308,3 +279,94 @@ function getDate(milli) {
 
   return res;
 }
+
+function showEdit(pid) {
+  $("#editForm form").form('reset');
+  $("#editForm form").attr('data-post', pid);
+
+  $.ajax({
+    url: "/post/" + pid + "/",
+    method: "get",
+    success: (result) => {
+      $("#editTitle").val(result[0].title);
+      $("#editTags").dropdown("set selected", result[0].tags)
+
+      $("#edit").modal('show');
+
+    },
+  })
+}
+
+$("#editForm form").form({ // Validation Handling for Login
+  fields: {
+    title: {
+      rules: [{
+        type: "empty",
+        prompt: "You can't post with no title!"
+      }]
+    },
+    tags: {
+      rules: [{
+        type: "empty",
+        prompt: "Oh noes! You need some tags"
+      }]
+    }
+  },
+  onSuccess: (event, fields) => {
+    event.preventDefault();
+    $("#editForm form .ui.error.message").empty();
+
+    let json = $("#editForm form").form('get values', ['title', 'tags'])[1];
+    let pid = $("#editForm form").attr('data-post');
+
+    $.ajax({
+      url: "/post/edit/",
+      method: "PUT",
+      data: {
+        id: pid,
+        _csrf: $("meta[name=global-csrf]").attr('content'),
+        json,
+      },
+      success: (status) => {
+        if (status.exists) {
+          var list = document.createElement("ul");
+          $("#editForm form").addClass("error");
+
+          list.className = "list";
+
+          if (status.server) {
+            $(list).append("<li> Oh Noes! The server broke! </li>");
+          } else if (status.db) {
+            $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
+          } else {
+            if (status.user)
+              $(list).append("<li>" + status.user + "</li>");
+
+            if (status.post)
+              $(list).append("<li>" + status.post + "</li>");
+
+            if (status.edit)
+              $(list).append("<li>" + status.edit + "</li>");
+          }
+
+          $("#editForm form .ui.error.message").append(list);
+        } else {
+          let parent = $(".card[data-post=" + pid + "]");
+          
+          $(parent).find('.header > span')[0].innerHTML = json.title;
+
+          $(parent).find('.extra.content > .ui.label').remove();
+
+          json.tags.forEach(elem => {
+            let a = document.createElement('a');
+            a.className = "ui label";
+            a.href = "/post/tag/?tag=" + elem;
+            $(a).text(elem);
+
+            $(parent).find('.extra.content')[0].prepend(a);
+          })
+        }
+      }
+    })
+  }
+});

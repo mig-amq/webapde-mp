@@ -159,8 +159,9 @@
       display: block;
       width: 100%;
       margin-bottom: 100px;
-      -webkit-column-break-inside: avoid;
-      break-inside: avoid-column; }
+      break-inside: avoid;
+      page-break-inside: avoid;
+      -webkit-column-break-inside: avoid; }
 
 @media screen and (min-width: 961px) and (max-width: 1091px) {
   #navbar {

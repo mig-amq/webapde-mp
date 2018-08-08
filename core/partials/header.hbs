@@ -101,7 +101,7 @@
     <div class="header">Share-A-Meme</div>
     <div class="content" id="shareForm">
       <form action="/post/share/" method="POST" class="ui form">
-          <input type="hidden" name="_csrf" value="{{csrf}}">
+        <input type="hidden" name="_csrf" value="{{csrf}}">
           
         <div class="field">
           <label for="title">Title</label>
@@ -149,13 +149,13 @@
       
         <div class="field">
           <label for="tags">Tags</label>
-          <select class="ui search fluid dropdown" multiple="" name="tags" id="editTags" value="aa" required>
+          <select class="ui search fluid dropdown" multiple="" name="tags" id="editTags" required>
           </select>
           <small class="muted">Press space or enter to separate tags.</small>
         </div>
       
         
-        <input type="submit" class="ui green button" id="editBtn"value="Edit Now">
+        <input type="submit" class="ui green button" value="Edit Now">
       
         <div class="ui error message"></div>
       </form>

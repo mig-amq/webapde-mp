@@ -394,12 +394,12 @@ module.exports = {
 
       if (!errors.exists) {
         for (let i = 0; i < Object.keys(json.edit).length; i++)
-          if (!(Object.keys(json.edit)[i] in ['tags', 'title']))
+          if (['tags', 'title'].indexOf(Object.keys(json.edit)[i]) <= -1)
             delete json.edit[Object.keys(json.edit)[i]]
-
+        
         Mongo.Post.findOne({
-          _id: Mongo.ObjectId(json.pid),
-          uid: Mongo.ObjectId(json.uid),
+          _id: json.pid,
+          uid: json.uid,
         }, (err, res) => {
           if (err) {
             errors.exists = true
@@ -408,19 +408,21 @@ module.exports = {
             if (!res) {
               errors.exists = true
               errors.post = "Post does not exist"
+              
+              resolve(errors)
             } else {
-              Mongo.Post.findOneAndUpdate(res._id, json.edit, (err, res) => {
+              Mongo.Post.findByIdAndUpdate(res._id, json.edit, (err, res2) => {
                 if (err) {
                   errors.exists = true
                   errors.db = true
                 } else {
-                  if (!res) {
+                  if (!res2) {
                     errors.exists = true
                     errors.post = "Post does not exist"
                   } 
-                  
-                  resolve(errors)
                 }
+                
+                resolve(errors)
               })
             }
           }
