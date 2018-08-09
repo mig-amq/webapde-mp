@@ -217,9 +217,9 @@ module.exports = {
 
       if (!errors.exists) {
         for (let i = 0; i < Object.keys(json.edit).length; i++)
-          if (!(Object.keys(json.edit)[i] in ['password', 'name', 'img']))
+          if (['password', 'name', 'img'].indexOf(Object.keys(json.edit)[i]) <= -1)
             delete json.edit[Object.keys(json.edit)[i]]
-
+        
         Mongo.User.findByIdAndUpdate(json.id, json.edit, (err, res) => {
           if (err) {
             errors.exists = true

@@ -147,6 +147,8 @@ router.put('/post/edit/', (req, res) => {
   var uid = req.session.user._id
   var pid = req.body.id
   
+  console.log(req.body.json);
+  
   post.edit({
     uid,
     pid,

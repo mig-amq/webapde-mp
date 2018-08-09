@@ -108,19 +108,25 @@ router.post('/user/:data/edit/', (req, res) => {
   if (!req.session.user)
     res.send({errors: true, username: "You're already logged in!"})
   else {
-    //let file = (req.files.length > 0) ? req.files[0].path.replace("public", "") : null;
+    let file = (req.files.length > 0) ? req.files[0].path.replace("public", "") : null;
 
-    let data = {
-      name: req.body.name,
-      username: req.body.username,
-      password: req.body.password,
-      //img: file || path.normalize("img/samples/sample_profile.jpg"),
-    }
+    let data = {}
 
-    if (req.session.user)
-      res.send({})
+    if (req.body.name && req.body.name.length > 0)
+      data['name'] = req.body.name
+
+    if (req.body.password && req.body.password.length >= 8)
+      data['password'] = req.body.password
+
+    if (req.files.length > 0 && file)
+      data['img'] = file
+
+    if (!req.session.user)
+      res.redirect('/')
     else
-      user.create(data).then((result) => res.send(result))
+      user.edit({id: req.params.data, edit: data}).then((result) => {
+        res.redirect('/user/' + req.params.data)
+      })
   } 
 })
 module.exports = router

@@ -5,12 +5,12 @@
     <div class="details">
       <h1 class="ui header">
         {{profile.name}}
-        <form action="/user/{{account._id}}/edit/" method="POST" class="ui form">
+        <form action="/user/{{account._id}}/edit/" method="POST" class="ui form" enctype="multipart/form-data">
           <input type="hidden" name="_csrf" value="{{csrf}}">
             <input type="hidden" name="username" value="{{profile.username}}">
           <div class="field">
             <label for="name">Full Name</label>
-            <input type="text" name="name" id="name" value= "{{profile.name}}" required>
+            <input type="text" name="name" id="name" value= "{{profile.name}}">
           </div>
           <div class="field">
             <label for="password">Password</label>

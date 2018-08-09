@@ -288,7 +288,7 @@ function showDelete(pid){
     
     
     $("#delBtn").click(()=>{
-        let pid = $("#editForm form").attr('data-post');
+        let pid = $("#delForm form").attr('data-post');
         $.ajax({
             url: "/post/delete/",
             method: "PUT",
@@ -299,7 +299,7 @@ function showDelete(pid){
             success: (status)=>{
                 if (status.exists) {
                   var list = document.createElement("ul");
-                  $("#editForm form").addClass("error");
+                  $("#delForm form").addClass("error");
 
                   list.className = "list";
 
@@ -360,6 +360,7 @@ $("#delForm form").submit((e) => {
     }
   })
 })
+
 $("#editForm form").form({ // Validation Handling for Login
   fields: {
     title: {
@@ -379,7 +380,7 @@ $("#editForm form").form({ // Validation Handling for Login
     event.preventDefault();
     $("#editForm form .ui.error.message").empty();
 
-    let json = $("#editForm form").form('get values', ['title', 'tags'])[1];
+    let json = $("#editForm form").form('get values', ['title', 'tags']);
     let pid = $("#editForm form").attr('data-post');
 
     $.ajax({
