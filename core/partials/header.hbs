@@ -166,18 +166,21 @@
       
   </div>
     
- <div id="delete" class="ui small modal">
-    <div class="header"></div>
-    <div class="content" id="editForm">
+ <div id="delete" class="ui tiny modal">
+    <div class="header">
+      Delete this post?
+    </div>
+    <div class="content" id="delForm">
       <form action="/post/edit/" method="POST" class="ui form">
-          <input type="hidden" name="_csrf" value="{{csrf}}">
-          
+        <input type="hidden" name="_csrf" value="{{csrf}}">
+        <input type="hidden" name="id" value="">  
+
         <div class="field">
-          <label for="title">Are you sure?</label>
+          <label for="title">Are you sure you want to continue? Doing this will permanently remove this meme forever.</label>
         </div>
             
         
-        <input type="submit" class="ui green button" id="delBtn"value="Delete">
+        <input type="submit" class="ui red button" id="delBtn" value="Yes">
       
         <div class="ui error message"></div>
       </form>

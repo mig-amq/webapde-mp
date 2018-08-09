@@ -131,7 +131,7 @@ function parsePost(data) {
   if (powned) {
     var edit = $("<div id='editModal' class='item'><i class='edit outline icon'></i>Edit Post</div>");
     var del = $("<div id='delModal' class='ui red item'><i class='exclamation circle icon'></i>Delete Post</div>");
-    settings.className = "ui dropdown";
+    settings.className = "ui right dropdown";
     var settings_icon = document.createElement("i");
     settings_icon.className = "cog icon";
     var settings_menu = document.createElement("div");
@@ -141,8 +141,8 @@ function parsePost(data) {
 
 
     $(del).click(() => {
-      console.log("1")
-      $("#delete").modal("show")
+      $("#delForm form input[name=id]").val(pid);
+      $("#delete").modal("show");
     })
 
     $(edit).click((e) => showEdit(pid));
@@ -297,6 +297,21 @@ function showEdit(pid) {
   })
 }
 
+$("#delForm form").submit((e) => {
+  e.preventDefault();
+
+  let data = $("#delForm form").form("get values");
+
+  $.ajax({
+    url: '/post/delete',
+    method: "DELETE",
+    data: data,
+    success: (result) => {
+      $(".card[data-post=" + data.id + "]").remove();
+      $("#delete").modal('hide');
+    }
+  })
+})
 $("#editForm form").form({ // Validation Handling for Login
   fields: {
     title: {
@@ -352,7 +367,7 @@ $("#editForm form").form({ // Validation Handling for Login
           $("#editForm form .ui.error.message").append(list);
         } else {
           let parent = $(".card[data-post=" + pid + "]");
-          
+
           $(parent).find('.header > span')[0].innerHTML = json.title;
 
           $(parent).find('.extra.content > .ui.label').remove();

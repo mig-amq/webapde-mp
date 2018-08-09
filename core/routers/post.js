@@ -156,6 +156,13 @@ router.put('/post/edit/', (req, res) => {
   })
 })
 
+router.delete('/post/delete/', (req, res) => {
+  var account = req.session.user._id
+  var pid = req.body.id
+
+  post.delete(account, pid).then((result) => res.send(result))
+})
+
 function add_props(post, user) {
   if (user) {
     for (i = 0; i < post.length; i++) {

@@ -26,6 +26,10 @@ body {
   background-color: #801515 !important;
 }
 
+.extra.content .ui.right {
+  margin-left: auto;
+}
+
 #content::after {
   content: '';
   display: block;
