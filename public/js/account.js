@@ -78,6 +78,7 @@ $("#registerTab form").form({
   },
   onSuccess: (event, fields) => {
     event.preventDefault();
+
     $("#registerTab form .ui.error.message").empty();
 
     /**
@@ -91,7 +92,7 @@ $("#registerTab form").form({
     data.append('password', fields.password);
     data.append('name', fields.name);
     data.append('img', $("#registerTab form input[type=file]")[0].files[0])
-    data.append('_csrf', fields._csrf);
+    // data.append('_csrf', fields._csrf);
     
     $.ajax({
       url: '/user/register/',
@@ -100,7 +101,8 @@ $("#registerTab form").form({
       processData: false,
       contentType: false,
       success: function (status) {
-
+        console.log(status);
+        
         if (status.exists) {
           var list = document.createElement("ul");
           $("#registerTab form").addClass("error");

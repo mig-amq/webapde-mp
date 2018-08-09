@@ -1,7 +1,7 @@
 // External modules
 const hbs = require('hbs')
 const path = require('path')
-const csurf = require('csurf')
+// const csurf = require('csurf')
 const app = require('express')()
 const multer = require('multer')
 const bparser = require('body-parser')
@@ -33,7 +33,7 @@ for (let i = 0; i < settings.hbs.helpers.helper_location.length; i++) // ready h
   hbs.registerHelper(settings.hbs.helpers.helper_location[i][0], settings.hbs.helpers.helper_location[i][1])
 
 app.use(session(settings.session)) // ready app sessions details
-
+// app.use(csurf(settings.csurf))
 app.use(require('express').static(path.join(__dirname, settings.hbs.static_location))) // ready static files
 
 /**
@@ -60,8 +60,6 @@ let multer_options = {
 }
 
 app.use(multer(multer_options).any())
-
-app.use(csurf(settings.csurf))
 
 app.use("*", (req, res, next) => {
   /**

@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
     account,
     default: true,
     title: "Meme-A: Home Page",
-    csrf: req.csrfToken(),
+    // csrf: req.csrfToken(),
   })
 })
 
@@ -42,7 +42,7 @@ router.use('/post/:type/:func?', (req, res, next) => {
           account,
           random: true,
           title: "Meme-A: Random Tag!",
-          csrf: req.csrfToken(),
+          // csrf: req.csrfToken(),
         })
       }
       break;
@@ -60,7 +60,7 @@ router.use('/post/:type/:func?', (req, res, next) => {
         res.render('index.hbs', {
           title: "MEME-A: Searching for " + q,
           search: q,
-          csrf: req.csrfToken(),
+          // csrf: req.csrfToken(),
           account,
         })
       }
@@ -78,7 +78,7 @@ router.use('/post/:type/:func?', (req, res, next) => {
       } else {
         res.render('index.hbs', {
           title: "MEME-A: " + tag + " posts",
-          csrf: req.csrfToken(),
+          // csrf: req.csrfToken(),
           account,
           tag,
         })

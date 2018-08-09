@@ -51,11 +51,14 @@ router.post('/user/register/', (req, res) => {
       password: req.body.password,
       img: file || path.normalize("img/samples/sample_profile.jpg"),
     }
-
+    
     if (req.session.user)
       res.send({})
     else
-      user.create(data).then((result) => res.send(result))
+      user.create(data).then((result) => {
+        res.send(result)
+        
+      })
   } 
 })
 
@@ -77,7 +80,7 @@ router.get('/user/:data', (req, res) => {
         account: req.session.user,
         profile: data,
         mine: req.session.user._id == data._id,
-        csrf: req.csrfToken(),
+        // csrf: req.csrfToken(),
       })
     }).catch((err) => 
       res.redirect('/')
@@ -94,7 +97,7 @@ router.get('/user/:data/edit/', (req, res) => {
         title: "Meme-A: Update Profile",
       account: req.session.user,
       user: true,
-      csrf: req.csrfToken(),
+      // csrf: req.csrfToken(),
         profile: data,
         mine: req.session.user._id == data._id,
       })

@@ -90,11 +90,15 @@ module.exports = {
         if (json.password.length < 8) {
           errors.exists = true
           errors.password.push("Password must be at least 8 characters")
+
+          resolve(errors);
         }
 
         if (json.username.length < 4) {
           errors.exists = true
           errors.username.push("Usernames must be at least 4 characters")
+
+          resolve(errors);
         }
 
         if (!errors.exists) {
@@ -116,7 +120,7 @@ module.exports = {
 
                 // Hash the password
                 json.password = sha('sha256').update(json.password).digest('hex');
-
+                
                 Mongo.User.create(json, (err, res) => {
                   if(err) {
                     errors.exists = true
@@ -220,6 +224,9 @@ module.exports = {
           if (['password', 'name', 'img'].indexOf(Object.keys(json.edit)[i]) <= -1)
             delete json.edit[Object.keys(json.edit)[i]]
         
+        if (json.edit.password) {
+          json.edit.password = sha('sha256').update(json.edit.password).digest('hex')
+        }
         Mongo.User.findByIdAndUpdate(json.id, json.edit, (err, res) => {
           if (err) {
             errors.exists = true
