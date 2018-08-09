@@ -89,13 +89,38 @@ router.get('/user/:data/edit/', (req, res) => {
   if (!req.session.user) {
     res.redirect('/')
   } else {
-    res.render('profile_update.hbs', {
-      title: "Meme-A: Update Profile",
+      user.get_account({_id: req.params.data}).then((data) => {
+      res.render('profile_update.hbs', {
+        title: "Meme-A: Update Profile",
       account: req.session.user,
       user: true,
       csrf: req.csrfToken(),
-    })
+        profile: data,
+        mine: req.session.user._id == data._id,
+      })
+    }).catch((err) => 
+      res.redirect('/')
+    )
   }
 })
 
+router.post('/user/:data/edit/', (req, res) => {
+  if (!req.session.user)
+    res.send({errors: true, username: "You're already logged in!"})
+  else {
+    //let file = (req.files.length > 0) ? req.files[0].path.replace("public", "") : null;
+
+    let data = {
+      name: req.body.name,
+      username: req.body.username,
+      password: req.body.password,
+      //img: file || path.normalize("img/samples/sample_profile.jpg"),
+    }
+
+    if (req.session.user)
+      res.send({})
+    else
+      user.create(data).then((result) => res.send(result))
+  } 
+})
 module.exports = router

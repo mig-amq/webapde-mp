@@ -1,0 +1,30 @@
+{{> header}}
+<div id="content" class="ui special">
+  <div class="user">
+    <img src="{{profile.img}}" alt="" class="ui small circular image">
+    <div class="details">
+      <h1 class="ui header">
+        {{profile.name}}
+        <form action="/user/{{account._id}}/edit/" method="POST" class="ui form">
+          <input type="hidden" name="_csrf" value="{{csrf}}">
+            <input type="hidden" name="username" value="{{profile.username}}">
+          <div class="field">
+            <label for="name">Full Name</label>
+            <input type="text" name="name" id="name" value= "{{profile.name}}" required>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+          </div>
+          <div class="field">
+            <label for="img">Profile Picture</label>
+            <div class="ui right action left icon input">
+              <i class="image icon"></i>
+              <input type="text" id="img-name" readonly="" class="file-name">
+              <input type="file" name="img" id="img" style="display: none" accept="image/*">
+              <div class="ui basic floating button" id="img-browse">Browse</div>
+            </div>
+          </div>
+          <input value="Edit" type="submit" class="ui green button">
+        </form>
+{{> footer}}
