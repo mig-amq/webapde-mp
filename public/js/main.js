@@ -35,6 +35,16 @@ $("#img").on('change', (e) => {
   $("#img-name").val(e.target.files[0].name);
 })
 
+$("#img-name-edit, #img-browse-edit").click((e) => {
+  e.preventDefault();
+  $("#img-edit").click();
+})
+
+$("#img-edit").on('change', (e) => {
+  $("#img-name-edit").val(e.target.files[0].name);
+})
+
+
 $(".nav-form").click((e) => {
   $(".nav-form input").focus();
 });

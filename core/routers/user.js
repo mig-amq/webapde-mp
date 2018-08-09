@@ -124,6 +124,8 @@ router.post('/user/:data/edit/', (req, res) => {
     if (req.files.length > 0 && file)
       data['img'] = file
 
+    console.log(data);
+    
     if (!req.session.user)
       res.redirect('/')
     else
