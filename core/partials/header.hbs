@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{title}}</title>
-  
+
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/img/favicon/apple-touch-icon-57x57.png" />
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/img/favicon/apple-touch-icon-114x114.png" />
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/img/favicon/apple-touch-icon-72x72.png" />
@@ -32,7 +32,7 @@
     <div class="nav-item" id="nav-expander">
       <div class="header">
         <a href="/">
-        <img src="/img/favicon/favicon-32x32.png" alt="">
+          <img src="/img/favicon/favicon-32x32.png" alt="">
         </a>
         <span class="mobile">
           MEME-A</span>
@@ -51,7 +51,7 @@
       </div>
 
       <div class="nav-item">
-        <a href="/post/random/"  class="{{#if random}} active {{/if}}">
+        <a href="/post/random/" class="{{#if random}} active {{/if}}">
           <i class="shuffle icon"></i>
           Random
         </a>
@@ -73,13 +73,13 @@
           <span>{{account.name}}</span>
           <div class="menu" id="user-menu">
             <a href="/user/{{account._id}}" class="item">
-            <i class="user circle outline icon"></i> View Profile</a>
+              <i class="user circle outline icon"></i> View Profile</a>
             <a href="/user/{{account._id}}/edit/" class="item">
-            <i class="edit outline icon"></i>
+              <i class="edit outline icon"></i>
               Update Profile</a>
             <a href="/user/logout/" class="ui red item">
-            <i class="power off icon"></i>
-            Log Out</a>
+              <i class="power off icon"></i>
+              Log Out</a>
           </div>
         </div>
         <div class="user-share">
@@ -98,23 +98,24 @@
 
   {{#if account}}
   <div id="share" class="ui small modal">
-    <div class="header">Share-A-Meme</div>
+    <i class="close icon"></i>
     <div class="content" id="shareForm">
       <form action="/post/share/" method="POST" class="ui form">
         <input type="hidden" name="_csrf" value="{{csrf}}">
-          
+
         <div class="field">
           <label for="title">Title</label>
           <input type="text" name="title" id="title" required>
         </div>
-      
+
         <div class="field">
           <label for="tags">Tags</label>
-          <select class="ui search fluid dropdown" multiple="" name="tags" id="tags" placeholder="Press enter or space to add a tag..." required>
+          <select class="ui search fluid dropdown" multiple="" name="tags" id="tags" placeholder="Press enter or space to add a tag..."
+            required>
           </select>
           <small class="muted">Press space or enter to separate tags.</small>
         </div>
-      
+
         <div class="field">
           <div class="field">
             <label for="img">Meme</label>
@@ -126,73 +127,96 @@
             </div>
           </div>
         </div>
-        <input type="submit" class="ui green button" value="Share Now">
-      
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" class="hidden" tabindex="0" name="private" id="private">
+            <label for="private">Private Post</label>
+          </div>
+        </div>
+
+        <div class="field hidden">
+          <label for="viewers">Share With</label>
+          <select id="viewers" name="viewers" class="ui search fluid dropdown" multiple="">
+          </select>
+          <small class="muted">Press space or enter to separate users.</small>
+        </div><div>
+          <br/>
+          <input type="submit" class="ui green button" value="Share Now">
+          <div class="ui cancel button">
+            Cancel</div>
+        </div>
+
         <div class="ui error message"></div>
       </form>
     </div>
-    <div class="actions">
-      <div class="ui cancel button">Close</div>
-    </div>
   </div>
-    
+
   <div id="edit" class="ui small modal">
-    <div class="header">Edit-A-Meme</div>
+    <i class="close icon"></i>
     <div class="content" id="editForm">
       <form action="/post/edit/" method="POST" class="ui form">
-          <input type="hidden" name="_csrf" value="{{csrf}}">
-          
+        <input type="hidden" name="_csrf" value="{{csrf}}">
+
         <div class="field">
           <label for="title">Title</label>
           <input type="text" name="title" id="editTitle" required>
         </div>
-      
+
         <div class="field">
           <label for="tags">Tags</label>
           <select class="ui search fluid dropdown" multiple="" name="tags" id="editTags" required>
           </select>
           <small class="muted">Press space or enter to separate tags.</small>
         </div>
-      
-        
-        <input type="submit" class="ui green button" value="Edit Now">
-      
+
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" class="hidden" tabindex="0" name="private" id="private">
+            <label for="private">Private Post</label>
+          </div>
+        </div>
+
+        <div class="field hidden">
+          <label for="viewers">Share With</label>
+          <select id="viewers" name="viewers" class="ui search fluid dropdown" multiple="">
+          </select>
+          <small class="muted">Press space or enter to separate users.</small>
+        </div>
+        <div>
+          <br/><input type="submit" class="ui green button" value="Edit Now">
+          <div class="ui cancel button">
+            Cancel</div>
+        </div>
+
         <div class="ui error message"></div>
       </form>
     </div>
-    <div class="actions">
-      <div class="ui cancel button">Close</div>
-    </div>
-      
+
   </div>
-    
- <div id="delete" class="ui tiny modal">
+
+  <div id="delete" class="ui tiny modal">
     <div class="header">
       Delete this post?
     </div>
     <div class="content" id="delForm">
       <form action="/post/edit/" method="POST" class="ui form">
         <input type="hidden" name="_csrf" value="{{csrf}}">
-        <input type="hidden" name="id" value="">  
-
-        <div class="field">
-          <label for="title">Are you sure you want to continue? Doing this will permanently remove this meme forever.</label>
+        <input type="hidden" name="id" value=""> Are you sure you want to continue? Doing this will permanently remove this meme forever.
+        <div>
+          <br/>
+          <input type="submit" class="ui red button" id="delBtn" value="Yes">
+          <div class="ui cancel button">
+            Abort!</div>
         </div>
-            
-        
-        <input type="submit" class="ui red button" id="delBtn" value="Yes">
-      
         <div class="ui error message"></div>
       </form>
     </div>
-    <div class="actions">
-      <div class="ui cancel button">Close</div>
-    </div>
-      
+
   </div>
-    
+
   {{else}}
   <div id="login" class="ui small modal">
+    <i class="close icon"></i>
     <div class="header">Login / Register</div>
     <div class="content">
       <div class="ui top tabular menu">
@@ -207,12 +231,12 @@
             <label for="username">Username</label>
             <input type="text" name="username" id="username" required>
           </div>
-  
+
           <div class="field">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" required>
           </div>
-  
+
           <div class="field">
             <div class="ui checkbox">
               <input type="checkbox" class="hidden" tabindex="0" name="remember" id="remember">
@@ -236,12 +260,12 @@
             <label for="username">Username</label>
             <input type="text" name="username" id="username" required>
           </div>
-  
+
           <div class="field">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" required>
           </div>
-  
+
           <div class="field">
             <label for="img">Profile Picture</label>
             <div class="ui right action left icon input">

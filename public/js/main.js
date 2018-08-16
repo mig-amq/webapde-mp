@@ -2,11 +2,12 @@ var bar_loc = $("#navbar").offset().top + 5;
 
 $("#loginModal").click(() => $("#login").modal('show'));
 $("#shareModal").click(() => $("#share").modal('show'));
+$(".ui.checkbox").checkbox();
 
 $(window).on('scroll', (e) => {
-  if($(window).scrollTop() >= bar_loc)
+  if ($(window).scrollTop() >= bar_loc)
     $("#navbar, #content").addClass('sticky');
-  else 
+  else
     $("#navbar, #content").removeClass('sticky');
 })
 
@@ -56,19 +57,37 @@ $("#nav-expander, body").click((e) => {
   if ($("#nav-expand").hasClass("active") && !$(e.target).is("#nav-expand *, #nav-expand"))
     $("#nav-expand").removeClass('active');
   else
-    if ($(e.target).is("#nav-expander *, #nav-expander"))
-      $("#nav-expand").addClass('active');
+  if ($(e.target).is("#nav-expander *, #nav-expander"))
+    $("#nav-expand").addClass('active');
 });
 
-$('.ui.dropdown').dropdown({
+$('.ui.dropdown:not(#viewers)').dropdown({
   allowAdditions: true,
   keys: {
     delimiter: 32,
   }
 });
 
+$('.ui.dropdown#viewers').dropdown({
+  keys: {
+    delimiter: 32,
+  }
+})
+
 $('.ui.dropdown.search').on('keypress', (e) => {
   if (e.keyCode === 13)
     e.preventDefault();
+});
+
+$("#share #private").on('change', (e) => {
+  if ($("#share").form("get value", "private")) {
+    $("#share #viewers").parents(".field").removeClass('hidden');
+  } else {
+    $("#share #viewers").dropdown("clear");
+    $("#share #viewers").parents(".field").addClass('hidden');
+  }
 })
 
+$(".ui.cancel.button").on('click', (e) => {
+  $($(".ui.cancel.button").parents(".modal")[0]).modal("hide");
+})

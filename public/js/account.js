@@ -17,6 +17,8 @@ $("#loginTab form").form({ // Validation Handling for Login
     event.preventDefault();
     $("#loginTab form .ui.error.message").empty();
 
+    console.log(fields);
+    
     $.ajax({
       url: '/user/login/',
       method: "POST",
@@ -42,6 +44,7 @@ $("#loginTab form").form({ // Validation Handling for Login
           }
 
           $("#loginTab form .ui.error.message").append(list);
+
         } else {
           location.reload();
         }
@@ -92,7 +95,7 @@ $("#registerTab form").form({
     data.append('password', fields.password);
     data.append('name', fields.name);
     data.append('img', $("#registerTab form input[type=file]")[0].files[0])
-    // data.append('_csrf', fields._csrf);
+    data.append('_csrf', fields._csrf);
     
     $.ajax({
       url: '/user/register/',
@@ -101,7 +104,6 @@ $("#registerTab form").form({
       processData: false,
       contentType: false,
       success: function (status) {
-        console.log(status);
         
         if (status.exists) {
           var list = document.createElement("ul");
@@ -134,6 +136,7 @@ $("#registerTab form").form({
             username: $("#registerTab form").form('get value', 'username')
           });
         }
+
       }
     });
   }

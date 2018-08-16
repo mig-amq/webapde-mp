@@ -9,9 +9,32 @@ router.get('/user/details/:id', (req, res) => {
   user.get_account({
     _id: id
   }).then((result) => {
-    delete result['password']
-    delete result['_id']
-    
+
+    if (!result) {
+      user.get_account({
+        username: id,
+      }).then((result0) => {
+        if (result0)
+          delete result0['password']
+
+        res.send(result0)
+      })
+    } else {
+      delete result['password']
+      res.send(result)
+    }
+  })
+})
+
+router.get('/user/search/', (req, res) => {
+  let q = req.query.q
+
+  user.search_username(q).then((result) => {
+    for (i = 0; i < result.length; i++)
+      if (req.session.user && req.session.user.username === result[i].username)
+        delete result[i]
+        
+
     res.send(result)
   })
 })
@@ -23,14 +46,16 @@ router.post('/user/login/', (req, res) => {
     res.send({})
   else {
     user.login(req.body).then((result) => {
-      if(!result.exists) {
-        user.get_account({username: req.body.username}).then((dat) => {
-          req.session.user = dat;
-          
-          if (remember === "on") {
+      if (!result.exists) {
+        user.get_account({
+          username: req.body.username
+        }).then((dat) => {
+          delete dat.posts
+
+          if (remember) {
             res.cookie('user', dat, config.cookie)
           }
-          
+
           res.send(result)
         })
       } else
@@ -41,7 +66,10 @@ router.post('/user/login/', (req, res) => {
 
 router.post('/user/register/', (req, res) => {
   if (req.session.user)
-    res.send({errors: true, username: "You're already logged in!"})
+    res.send({
+      errors: true,
+      username: "You're already logged in!"
+    })
   else {
     let file = (req.files.length > 0) ? req.files[0].path.replace("public", "") : null;
 
@@ -51,15 +79,15 @@ router.post('/user/register/', (req, res) => {
       password: req.body.password,
       img: file || path.normalize("img/samples/sample_profile.jpg"),
     }
-    
+
     if (req.session.user)
       res.send({})
     else
       user.create(data).then((result) => {
         res.send(result)
-        
+
       })
-  } 
+  }
 })
 
 router.get('/user/logout/', (req, res) => {
@@ -74,15 +102,16 @@ router.get('/user/:data', (req, res) => {
   if (!req.params.data) {
     res.redirect('/')
   } else {
-    user.get_account({_id: req.params.data}).then((data) => {
+    user.get_account({
+      _id: req.params.data
+    }).then((data) => {
       res.render('profile.hbs', {
         title: "Meme-A: @" + data.username,
         account: req.session.user,
         profile: data,
         mine: req.session.user._id == data._id,
-        // csrf: req.csrfToken(),
       })
-    }).catch((err) => 
+    }).catch((err) =>
       res.redirect('/')
     )
   }
@@ -92,16 +121,18 @@ router.get('/user/:data/edit/', (req, res) => {
   if (!req.session.user) {
     res.redirect('/')
   } else {
-      user.get_account({_id: req.params.data}).then((data) => {
+    user.get_account({
+      _id: req.params.data
+    }).then((data) => {
       res.render('profile_update.hbs', {
         title: "Meme-A: Update Profile",
-      account: req.session.user,
-      user: true,
-      // csrf: req.csrfToken(),
+        account: req.session.user,
+        user: true,
+
         profile: data,
         mine: req.session.user._id == data._id,
       })
-    }).catch((err) => 
+    }).catch((err) =>
       res.redirect('/')
     )
   }
@@ -109,7 +140,10 @@ router.get('/user/:data/edit/', (req, res) => {
 
 router.post('/user/:data/edit/', (req, res) => {
   if (!req.session.user)
-    res.send({errors: true, username: "You're already logged in!"})
+    res.send({
+      errors: true,
+      username: "You're already logged in!"
+    })
   else {
     let file = (req.files.length > 0) ? req.files[0].path.replace("public", "") : null;
 
@@ -124,14 +158,23 @@ router.post('/user/:data/edit/', (req, res) => {
     if (req.files.length > 0 && file)
       data['img'] = file
 
-    console.log(data);
-    
     if (!req.session.user)
       res.redirect('/')
     else
-      user.edit({id: req.params.data, edit: data}).then((result) => {
+      user.edit({
+        id: req.params.data,
+        edit: data
+      }).then((result) => {
         res.redirect('/user/' + req.params.data)
+
+        if (req.cookies.user)
+          res.cookie('user', result, config.cookie)
+
+        req.session.user = result
+        req.session.save()
+
       })
-  } 
+  }
 })
-module.exports = router
+
+module.exports.router = router

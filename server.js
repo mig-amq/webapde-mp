@@ -1,7 +1,7 @@
 // External modules
 const hbs = require('hbs')
 const path = require('path')
-// const csurf = require('csurf')
+const csurf = require('csurf')
 const app = require('express')()
 const multer = require('multer')
 const bparser = require('body-parser')
@@ -11,6 +11,7 @@ const session = require('express-session')
 // App modules
 const settings = require('./config')
 const user = require('./core/models/User')
+const post = require('./core/models/Post')
 
 // Start server
 app.listen(settings.server.port, (e) => console.log("Server Started @ " + settings.server.port))
@@ -33,7 +34,6 @@ for (let i = 0; i < settings.hbs.helpers.helper_location.length; i++) // ready h
   hbs.registerHelper(settings.hbs.helpers.helper_location[i][0], settings.hbs.helpers.helper_location[i][1])
 
 app.use(session(settings.session)) // ready app sessions details
-// app.use(csurf(settings.csurf))
 app.use(require('express').static(path.join(__dirname, settings.hbs.static_location))) // ready static files
 
 /**
@@ -60,6 +60,7 @@ let multer_options = {
 }
 
 app.use(multer(multer_options).any())
+app.use(csurf(settings.csurf))
 
 app.use("*", (req, res, next) => {
   /**
@@ -69,6 +70,8 @@ app.use("*", (req, res, next) => {
   if (!req.session.user)
     if (req.cookies.user)
       req.session.user = req.cookies.user
+
+  res.locals.csrf = req.csrfToken()
   
   /**
    * Disable after development.
@@ -80,13 +83,29 @@ app.use("*", (req, res, next) => {
   next()
 })
 
+app.get('/uploads/:post', (req, res) => {
+  if (req.params.post) {
+    post.get_posts({
+      post: path.join(settings.multer.path, req.params.post)
+    }).then((result) => {
+      require("./core/routers/post").add_props(result, req.session.user)
+
+      if (result && result.length > 0) {
+        res.sendFile(path.join(__dirname, result[0].post))
+      } else {
+        res.redirect('/')
+      }
+    })
+  }
+})
+
 /**
  * This loop is used to go through the routes array which then
  * allows the app to require the express.Router() objects that 
  * are exported from each route file.
  */
 for (let i = 0; i < settings.routes.length; i++) {
-  app.use('/', require("./core/routers/" + settings.routes[i]))
+  app.use('/', require("./core/routers/" + settings.routes[i]).router)
 }
 
 app.use('*', (req, res) => {

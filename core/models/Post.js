@@ -1,5 +1,4 @@
 const Mongo = require('./Mongo');
-const config = require('../../config')
 
 module.exports = {
 
@@ -14,7 +13,6 @@ module.exports = {
    */
   get_posts(query = {}, sort = {
     time: -1,
-    likes: -1,
   }, limiter = 0, skip = 0) {
     return new Promise((resolve, reject) => {
       if (query.uid && query.uid.length < 24)
@@ -22,7 +20,7 @@ module.exports = {
 
       if (query._id && query._id.length < 24)
         resolve([]);
-      
+
       Mongo.Post
         .find(query)
         .sort(sort)
@@ -55,7 +53,6 @@ module.exports = {
       uid: user_id
     }, {
       time: (desc) ? -1 : 1,
-      likes: (desc) ? -1 : 1,
     }, limiter, skip);
   },
 
@@ -76,10 +73,13 @@ module.exports = {
 
     strings.forEach(elem => {
       queries.push({
-        title: new RegExp(elem, "gi")
+        title: {
+          $regex: ".*" + elem + ".*",
+          $options: "i",
+        }
       });
     });
-    
+
     queries.push({
       tags: {
         $in: strings
@@ -90,7 +90,6 @@ module.exports = {
       $or: queries
     }, {
       time: (desc) ? -1 : 1,
-      likes: (desc) ? -1 : 1,
     }, limiter, skip);
   },
 
@@ -108,7 +107,6 @@ module.exports = {
       }
     }, {
       time: (desc) ? -1 : 1,
-      likes: (desc) ? -1 : 1,
     }, limiter, skip);
   },
 
@@ -119,7 +117,6 @@ module.exports = {
 
         let random_post = this.get_posts({}, {
           time: (desc) ? -1 : 1,
-          likes: (desc) ? -1 : 1,
         }, 1, random)
 
         random_post.then((post) => {
@@ -192,14 +189,24 @@ module.exports = {
               json.uid = Mongo.ObjectId(res._id)
               json.user = res.username
 
-              Mongo.Post.create(json, (err, res) => {
+              Mongo.Post.create(json, (err, post) => {
                 if (err) {
                   errors.exists = true
                   errors.db = true
                 }
 
-                console.log(res)
-                resolve(res)
+                Mongo.User.findByIdAndUpdate(res._id, {
+                  $push: {
+                    posts: post
+                  }
+                }, (err, res_user) => {
+                  if (err) {
+                    errors.exists = true
+                    errors.db = true
+                  }
+
+                  resolve(post)
+                })
               })
             }
           }
@@ -340,9 +347,22 @@ module.exports = {
                 if (err) {
                   errors.exists = true
                   errors.db = true
+                } else {
+                  Mongo.User.findByIdAndUpdate(uid, {
+                    $pull: {
+                      posts: {
+                        _id: pid,
+                      }
+                    }
+                  }, (err, res0) => {
+                    if (err) {
+                      errors.exists = true
+                      errors.db = true
+                    }
+                    
+                    resolve(errors)
+                  })
                 }
-
-                resolve(errors)
               })
             } else {
               errors.exists = true
@@ -394,9 +414,12 @@ module.exports = {
 
       if (!errors.exists) {
         for (let i = 0; i < Object.keys(json.edit).length; i++)
-          if (['tags', 'title'].indexOf(Object.keys(json.edit)[i]) <= -1)
+          if (['tags', 'title', 'private', 'viewers'].indexOf(Object.keys(json.edit)[i]) <= -1)
             delete json.edit[Object.keys(json.edit)[i]]
-        
+
+        if (!json.edit.private || (json.edit.private && !json.edit.viewers))
+          json.edit.viewers = []
+          
         Mongo.Post.findOne({
           _id: json.pid,
           uid: json.uid,
@@ -408,10 +431,11 @@ module.exports = {
             if (!res) {
               errors.exists = true
               errors.post = "Post does not exist"
-              
+
               resolve(errors)
             } else {
               Mongo.Post.findByIdAndUpdate(res._id, json.edit, (err, res2) => {
+                
                 if (err) {
                   errors.exists = true
                   errors.db = true
@@ -419,9 +443,9 @@ module.exports = {
                   if (!res2) {
                     errors.exists = true
                     errors.post = "Post does not exist"
-                  } 
+                  }
                 }
-                
+
                 resolve(errors)
               })
             }

@@ -82,7 +82,7 @@ function update_status(pid, elems) {
           $(elems[0]).find('span').text(likesTop + 1);
 
           $(elems[1]).find('.header > .heart').addClass('red');
-          $(elems[1]).find('.header > span').text("Dislike :(");
+          $(elems[1]).find('.header > span').text(" Liked!");
         }
       } else {
         $("#login").modal('show');
@@ -172,10 +172,10 @@ function parsePost(data) {
   image_dheader.appendChild(image_dicon);
   image_dcontent.appendChild(image_dheader);
   image_dimmer.appendChild(image_dcontent);
-  $(image_dheader).append("<span>" + ((pliked) ? "Dislike :(" : "Like!") + "</span>");
+  $(image_dheader).append("<span>" + ((pliked) ? "Liked!" : "Like!") + "</span>");
 
   var img = document.createElement("img"); // post image
-  img.src = pcont;
+  img.src = (pcont.charAt(0) === '/') ? pcont : '/' + pcont;
 
   var heart = document.createElement("span");
   heart.className = "right floated like";
@@ -200,7 +200,7 @@ function parsePost(data) {
 
   var tags = document.createElement("div");
   tags.className = "extra content";
-
+  
   ptags.forEach((e) => {
     let tag = document.createElement("a");
     tag.href = "/post/tag/?tag=" + e;
@@ -329,18 +329,31 @@ function showDelete(pid){
 }
 
 function showEdit(pid) {
-  $("#editForm form").form('reset');
   $("#editForm form").attr('data-post', pid);
-
   $.ajax({
     url: "/post/" + pid + "/",
     method: "get",
     success: (result) => {
-      $("#editTitle").val(result[0].title);
-      $("#editTags").dropdown("set selected", result[0].tags)
-    
-      $("#edit").modal('show');
+      $("#edit form #viewers").empty();
+      $("#edit form #viewers").siblings("a.ui.label").remove();
+      
+      result[0].viewers.forEach((elem) => {
+        $.ajax({
+          url: "/user/details/" + elem,
+          method: "GET",
+          success: (d) => {
+            $("#edit #viewers").append("<option value='" + d._id + "' selected> " + d.username + "</option>");
+          }
+        })
+      })
 
+      $("#edit form").form("set values", {
+        title: result[0].title,
+        tags: result[0].tags,
+        private: result[0].private,
+      })
+
+      $("#edit").modal('show');
     },
   })
 }
@@ -361,6 +374,45 @@ $("#delForm form").submit((e) => {
   })
 })
 
+$("#edit #private").on('change', (e) => {
+  if ($("#edit").form("get value", "private")) {
+    $("#edit #viewers").parents(".field").removeClass('hidden');
+  } else {
+    $("#edit #viewers").dropdown("clear");
+    $("#edit #viewers").parents(".field").addClass('hidden');
+  }
+})
+
+$("#edit #viewers, #share #viewers").parent(".ui.search").on('keyup', (e) => {
+  let q = $(e.target).val();
+
+  $.ajax({
+    url: "/user/search/",
+    method: "GET",
+    data: {
+      q: q
+    },
+    success: (data) => {
+
+      if (data.length > 0) {
+        data.forEach(elem => {
+          let display = true;
+
+          $(e.target).siblings("#viewers").children().toArray().forEach(elem0 => {
+
+            if (elem && elem0 && elem._id === $(elem0).attr("value"))
+              display = false;
+          });
+
+          if (display) {
+            $(e.target).siblings("#viewers").append("<option value='" + elem._id + "'> " + elem.username + "</option>");
+          }
+        });
+      }
+    }
+  });
+});
+
 $("#editForm form").form({ // Validation Handling for Login
   fields: {
     title: {
@@ -378,11 +430,22 @@ $("#editForm form").form({ // Validation Handling for Login
   },
   onSuccess: (event, fields) => {
     event.preventDefault();
+
     $("#editForm form .ui.error.message").empty();
+    let viewers = [];
 
-    let json = $("#editForm form").form('get values', ['title', 'tags']);
-    let pid = $("#editForm form").attr('data-post');
+    $("#editForm form #viewers").siblings("a.ui.label.visible").toArray().forEach((e) => {
+      viewers.push($(e).attr("data-value"));
+    });
 
+    var json = {
+      title: fields.title,
+      tags: fields.tags,
+      private: (fields.private === "on") ? true : false,
+      viewers: viewers,
+    };
+    
+    var pid = $("#editForm form").attr('data-post');
     $.ajax({
       url: "/post/edit/",
       method: "PUT",
@@ -429,8 +492,22 @@ $("#editForm form").form({ // Validation Handling for Login
 
             $(parent).find('.extra.content')[0].prepend(a);
           })
+
+          $("#edit").modal("hide");
         }
       }
     })
   }
 });
+
+function requestCSRF() {
+  $.ajax({
+    url: "/request/csrf/",
+    method: "GET",
+    success: (csrf) => {
+      $("meta[name=global_csrf], intput[name=_csrf]").each((i, o) => {
+        $(o).val(csrf);
+      });
+    }
+  })
+}

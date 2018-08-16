@@ -4,12 +4,11 @@ const user = require('../models/User')
 
 router.get('/', (req, res) => {
   let account = req.session.user
-
+  
   res.render('index.hbs', {
     account,
     default: true,
     title: "Meme-A: Home Page",
-    // csrf: req.csrfToken(),
   })
 })
 
@@ -42,7 +41,6 @@ router.use('/post/:type/:func?', (req, res, next) => {
           account,
           random: true,
           title: "Meme-A: Random Tag!",
-          // csrf: req.csrfToken(),
         })
       }
       break;
@@ -60,7 +58,6 @@ router.use('/post/:type/:func?', (req, res, next) => {
         res.render('index.hbs', {
           title: "MEME-A: Searching for " + q,
           search: q,
-          // csrf: req.csrfToken(),
           account,
         })
       }
@@ -78,7 +75,6 @@ router.use('/post/:type/:func?', (req, res, next) => {
       } else {
         res.render('index.hbs', {
           title: "MEME-A: " + tag + " posts",
-          // csrf: req.csrfToken(),
           account,
           tag,
         })
@@ -110,11 +106,22 @@ router.use('/post/:type/:func?', (req, res, next) => {
 })
 
 router.post('/post/share/', (req, res) => {
+  
   let data = {
     title: req.body.title,
     user: req.session.user,
     post: req.files[0].path.replace("public", ""),
-    tags: req.body.tags
+    tags: [],
+    private: (req.body.private && req.body.private === "on") ? true : false,
+    viewers: req.body.viewers,
+  }
+
+  if ((typeof req.body.tags).toLowerCase() === "string") {
+    req.body.tags.split(',').forEach(elem => {
+      data.tags.push(elem.trim().replace(/\s+/, ''))
+    })
+  } else {
+    data.tags = req.body.tags
   }
 
   post.create(data).then((result) => {
@@ -146,9 +153,7 @@ router.get('/post/:id/', (req, res) => {
 router.put('/post/edit/', (req, res) => {
   var uid = req.session.user._id
   var pid = req.body.id
-  
-  console.log(req.body.json);
-  
+
   post.edit({
     uid,
     pid,
@@ -168,19 +173,46 @@ router.delete('/post/delete/', (req, res) => {
 function add_props(post, user) {
   if (user) {
     for (i = 0; i < post.length; i++) {
+      let viewable = false
+      let deleted = false
+
       if (post[i].uid.toString() === user._id.toString())
         post[i].owned = true
 
-      if (post[i].likers.length > 0) {
-        for (x = 0; x < post[i].likers.length; x++) {
-          if (user && post[i].likers[x].toString() === user._id.toString()) {
-            post[i].liked = true
-          }
+      if (post[i].private) {
+        for (z = 0; z < post[i].viewers.length; z++)
+          if (post[i].viewers[z] === user._id.toString())
+            viewable = true
+            
+        if (!viewable && !post[i].owned) {
+          post.splice(i, 1)
+          deleted = true
         }
-      } else {
-        post[i].liked = false
+      }
+
+      if (!deleted) {
+        if (post[i].likers.length > 0) {
+          for (x = 0; x < post[i].likers.length; x++) {
+            if (user && post[i].likers[x].toString() === user._id.toString()) {
+              post[i].liked = true
+            }
+          }
+        } else {
+          post[i].liked = false
+        }
       }
     }
+  } else {
+    for (i = 0; i < post.length; i++) {
+      if (post[i].private) {
+        post.splice(i, 1)
+      }
+    }
+    
   }
 }
-module.exports = router
+
+module.exports.router = router
+module.exports.add_props = (posts, user) => {
+  add_props(posts, user)
+}

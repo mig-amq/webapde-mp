@@ -15,6 +15,7 @@ const UserSchema = new Schema({
   username: String,
   password: String,
   name: String,
+  posts: Array,
   img: {
       type: String,
       default: '/img/samples/sample_profile.jpg',
@@ -30,6 +31,11 @@ const PostSchema = new Schema({
   },
   uid: ObjectId,
   user: String,
+  viewers: Array,
+  private: {
+    type: Boolean,
+    default: false,
+  },
   tags: Array,
   likers: Array,
   post: String,

@@ -1,5 +1,4 @@
 const Mongo = require('./Mongo.js');
-const config = require('../../config')
 const sha = require('sha.js')
 
 module.exports = {
@@ -17,14 +16,14 @@ module.exports = {
       if (json._id)
         if (json._id.length < 24)
           resolve([])
-        else
-          json._id = Mongo.ObjectId(json._id.toString())
+      else
+        json._id = Mongo.ObjectId(json._id.toString())
 
       for (let i = 0; i < Object.keys(json).length; i++)
         if (['_id', 'username', 'password', 'name'].indexOf(Object.keys(json)[i]) === -1)
           delete json[Object.keys(json)[i]]
 
-      Mongo.User.findOne(json, (err, res) => {
+      Mongo.User.findOne(json).lean().exec((err, res) => {
         if (err) reject(err)
 
         if (!res) reject(null)
@@ -103,30 +102,30 @@ module.exports = {
 
         if (!errors.exists) {
           Mongo.User.countDocuments({
-                username: json.username
-              }, (err, res) => {
+            username: json.username
+          }, (err, res) => {
             if (err) {
               errors.exists = true
               errors.db = true
 
-              resolve (errors)
+              resolve(errors)
             } else {
               if (res > 0) {
                 errors.exists = true
                 errors.username = "Username is already taken"
-                
+
                 resolve(errors)
               } else {
 
                 // Hash the password
                 json.password = sha('sha256').update(json.password).digest('hex');
-                
+
                 Mongo.User.create(json, (err, res) => {
-                  if(err) {
+                  if (err) {
                     errors.exists = true
                     errors.db = true
                   }
-                  
+
                   resolve(errors)
                 })
               }
@@ -136,6 +135,40 @@ module.exports = {
       } else
         resolve(errors)
     });
+  },
+
+  /**
+   * 
+   * @param {string} username 
+   */
+  search_username(username) {
+    return new Promise((resolve, reject) => {
+      if (typeof username === 'string')
+        username = username.replace(/\s+/, " ").trim().split(" ")
+
+      let q = []
+
+      username.forEach(u => {
+        q.push({
+          username: {
+            $regex: ".*" + u + ".*",
+            $options: "i",
+          }
+        })
+      });
+      
+      Mongo.User.find({
+        $or: q,
+      }).lean().exec((err, res) => {
+        delete res.posts
+        delete res.password
+
+        if (err || !res)
+          resolve([])
+
+        resolve(res)
+      })
+    })
   },
 
   /**
@@ -168,11 +201,11 @@ module.exports = {
 
       if (!errors.exists) {
         json.password = sha('sha256').update(json.password).digest('hex')
-        
+
         Object.keys(json).forEach(el => {
           if (["username", "password"].indexOf(el) === -1)
             delete json[el]
-        }) 
+        })
 
         Mongo.User.findOne(json, (err, res) => {
           if (err) {
@@ -223,21 +256,26 @@ module.exports = {
         for (let i = 0; i < Object.keys(json.edit).length; i++)
           if (['password', 'name', 'img'].indexOf(Object.keys(json.edit)[i]) <= -1)
             delete json.edit[Object.keys(json.edit)[i]]
-        
+
         if (json.edit.password) {
           json.edit.password = sha('sha256').update(json.edit.password).digest('hex')
         }
-        Mongo.User.findByIdAndUpdate(json.id, json.edit, (err, res) => {
+        Mongo.User.findByIdAndUpdate(json.id, json.edit, {
+          new: true
+        }, (err, res) => {
           if (err) {
             errors.exists = true
             errors.db = true
+
+            resolve(errors)
           } else {
             if (!res) {
               errors.exists = true
               errors.id = "Account does not exist"
-            }
 
-            resolve(errors)
+              resolve(errors)
+            } else
+              resolve(res)
           }
         })
       }

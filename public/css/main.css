@@ -30,6 +30,10 @@ body {
   margin-left: auto;
 }
 
+.hidden {
+  display: none;
+}
+
 #content::after {
   content: '';
   display: block;

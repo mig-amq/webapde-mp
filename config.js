@@ -92,8 +92,8 @@ module.exports.multer = {
    * Multer is responsible for the file uploads.
    * View https://www.npmjs.com/package/multer#api for additional configuration.
    */
-  destination: 'public/img/uploads',
-  path: '/img/uploads/',
+  destination: "uploads",
+  path: "uploads",
   allowed_files: [
     /**
      * Append the MIME type of the files that the app

@@ -26,19 +26,27 @@ $("#shareForm form").form({
     data.append('title', fields.title);
     data.append('tags', fields.tags);
     data.append('post', $("#shareForm form input[type=file]")[0].files[0]);
-    data.append('_csrf', fields._csrf);
-
+    data.append('private', fields.private);
+    data.append('viewers', fields.viewers);
+    
     $.ajax({
       url: '/post/share/',
       data: data,
       method: "POST",
       processData: false,
-      contentType: false,
+      contentType: false, 
+      mimeType: 'multipart/form-data',
+      headers: {
+        "X-CSRF-TOKEN": fields._csrf
+      },
       success: (status) => {
-        console.log(status);
-
         if (!status.exists) {
-          location.reload();
+          status = JSON.parse(status);
+          status.owned = true;
+
+          $("#content #cards").prepend(parsePost(status));
+          $("#share").modal('hide');
+
         } else {
           var list = document.createElement("ul");
           $("#shareForm form").addClass("error");
