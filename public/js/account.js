@@ -36,10 +36,10 @@ $("#loginTab form").form({ // Validation Handling for Login
           } else if (status.db) { 
             $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
           } else {
-            if (status.username)
+            if (status.username && status.username.length > 0)
               $(list).append("<li>" + status.username + "</li>");
 
-            if (status.password)
+            if (status.password && status.password.length > 0)
               $(list).append("<li>" + status.password + "</li>");
           }
 
@@ -116,13 +116,13 @@ $("#registerTab form").form({
           } else if (status.db) {
             $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
           } else {
-            if (status.username)
+            if (status.username && status.username.length > 0)
               $(list).append("<li>" + status.username + "</li>");
 
-            if (status.password)
+            if (status.password && status.password.length > 0)
               $(list).append("<li>" + status.password + "</li>");
 
-            if (status.name)
+            if (status.name && status.name.length > 0)
               $(list).append("<li>" + status.name + "</li>");
           }
 

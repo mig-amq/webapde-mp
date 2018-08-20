@@ -34,6 +34,9 @@ $("#img-name, #img-browse").click((e) => {
 
 $("#img").on('change', (e) => {
   $("#img-name").val(e.target.files[0].name);
+
+  $("#showImage img").attr("src", URL.createObjectURL(e.target.files[0]));
+  $("#showImage i").addClass("hidden");
 })
 
 $("#img-name-edit, #img-browse-edit").click((e) => {

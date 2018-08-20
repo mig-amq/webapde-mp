@@ -33,7 +33,7 @@ router.get('/user/search/', (req, res) => {
     for (i = 0; i < result.length; i++)
       if (req.session.user && req.session.user.username === result[i].username)
         delete result[i]
-        
+
 
     res.send(result)
   })
@@ -165,13 +165,14 @@ router.post('/user/:data/edit/', (req, res) => {
         id: req.params.data,
         edit: data
       }).then((result) => {
-        res.redirect('/user/' + req.params.data)
 
         if (req.cookies.user)
           res.cookie('user', result, config.cookie)
 
         req.session.user = result
         req.session.save()
+
+        res.redirect('/user/' + req.params.data)
 
       })
   }

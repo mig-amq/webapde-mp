@@ -29,6 +29,9 @@ $("#shareForm form").form({
     data.append('private', fields.private);
     data.append('viewers', fields.viewers);
     
+    $("#showImage img").attr("src", "");
+    $("#showImage i").removeClass("hidden");
+
     $.ajax({
       url: '/post/share/',
       data: data,

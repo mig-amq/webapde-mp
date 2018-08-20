@@ -7,6 +7,7 @@ const multer = require('multer')
 const bparser = require('body-parser')
 const cookie = require('cookie-parser')
 const session = require('express-session')
+const sanitizer = require('express-sanitizer')
 
 // App modules
 const settings = require('./config')
@@ -17,6 +18,7 @@ const post = require('./core/models/Post')
 app.listen(settings.server.port, (e) => console.log("Server Started @ " + settings.server.port))
 
 app.use(bparser.urlencoded(settings.body_parser)) // ready body-parser
+app.use(sanitizer()) // auto escapes characters in post data
 app.use(cookie()) // ready cookie-parser
 
 /**

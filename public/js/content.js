@@ -40,6 +40,11 @@ function putContent(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
   fetching = true;
 
   getData(type, query, limit, skip).then((d) => {
+    if (d.length > 0)
+      $("#empty").addClass("hidden");
+    else
+      $("#empty").removeClass("hidden");
+
     d.forEach(e => {
       $("#content #cards").append(parsePost(e));
     });
@@ -466,13 +471,13 @@ $("#editForm form").form({ // Validation Handling for Login
           } else if (status.db) {
             $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
           } else {
-            if (status.user)
+            if (status.user && status.user.length > 0)
               $(list).append("<li>" + status.user + "</li>");
 
-            if (status.post)
+            if (status.post && status.post.length > 0)
               $(list).append("<li>" + status.post + "</li>");
 
-            if (status.edit)
+            if (status.edit && status.edit.length > 0)
               $(list).append("<li>" + status.edit + "</li>");
           }
 
@@ -499,15 +504,3 @@ $("#editForm form").form({ // Validation Handling for Login
     })
   }
 });
-
-function requestCSRF() {
-  $.ajax({
-    url: "/request/csrf/",
-    method: "GET",
-    success: (csrf) => {
-      $("meta[name=global_csrf], intput[name=_csrf]").each((i, o) => {
-        $(o).val(csrf);
-      });
-    }
-  })
-}

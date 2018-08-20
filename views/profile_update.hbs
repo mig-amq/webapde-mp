@@ -1,29 +1,39 @@
 {{> header}}
 <div id="content" class="ui special">
   <div class="user">
-    <img src="{{profile.img}}" alt="" class="ui small circular image">
-    <div class="details">
-      <h1 class="ui header">
-        {{profile.name}}
-        <form action="/user/{{account._id}}/edit/" method="POST" class="ui form" enctype="multipart/form-data">
-          <input type="hidden" name="_csrf" value="{{csrf}}">
-          <div class="field">
-            <label for="name">Full Name</label>
-            <input type="text" name="name" id="name" value="{{profile.name}}">
-          </div>
-          <div class="field">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password">
-          </div>
-          <div class="field">
-            <label for="img">Profile Picture</label>
-            <div class="ui right action left icon input">
-              <i class="image icon"></i>
-              <input type="text" id="img-name-edit" readonly="" class="file-name">
-              <input type="file" name="img" id="img-edit" style="display: none" accept="image/*">
-              <div class="ui basic floating button" id="img-browse-edit">Browse</div>
+    <div class="ui grid container">
+      <div class="three wide column">
+        <img src="{{profile.img}}" alt="" class="ui small fluid circular image">
+      </div>
+      <div class="thirteen wide column">
+        <div class="details">
+          <h1 class="ui header">
+            {{profile.name}}
+          </h1>
+          <form action="/user/{{account._id}}/edit/" method="POST" class="ui form" enctype="multipart/form-data">
+            <input type="hidden" name="_csrf" value="{{csrf}}">
+            <div class="field">
+              <label for="name">Full Name</label>
+              <input type="text" name="name" id="name" value="{{profile.name}}">
             </div>
-          </div>
-          <input value="Edit" type="submit" class="ui green button">
-        </form>
-        {{> footer}}
+            <div class="field">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password">
+            </div>
+            <div class="field">
+              <label for="img">Profile Picture</label>
+              <div class="ui right action left icon input">
+                <i class="image icon"></i>
+                <input type="text" id="img-name-edit" readonly="" class="file-name">
+                <input type="file" name="img" id="img-edit" style="display: none" accept="image/*">
+                <div class="ui basic floating button" id="img-browse-edit">Browse</div>
+              </div>
+            </div>
+            <input value="Edit" type="submit" class="ui green button">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  {{> footer}}
