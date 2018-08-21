@@ -47,7 +47,7 @@ body {
 }
 
 #navbar {
-  z-index: 10003;
+  z-index: 10005;
 }
 
 .dimmer.modals {
@@ -64,11 +64,16 @@ form .filename {
 
 .card .content .header {
   word-break: break-all;
+  position: relative;
   font-size: 16px !important;
 }
 
 .card .content .like {
   cursor: pointer;
+  top: 0;
+  right: 0;
+  position: absolute;
+  z-index: 1000;
 }
 
 .card .content .like i {
@@ -83,16 +88,28 @@ form .filename {
 
 .card .content .like:hover,
 .card .content .liked {
-  color: #aa1a1a;
+  color: #aa1a1a !important;
 }
 
 .card .content .meta {
+  position: relative;
   font-size: 12px;
-  cursor: pointer;
 }
 
-.card .content .meta:hover {
-  color: #009c95;
+.card .content .meta a {
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  position: absolute;
+  color: rgba(0, 0, 0, .4) ;
+}
+
+.card-holder {
+  position: relative;
+}
+
+.card .content .meta a:hover {
+  color: #009c95 !important;
 }
 
 .card .extra.content {
@@ -102,6 +119,10 @@ form .filename {
   align-items: center;
 }
 
+.card .extra.content .ui.dropdown {
+  position: absolute;
+  right: 10.5px;
+}
 .card .extra.content .tag {
   margin-bottom: 10px;
   margin-right: 10px;

@@ -37,26 +37,27 @@ async function getData(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
 
 function putContent(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
   loader.addClass('active');
-  fetching = true;
 
   getData(type, query, limit, skip).then((d) => {
-    if (d.length > 0)
+    
+    if (d.length > 0){
       $("#empty").addClass("hidden");
-    else
-      $("#empty").removeClass("hidden");
 
-    d.forEach(e => {
-      $("#content #cards").append(parsePost(e));
-    });
+      d.forEach(e => {
+        $("#content #cards").append(parsePost(e));
+      });
 
-    $('.card .image').dimmer({
-      on: 'hover'
-    });
+      $('.card .image').dimmer({
+        on: 'hover'
+      });
 
-    $('.card .image').blur((e) => $('.image').dimmer('hide'));
+      $('.card .image').blur((e) => $('.image').dimmer('hide'));
+    }else {
+      if ($(".card").length <= 0)
+        $("#empty").removeClass("hidden");
 
-    loader.removeClass('active');
-    fetching = false;
+        loader.removeClass('active');
+    }
   });
 }
 
@@ -160,6 +161,9 @@ function parsePost(data) {
   card.className = "ui card";
   $(card).attr('data-post', pid);
 
+  var card_holder = document.createElement("div");
+  card_holder.className = "card-holder";
+
   var image_content = document.createElement("div");
   image_content.className = "ui fluid blurring dimmable image";
 
@@ -183,7 +187,7 @@ function parsePost(data) {
   img.src = (pcont.charAt(0) === '/') ? pcont : '/' + pcont;
 
   var heart = document.createElement("span");
-  heart.className = "right floated like";
+  heart.className = "right floated like icon";
 
   var heart_icon = document.createElement("i");
   heart_icon.className = ((pliked) ? "red" : "") + " heart icon";
@@ -200,8 +204,10 @@ function parsePost(data) {
   $(title).append("<span>" + ptitle + "</span>");
 
   var user = document.createElement("div");
+  var username = document.createElement("a");
   user.className = "meta";
-  $(user).text("@" + powner);
+  username.href = "/user/" + data.uid.toString();
+  $(username).text("@" + powner);
 
   var tags = document.createElement("div");
   tags.className = "extra content";
@@ -225,14 +231,11 @@ function parsePost(data) {
   $(heart).append("<span>" + getLikeText(plikes) + "</span>");
   $(heart).append(heart_icon);
 
-  $(user).click((e) => {
-    window.location = "/user/" + data.uid;
-  });
-
   image_content.appendChild(image_dimmer);
   image_content.appendChild(img);
 
   title.appendChild(heart);
+  user.appendChild(username);
   user.appendChild(time);
 
   content.appendChild(title);
@@ -245,7 +248,8 @@ function parsePost(data) {
   tags.append(settings);
   card.appendChild(tags);
 
-  return card;
+  card_holder.appendChild(card);
+  return card_holder;
 }
 
 function getLikeText(likes) {

@@ -105,8 +105,6 @@
     margin: 0;
     position: fixed;
     width: 100%;
-    -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
     background-color: #ffffff;
     z-index: 10001; }
     #navbar.sticky > .nav-item a.active,
@@ -155,14 +153,15 @@
     -webkit-column-gap: 100px;
     column-gap: 100px; }
     #content #cards .card {
-      position: relative;
+      position: static;
       display: block;
       width: 100%;
       margin-bottom: 100px;
+      /* break-inside doesn't fully work in chrome. Creates unclickable links */
       break-inside: avoid;
       page-break-inside: avoid;
       -webkit-column-break-inside: avoid;
-    overflow: hidden }
+    overflow: hidden; }
 
 @media screen and (min-width: 961px) and (max-width: 1091px) {
   #navbar {

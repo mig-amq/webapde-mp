@@ -16,8 +16,6 @@ $("#loginTab form").form({ // Validation Handling for Login
   onSuccess: (event, fields) => {
     event.preventDefault();
     $("#loginTab form .ui.error.message").empty();
-
-    console.log(fields);
     
     $.ajax({
       url: '/user/login/',
