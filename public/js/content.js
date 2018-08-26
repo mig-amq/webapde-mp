@@ -201,7 +201,7 @@ function parsePost(data) {
 
   var title = document.createElement("div"); // post title
   title.className = "header";
-  $(title).append("<span>" + ptitle + "</span>");
+  $(title).append("<a href='/post/view/" + pid + "'>" + ptitle + "</a>");
 
   var user = document.createElement("div");
   var username = document.createElement("a");

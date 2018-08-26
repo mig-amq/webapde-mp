@@ -1,0 +1,16 @@
+{{> header }}
+<div id="content" class="ui special">
+    <div class="ui horizontal divided grid">
+
+    <div id="post" class="six wide column">
+        <img src="{{post.post}}" alt="{{post.title}}" class="ui fluid image">
+    </div>
+
+    <div id="comments" class="ten wide column">
+        <div class="ui inline centered active text indeterminate loader" id="post-loader">
+            Getting dem comments...
+        </div>
+    </div>
+    </div>
+</div>
+{{> footer }}

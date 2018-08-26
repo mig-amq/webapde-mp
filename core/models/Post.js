@@ -109,7 +109,7 @@ module.exports = {
       time: (desc) ? -1 : 1,
     }, limiter, skip);
   },
-
+  
   get_random_tag(desc = true) {
     return new Promise((res, rej) => {
       Mongo.Post.countDocuments().exec((err, count) => {
