@@ -40,7 +40,9 @@ module.exports = {
                                         var newComment = comment;
                                         if (user) {
                                             
-                                            user.img = path.join("/", "uploads", "profile", user.img.replace('uploads', ''))
+                                            if (user.img.indexOf("samples") <= -1)
+                                                user.img = path.join("/", "uploads", "profile", user.img.replace('uploads', ''))
+
                                             delete user.password
                                             delete user.posts
                                             
@@ -118,8 +120,10 @@ module.exports = {
 
                             delete user.posts
                             delete user.password
-                            user.img = path.join("/", "uploads", "profile", user.img.replace('uploads', ''))
                             
+                            if (user.img.indexOf("samples") <= -1)
+                                user.img = path.join("/", "uploads", "profile", user.img.replace('uploads', ''))
+
                             newResult.user = user
 
                             resolve(newResult)

@@ -31,9 +31,11 @@ module.exports = {
         if (!res) {
           reject(null)
         } else {
-          let actual = res.img.replace('uploads', '')
-          actual = path.join("/", "uploads", "profile", actual)
-          res.img = actual
+          if (res.img.indexOf("samples") <= -1) {
+            let actual = res.img.replace('uploads', '')
+            actual = path.join("/", "uploads", "profile", actual)
+            res.img = actual
+          }
 
           resolve(res)
         }
