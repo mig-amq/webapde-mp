@@ -54,7 +54,7 @@ let multer_storage = multer.diskStorage({ // Adjust file storing according to se
 let multer_options = {
   storage: multer_storage,
   fileFilter: (req, file, cb) => { // Validate file types
-    if (settings.multer.allowed_files.indexOf(file.mimetype) >= 0) 
+    if (settings.multer.allowed_files.indexOf(file.mimetype) >= 0)
       return cb(null, true)
 
     cb(new Error("Invalid file"))
@@ -74,38 +74,45 @@ app.use("*", (req, res, next) => {
       req.session.user = req.cookies.user
 
   res.locals.csrf = req.csrfToken()
-  
+
   /**
    * Disable after development.
    * Used for testing.
    */
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  
+
   next()
 })
 
-app.get('/uploads/:post', (req, res) => {
-  if (req.params.post) {
+app.get('/uploads/:post', (req, res, next) => {
+  if (req.params.post && req.params.post !== "profile") {
     post.get_posts({
       post: path.join(settings.multer.path, req.params.post)
     }).then((result) => {
       require("./core/routers/post").add_props(result, req.session.user)
+
       if (result && result.length > 0) {
         res.sendFile(path.join(__dirname, result[0].post))
       } else {
-        console.log("test")
-        user.get_account({
-          img: path.join(settings.multer.path, req.params.post)
-        }).then((result0) => {
-          if (result0.img.indexOf('uploads') > -1)
-            res.sendFile(path.join(__dirname, result0.img))
-          else
-            res.sendFile(path.join(__dirname, "public", result0.img))
-        }).catch((err) => {
-          res.redirect('/')
-        })
+        res.redirect('/')
       }
+    })
+  } else next()
+})
+
+app.get('/uploads/profile/:profile', (req, res) => {
+  if (req.params.profile) {
+    user.get_account({
+      img: path.join('/', settings.multer.path, req.params.profile),
+    }).then((result) => {
+      if (result) {
+        res.sendFile(path.join(__dirname, result.img.replace("profile", "")))
+      } else {
+        res.redirect('/')
+      }
+    }).catch((err) => {
+      console.log("Error: " + err)
     })
   }
 })

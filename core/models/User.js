@@ -26,12 +26,15 @@ module.exports = {
 
       Mongo.User.findOne(json).lean().exec((err, res) => {
         if (err) reject(err)
-
+        
+        
         if (!res) {
           reject(null)
         } else {
-          if (res.img.indexOf('uploads') > -1)
-            res.img = path.normalize("/" + res.img);
+          let actual = res.img.replace('uploads', '')
+          actual = path.join("/", "uploads", "profile", actual)
+          res.img = actual
+
           resolve(res)
         }
       })

@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const post = require('../models/Post')
 const user = require('../models/User')
+const path = require('path')
 
 router.get('/', (req, res) => {
   let account = req.session.user

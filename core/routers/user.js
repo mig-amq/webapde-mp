@@ -71,7 +71,7 @@ router.post('/user/register/', (req, res) => {
       username: "You're already logged in!"
     })
   else {
-    let file = (req.files.length > 0) ? req.files[0].path.replace("public", "") : null;
+    let file = (req.files.length > 0) ? path.join('/', req.files[0].path.replace("public", "")) : null;
 
     let data = {
       name: req.body.name,
@@ -85,7 +85,6 @@ router.post('/user/register/', (req, res) => {
     else
       user.create(data).then((result) => {
         res.send(result)
-
       })
   }
 })
@@ -145,7 +144,7 @@ router.post('/user/:data/edit/', (req, res) => {
       username: "You're already logged in!"
     })
   else {
-    let file = (req.files.length > 0) ? req.files[0].path.replace("public", "") : null;
+    let file = (req.files.length > 0) ? path.join('/', req.files[0].path.replace("public", "")) : null;
 
     let data = {}
 
@@ -167,9 +166,6 @@ router.post('/user/:data/edit/', (req, res) => {
       }).then((res0) => {
         var result = res0.toObject();
         delete result.posts
-
-        if (result.img.indexOf('uploads') > -1)
-          result.img = path.normalize("/" + result.img);
 
         if (req.cookies.user)
           res.cookie('user', result, config.cookie)
