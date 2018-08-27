@@ -1,5 +1,6 @@
 const Mongo = require('./Mongo.js');
 const sha = require('sha.js')
+const path = require('path')
 
 module.exports = {
 
@@ -26,8 +27,13 @@ module.exports = {
       Mongo.User.findOne(json).lean().exec((err, res) => {
         if (err) reject(err)
 
-        if (!res) reject(null)
-        else resolve(res)
+        if (!res) {
+          reject(null)
+        } else {
+          if (res.img.indexOf('uploads') > -1)
+            res.img = path.normalize("/" + res.img);
+          resolve(res)
+        }
       })
     })
 
@@ -156,7 +162,7 @@ module.exports = {
           }
         })
       });
-      
+
       Mongo.User.find({
         $or: q,
       }).lean().exec((err, res) => {
@@ -274,7 +280,7 @@ module.exports = {
               errors.id = "Account does not exist"
 
               resolve(errors)
-            } else
+            } else 
               resolve(res)
           }
         })

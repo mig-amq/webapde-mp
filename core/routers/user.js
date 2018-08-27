@@ -168,6 +168,9 @@ router.post('/user/:data/edit/', (req, res) => {
         var result = res0.toObject();
         delete result.posts
 
+        if (result.img.indexOf('uploads') > -1)
+          result.img = path.normalize("/" + result.img);
+
         if (req.cookies.user)
           res.cookie('user', result, config.cookie)
 

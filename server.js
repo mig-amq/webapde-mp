@@ -91,11 +91,17 @@ app.get('/uploads/:post', (req, res) => {
       post: path.join(settings.multer.path, req.params.post)
     }).then((result) => {
       require("./core/routers/post").add_props(result, req.session.user)
-
       if (result && result.length > 0) {
         res.sendFile(path.join(__dirname, result[0].post))
       } else {
-        res.redirect('/')
+        
+        user.get_account({
+          img: path.join(settings.multer.path, req.params.post)
+        }).then((result0) => {
+          res.sendFile(path.join(__dirname, settings.multer.path, req.params.post))
+        }).catch((err) => {
+          res.redirect('/')
+        })
       }
     })
   }
