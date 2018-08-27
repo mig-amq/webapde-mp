@@ -4,7 +4,7 @@ const user = require('../models/User')
 
 router.get('/', (req, res) => {
   let account = req.session.user
-  
+
   res.render('index.hbs', {
     account,
     default: true,
@@ -89,6 +89,29 @@ router.use('/post/:type/:func?', (req, res, next) => {
         res.send(result)
       })
       break;
+    case "view":
+      let pid = req.params.func || ""
+
+      post.get_posts({
+        _id: pid
+      }).then((result) => {
+        add_props(result, req.session.user)
+
+        if (result && result.length > 0)
+          res.render('view.hbs', {
+            account: req.session.user,
+            post: result[0],
+            view_post: true,
+            title: "Meme-A: " + result[0].title,
+          })
+        else
+
+          res.render('err/404.hbs', {
+            account: req.session.user,
+            title: "Meme-A: Error 404",
+          })
+      })
+      break;
     case "default":
       post.get_posts({}, {
         likes: -1,
@@ -106,7 +129,7 @@ router.use('/post/:type/:func?', (req, res, next) => {
 })
 
 router.post('/post/share/', (req, res) => {
-  
+
   let data = {
     title: req.body.title,
     user: req.session.user,
@@ -183,7 +206,7 @@ function add_props(post, user) {
         for (z = 0; z < post[i].viewers.length; z++)
           if (post[i].viewers[z] === user._id.toString())
             viewable = true
-            
+
         if (!viewable && !post[i].owned) {
           post.splice(i, 1)
           deleted = true
@@ -208,7 +231,7 @@ function add_props(post, user) {
         post.splice(i, 1)
       }
     }
-    
+
   }
 }
 

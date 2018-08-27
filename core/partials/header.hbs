@@ -56,8 +56,8 @@
           Random
         </a>
       </div>
-
-      <div class="nav-item {{#if search }} active {{else}} {{#if tag}} active {{/if}} {{/if}}">
+      
+      <div class="nav-item {{#if search }} active {{else}} {{#if tag}} active {{else}} {{#if view_post}} active {{/if}} {{/if}} {{/if}}">
         <div class="nav-form">
           <form action="/post/search/" id="search-form">
             <i class="search icon"></i>
@@ -252,8 +252,9 @@
               <label for="remember">Remember Me</label>
             </div>
           </div>
-          <input type="submit" value="Log In" class="ui green button">
+          <button type="submit" class="ui green button"> Log In </button>
 
+      <button class="ui cancel button">Close</button>
           <div class="ui error message"></div>
         </form>
       </div>
@@ -284,13 +285,11 @@
               <div class="ui basic floating button" id="img-browse">Browse</div>
             </div>
           </div>
-          <input value="Register" type="submit" class="ui green button">
+          <button type="submit" class="ui green button"> Register </button>
+          <button class="ui cancel button">Close</button>
           <div class="ui error message"></div>
         </form>
       </div>
-    </div>
-    <div class="actions">
-      <div class="ui cancel button">Close</div>
     </div>
   </div>
   {{/if}}

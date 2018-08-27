@@ -16,12 +16,17 @@ $("#loginTab form").form({ // Validation Handling for Login
   onSuccess: (event, fields) => {
     event.preventDefault();
     $("#loginTab form .ui.error.message").empty();
-    
+    $("#loginTab button[type=submit]").addClass("loading");
+    $("#loginTab button[type=submit]").attr('disabled', true);
+
     $.ajax({
       url: '/user/login/',
       method: "POST",
       data: $("#loginTab form").form("get values"),
       success: function (status) {
+
+        $("#loginTab button[type=submit]").removeClass("loading");
+        $("#loginTab button[type=submit]").attr('disabled', false);
 
         if (status.exists) {
           var list = document.createElement("ul");
@@ -31,7 +36,7 @@ $("#loginTab form").form({ // Validation Handling for Login
 
           if (status.server) {
             $(list).append("<li> Oh Noes! The server broke! </li>");
-          } else if (status.db) { 
+          } else if (status.db) {
             $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
           } else {
             if (status.username && status.username.length > 0)
@@ -80,6 +85,8 @@ $("#registerTab form").form({
   onSuccess: (event, fields) => {
     event.preventDefault();
 
+    $("#registerTab button[type=submit]").addClass("loading");
+    $("#registerTab button[type=submit]").attr('disabled', true);
     $("#registerTab form .ui.error.message").empty();
 
     /**
@@ -94,7 +101,7 @@ $("#registerTab form").form({
     data.append('name', fields.name);
     data.append('img', $("#registerTab form input[type=file]")[0].files[0])
     data.append('_csrf', fields._csrf);
-    
+
     $.ajax({
       url: '/user/register/',
       method: "POST",
@@ -102,7 +109,9 @@ $("#registerTab form").form({
       processData: false,
       contentType: false,
       success: function (status) {
-        
+
+        $("#registerTab button[type=submit]").removeClass("loading");
+        $("#registerTab button[type=submit]").attr('disabled', false);
         if (status.exists) {
           var list = document.createElement("ul");
           $("#registerTab form").addClass("error");

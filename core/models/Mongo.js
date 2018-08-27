@@ -39,11 +39,21 @@ const PostSchema = new Schema({
   tags: Array,
   likers: Array,
   post: String,
-  time: {type: Date, default: Date.now}
+  time: {type: Date, default: Date.now},
+  comments: Array,
+})
+
+const CommentSchema = new Schema({
+  content: String,
+  user: ObjectId,
+  replies: Array,
 })
 
 // Create Schemas
 module.exports.Connection = connection
+
 module.exports.User = mongoose.model('Users', UserSchema)
 module.exports.Post = mongoose.model('Posts', PostSchema)
+module.exports.Comment = mongoose.model('Comment', CommentSchema)
+
 module.exports.ObjectId = mongoose.Types.ObjectId

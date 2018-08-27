@@ -96,12 +96,20 @@ form .filename {
   font-size: 12px;
 }
 
-.card .content .meta a {
+.card .content .meta a{
   top: 0;
   left: 0;
   z-index: 1000;
   position: absolute;
   color: rgba(0, 0, 0, .4) ;
+}
+
+.card .content .header a {
+  color: #4a4a4a;
+}
+
+.card .content .header a:hover {
+  color: #009c95 !important;
 }
 
 .card-holder {
@@ -131,4 +139,10 @@ form .filename {
 .card .extra.content .tag {
   margin-bottom: 10px;
   margin-right: 10px;
+}
+
+#post > .header .like:hover,
+#post > .header .liked {
+  cursor: pointer;
+  color: #aa1a1a !important;
 }
