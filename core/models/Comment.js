@@ -37,11 +37,11 @@ module.exports = {
                                         if (err) resolve0(comment)
 
                                         var newComment = comment;
-
+                                        user.img = path.join("/", "uploads", "profile", user.img.replace('uploads', ''))
                                         if (user) {
                                             delete user.password
                                             delete user.posts
-
+                                            
                                             newComment.user = user
                                         }
 
