@@ -28,21 +28,26 @@ $("#shareForm form").form({
     data.append('post', $("#shareForm form input[type=file]")[0].files[0]);
     data.append('private', fields.private);
     data.append('viewers', fields.viewers);
-    
+
     $("#showImage img").attr("src", "");
     $("#showImage i").removeClass("hidden");
+    $("#shareForm button[type=submit]").addClass("loading");
+    $("#shareForm button[type=submit]").attr("disabled", true);
 
     $.ajax({
       url: '/post/share/',
       data: data,
       method: "POST",
       processData: false,
-      contentType: false, 
+      contentType: false,
       mimeType: 'multipart/form-data',
       headers: {
         "X-CSRF-TOKEN": fields._csrf
       },
       success: (status) => {
+        $("#shareForm button[type=submit]").removeClass("loading");
+        $("#shareForm button[type=submit]").attr("disabled", false);
+
         if (!status.exists) {
           status = JSON.parse(status);
           status.owned = true;
@@ -74,6 +79,6 @@ $("#shareForm form").form({
           $("#shareForm form .ui.error.message").append(list);
         }
       }
-    })  
+    })
   }
 });

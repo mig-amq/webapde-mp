@@ -39,8 +39,7 @@ function putContent(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
   loader.addClass('active');
 
   getData(type, query, limit, skip).then((d) => {
-    
-    if (d.length > 0){
+    if (d.length > 0) {
       $("#empty").addClass("hidden");
 
       d.forEach(e => {
@@ -52,16 +51,15 @@ function putContent(type = _TYPES.def, query = {}, limit = 5, skip = 0) {
       });
 
       $('.card .image').blur((e) => $('.image').dimmer('hide'));
-    }else {
+    } else {
       if ($(".card").length <= 0)
         $("#empty").removeClass("hidden");
 
-        loader.removeClass('active');
+      loader.removeClass('active');
     }
   });
 }
 
-// @TODO
 function update_status(pid, elems) {
   $.ajax({
     url: '/post/like/',
@@ -211,7 +209,7 @@ function parsePost(data) {
 
   var tags = document.createElement("div");
   tags.className = "extra content";
-  
+
   ptags.forEach((e) => {
     let tag = document.createElement("a");
     tag.href = "/post/tag/?tag=" + e;
@@ -289,52 +287,50 @@ function getDate(milli) {
   return res;
 }
 
-function showDelete(pid){
-    $("#delForm form").form('reset');
-    $("#delForm form").attr('data-post', pid);
-    $("#delete").modal("show")
-    
-    
-    
-    $("#delBtn").click(()=>{
-        let pid = $("#delForm form").attr('data-post');
-        $.ajax({
-            url: "/post/delete/",
-            method: "PUT",
-            data: {
-                id: pid,
-                _csrf: $("meta[name=global-csrf]").attr('content'),
-            },
-            success: (status)=>{
-                if (status.exists) {
-                  var list = document.createElement("ul");
-                  $("#delForm form").addClass("error");
+function showDelete(pid) {
+  $("#delForm form").form('reset');
+  $("#delForm form").attr('data-post', pid);
+  $("#delete").modal("show")
 
-                  list.className = "list";
+  $("#delBtn").click(() => {
+    let pid = $("#delForm form").attr('data-post');
+    $.ajax({
+      url: "/post/delete/",
+      method: "PUT",
+      data: {
+        id: pid,
+        _csrf: $("meta[name=global-csrf]").attr('content'),
+      },
+      success: (status) => {
+        if (status.exists) {
+          var list = document.createElement("ul");
+          $("#delForm form").addClass("error");
 
-                  if (status.server) {
-                    $(list).append("<li> Oh Noes! The server broke! </li>");
-                  } else if (status.db) {
-                    $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
-                  } else {
-                    if (status.user)
-                      $(list).append("<li>" + status.user + "</li>");
+          list.className = "list";
 
-                    if (status.post)
-                      $(list).append("<li>" + status.post + "</li>");
+          if (status.server) {
+            $(list).append("<li> Oh Noes! The server broke! </li>");
+          } else if (status.db) {
+            $(list).append("<li> Uh Oh! Something went wrong with the database </li>");
+          } else {
+            if (status.user)
+              $(list).append("<li>" + status.user + "</li>");
 
-                    if (status.edit)
-                      $(list).append("<li>" + status.edit + "</li>");
-                  }
+            if (status.post)
+              $(list).append("<li>" + status.post + "</li>");
 
-                  $("#editForm form .ui.error.message").append(list);
-              }else{
-                  let parent = $(".card[data-post=" + pid + "]");
-                  $(this).closest(parent).hide()
-              }   
+            if (status.edit)
+              $(list).append("<li>" + status.edit + "</li>");
+          }
+
+          $("#editForm form .ui.error.message").append(list);
+        } else {
+          let parent = $(".card[data-post=" + pid + "]");
+          $(this).closest(parent).hide()
         }
-        })    
+      }
     })
+  })
 }
 
 function showEdit(pid) {
@@ -345,7 +341,7 @@ function showEdit(pid) {
     success: (result) => {
       $("#edit form #viewers").empty();
       $("#edit form #viewers").siblings("a.ui.label").remove();
-      
+
       result[0].viewers.forEach((elem) => {
         $.ajax({
           url: "/user/details/" + elem,
@@ -371,12 +367,17 @@ $("#delForm form").submit((e) => {
   e.preventDefault();
 
   let data = $("#delForm form").form("get values");
+  $("#delForm button[type=submit]").addClass("loading");
+  $("#delForm button[type=submit]").attr("disabled", true);
 
   $.ajax({
     url: '/post/delete',
     method: "DELETE",
     data: data,
     success: (result) => {
+      $("#delForm button[type=submit]").removeClass("loading");
+      $("#delForm button[type=submit]").attr("disabled", false);
+
       $(".card[data-post=" + data.id + "]").remove();
       $("#delete").modal('hide');
     }
@@ -447,13 +448,16 @@ $("#editForm form").form({ // Validation Handling for Login
       viewers.push($(e).attr("data-value"));
     });
 
+    $("#editForm input[type=submit]").addClass("loading");
+    $("#editForm input[type=submit]").attr("disabled", true);
+
     var json = {
       title: fields.title,
       tags: fields.tags,
       private: (fields.private === "on") ? true : false,
       viewers: viewers,
     };
-    
+
     var pid = $("#editForm form").attr('data-post');
     $.ajax({
       url: "/post/edit/",
@@ -464,6 +468,9 @@ $("#editForm form").form({ // Validation Handling for Login
         json,
       },
       success: (status) => {
+        $("#editForm input[type=submit]").removeClass("loading");
+        $("#editForm input[type=submit]").attr("disabled", false);
+
         if (status.exists) {
           var list = document.createElement("ul");
           $("#editForm form").addClass("error");

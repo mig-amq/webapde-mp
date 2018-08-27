@@ -17,8 +17,8 @@ const UserSchema = new Schema({
   name: String,
   posts: Array,
   img: {
-      type: String,
-      default: '/img/samples/sample_profile.jpg',
+    type: String,
+    default: '/img/samples/sample_profile.jpg',
   },
 })
 
@@ -39,14 +39,26 @@ const PostSchema = new Schema({
   tags: Array,
   likers: Array,
   post: String,
-  time: {type: Date, default: Date.now},
+  time: {
+    type: Date,
+    default: Date.now
+  },
   comments: Array,
 })
 
 const CommentSchema = new Schema({
   content: String,
+  post: ObjectId,
   user: ObjectId,
-  replies: Array,
+  likes: {
+    type: Number,
+    default: 0,
+  },
+  likers: Array,
+  time: {
+    type: Date,
+    default: Date.now
+  },
 })
 
 // Create Schemas
@@ -54,6 +66,6 @@ module.exports.Connection = connection
 
 module.exports.User = mongoose.model('Users', UserSchema)
 module.exports.Post = mongoose.model('Posts', PostSchema)
-module.exports.Comment = mongoose.model('Comment', CommentSchema)
+module.exports.Comment = mongoose.model('Comments', CommentSchema)
 
 module.exports.ObjectId = mongoose.Types.ObjectId

@@ -15,6 +15,7 @@ const Mongo = require('./core/models/Mongo')
 Mongo.Connection.then((res) => {
   Mongo.User.remove({}, (err) => console.log("Users cleared"))
   Mongo.Post.remove({}, (err) => console.log("Posts cleared"))
+  Mongo.Comment.remove({}, (err) => console.log("Comments cleared"))
 
   /**
    * Create initial users

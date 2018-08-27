@@ -109,7 +109,7 @@ router.get('/user/:data', (req, res) => {
         title: "Meme-A: @" + data.username,
         account: req.session.user,
         profile: data,
-        mine: req.session.user._id == data._id,
+        mine: (req.session.user) ? req.session.user._id == data._id : false,
       })
     }).catch((err) =>
       res.redirect('/')

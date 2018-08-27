@@ -1,14 +1,17 @@
 {{> header }}
+<div>
+
+</div>
 <div id="content">
     <div class="ui horizontal divided grid">
 
-        <div id="post" class="six wide column">
+        <div id="post" class="six wide column" data-id="{{post._id}}">
             <h2 class="ui header grid" style="color: #4a4a4a">
                 <span class="title thirteen wide column">
                     {{post.title}}
                 </span>
                 <span class="three wide column">
-                    <span class="like {{#if post.liked}} liked {{/if}}">
+                    <span class="like {{#if post.liked}} liked {{/if}}" onclick="update_status('{{post._id}}', this)">
                         <span class="likes">{{post.likes}}</span>
                         <i class="heart icon"></i>
                     </span>
@@ -20,18 +23,33 @@
 
         <div id="comments" class="ten wide column">
             <h4 class="ui dividing header">Comments</h4>
-            <form class='ui reply form'>
+            <form class='ui reply form' id="reply" method="POST">
+                <input type="hidden" name="_csrf" value="{{csrf}}">
                 <div class='field'>
-                    <textarea rows='3' style='resize: false'></textarea>
+                    {{#if account}}
+                        <textarea rows='3' style='resize: false' name="content" required></textarea>
+                    {{else}}
+                        <textarea rows='3' style='resize: false' name="content" disabled>You have to log in to comment on a post</textarea>
+                    {{/if}}
                 </div>
-                <div class="ui blue labeled submit icon button">
+                <button type="submit" class="ui blue labeled submit icon button {{#if account}} {{else}} disabled {{/if}}">
                     <i class="icon edit"></i> Comment
-                </div>
+                </button>
+                <div class="ui error message"></div>
             </form>
 
             <div id="body" class="ui comments">
 
             </div>
+            <br/>
+            <div class="ui hidden centered text" id="empty" style="text-align: center;">
+                <span class="ui large header">No one commented yet, sad :(</span class="header">
+            </div>
+            <br/>
+            <div class="ui small teal button" id="loadComments" style="width: 100%; text-align: center; font-weight:bold; cursor: pointer;">
+                Load Moare Comments!
+            </div>
+            <br/>
             <br/>
             <div class="ui inline centered active text indeterminate loader" id="post-loader">
                 Getting dem comments...

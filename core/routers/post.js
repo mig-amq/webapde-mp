@@ -196,6 +196,8 @@ router.delete('/post/delete/', (req, res) => {
 function add_props(post, user) {
   if (user) {
     for (i = 0; i < post.length; i++) {
+      delete post.comments
+      
       let viewable = false
       let deleted = false
 

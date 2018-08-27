@@ -38,6 +38,7 @@ module.exports.routes = [
    */
   'post',
   'user',
+  'comment',
 ]
 module.exports.hbs = {
   static_location: 'public',
