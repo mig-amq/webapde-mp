@@ -414,7 +414,7 @@ $("#edit #viewers, #share #viewers").parent(".ui.search").on('keyup', (e) => {
               display = false;
           });
 
-          if (display) {
+          if (display && elem) {
             $(e.target).siblings("#viewers").append("<option value='" + elem._id + "'> " + elem.username + "</option>");
           }
         });

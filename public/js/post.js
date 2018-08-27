@@ -55,6 +55,12 @@ $("#shareForm form").form({
           $("#content #cards").prepend(parsePost(status));
           $("#share").modal('hide');
 
+          $('.card .image').dimmer({
+            on: 'hover'
+          });
+
+          $('.card .image').blur((e) => $('.image').dimmer('hide'));
+
         } else {
           var list = document.createElement("ul");
           $("#shareForm form").addClass("error");
