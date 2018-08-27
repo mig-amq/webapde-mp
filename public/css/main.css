@@ -123,6 +123,11 @@ form .filename {
   position: absolute;
   right: 10.5px;
 }
+
+.card .extra.content .ui.dropdown .red.selected {
+  background: #801515 !important;
+}
+
 .card .extra.content .tag {
   margin-bottom: 10px;
   margin-right: 10px;

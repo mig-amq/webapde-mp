@@ -11,9 +11,7 @@ module.exports = {
    * @param {number} skip - the number of posts to skip from the start 
    * of the result
    */
-  get_posts(query = {}, sort = {
-    time: -1,
-  }, limiter = 0, skip = 0) {
+  get_posts(query = {}, sort = { time: -1, }, limiter = 0, skip = 0) {
     return new Promise((resolve, reject) => {
       if (query.uid && query.uid.length < 24)
         resolve([]);
@@ -29,9 +27,7 @@ module.exports = {
         .lean()
         .exec((err, res) => {
           if (err) resolve([])
-
-          if (!res) resolve([])
-
+          
           resolve(res)
         })
     });
