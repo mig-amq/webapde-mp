@@ -219,6 +219,7 @@ $("#reply").form({
       $("#reply .ui.error.message").empty();
       $("#reply button[type=submit]").addClass("loading");
       $("#reply button[type=submit]").attr('disabled', true);
+      $("#empty").addClass("hidden");
 
       fields.post = $("#post").attr("data-id")
       
