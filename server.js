@@ -94,14 +94,7 @@ app.get('/uploads/:post', (req, res) => {
       if (result && result.length > 0) {
         res.sendFile(path.join(__dirname, result[0].post))
       } else {
-        
-        user.get_account({
-          img: path.join(settings.multer.path, req.params.post)
-        }).then((result0) => {
-          res.sendFile(path.join(__dirname, settings.multer.path, req.params.post))
-        }).catch((err) => {
-          res.redirect('/')
-        })
+        res.redirect('/')
       }
     })
   }
