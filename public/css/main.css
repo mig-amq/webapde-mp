@@ -135,3 +135,9 @@ form .filename {
   margin-bottom: 10px;
   margin-right: 10px;
 }
+
+#post > .header .like:hover,
+#post > .header .liked {
+  cursor: pointer;
+  color: #aa1a1a !important;
+}

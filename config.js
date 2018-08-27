@@ -29,7 +29,7 @@ module.exports.post_opts = {
   tags: 0,
 }
 module.exports.server = {
-  port: process.env.PORT || 3000,
+  port: process.env.PORT || 8000,
 }
 module.exports.routes = [
   /**

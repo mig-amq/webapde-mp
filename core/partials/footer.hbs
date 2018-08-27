@@ -39,10 +39,13 @@
     {{#if view_post}}
         <script>
             var pid = "{{post._id}}";
+            var title = "{{post.title}}";
+            
         </script>
 
         <script src="/js/view_post.js" defer></script>
     {{/if}}
+    
     {{#if account}}
         <script src="/js/post.js" defer></script>
     {{/if}}

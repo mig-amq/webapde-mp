@@ -95,12 +95,13 @@ router.use('/post/:type/:func?', (req, res, next) => {
       post.get_posts({
         _id: pid
       }).then((result) => {
-        add_props(result)
+        add_props(result, req.session.user)
 
         if (result && result.length > 0)
           res.render('view.hbs', {
             account: req.session.user,
             post: result[0],
+            view_post: true,
             title: "Meme-A: " + result[0].title,
           })
         else

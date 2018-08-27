@@ -56,8 +56,8 @@
           Random
         </a>
       </div>
-
-      <div class="nav-item {{#if search }} active {{else}} {{#if tag}} active {{/if}} {{/if}}">
+      
+      <div class="nav-item {{#if search }} active {{else}} {{#if tag}} active {{else}} {{#if view_post}} active {{/if}} {{/if}} {{/if}}">
         <div class="nav-form">
           <form action="/post/search/" id="search-form">
             <i class="search icon"></i>
