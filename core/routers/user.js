@@ -141,7 +141,7 @@ router.post('/user/:data/edit/', (req, res) => {
   if (!req.session.user)
     res.send({
       errors: true,
-      username: "You're already logged in!"
+      username: "You're not logged in!"
     })
   else {
     let file = (req.files.length > 0) ? path.join('/', req.files[0].path.replace("public", "")) : null;
@@ -165,6 +165,8 @@ router.post('/user/:data/edit/', (req, res) => {
         edit: data
       }).then((res0) => {
         var result = res0.toObject();
+
+        result.img = path.join("/", "uploads", "profile", result.img.replace("uploads", ""))
         delete result.posts
 
         if (req.cookies.user)
