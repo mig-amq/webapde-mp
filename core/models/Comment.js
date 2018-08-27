@@ -1,6 +1,7 @@
 const Post = require('./Post')
 const User = require('./User')
 const Mongo = require('./Mongo')
+const path = require('path')
 
 module.exports = {
     /**
@@ -37,8 +38,9 @@ module.exports = {
                                         if (err) resolve0(comment)
 
                                         var newComment = comment;
-                                        user.img = path.join("/", "uploads", "profile", user.img.replace('uploads', ''))
                                         if (user) {
+                                            
+                                            user.img = path.join("/", "uploads", "profile", user.img.replace('uploads', ''))
                                             delete user.password
                                             delete user.posts
                                             
@@ -111,11 +113,13 @@ module.exports = {
 
                                 resolve(errors)
                             }
+                            
                             var newResult = result.toObject();
 
                             delete user.posts
                             delete user.password
-
+                            user.img = path.join("/", "uploads", "profile", user.img.replace('uploads', ''))
+                            
                             newResult.user = user
 
                             resolve(newResult)
