@@ -21,7 +21,7 @@ module.exports = {
         json._id = Mongo.ObjectId(json._id.toString())
 
       for (let i = 0; i < Object.keys(json).length; i++)
-        if (['_id', 'username', 'password', 'name'].indexOf(Object.keys(json)[i]) === -1)
+        if (['_id', 'username', 'password', 'name', 'img'].indexOf(Object.keys(json)[i]) === -1)
           delete json[Object.keys(json)[i]]
 
       Mongo.User.findOne(json).lean().exec((err, res) => {
