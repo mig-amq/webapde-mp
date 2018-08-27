@@ -97,7 +97,7 @@ app.get('/uploads/:post', (req, res) => {
         user.get_account({
           img: path.join(settings.multer.path, req.params.post)
         }).then((result0) => {
-          
+          console.log(result0)
           if (result0.img.indexOf('uploads') > -1)
             res.sendFile(path.join(__dirname, result0.img))
           else
