@@ -164,7 +164,9 @@ router.post('/user/:data/edit/', (req, res) => {
       user.edit({
         id: req.params.data,
         edit: data
-      }).then((result) => {
+      }).then((res0) => {
+        var result = res0.toObject();
+        delete result.posts
 
         if (req.cookies.user)
           res.cookie('user', result, config.cookie)
