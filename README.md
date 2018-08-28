@@ -26,7 +26,7 @@
 2. **Views**
     - [x] Homepage
     - [ ] Profile page
-      - [ ] Edit Details page
+      - [X] Edit Details page
     - [x] Login/Register page
     - [x] Share-A-Meme page
     - [x] Search Post page
@@ -36,23 +36,23 @@
       - [x] Logging In
       - [x] Remember Me
       - [x] Default
-      - [ ] Registering
-        - [ ] Profile Pic Upload
+      - [X] Registering
+        - [X] Profile Pic Upload
       - [x] Regular Registration (default profile pic)
       - [x] Log Out
-      - [ ] Editing Details
-        - [ ] Changing Name
-        - [ ] Changing Password
+      - [X] Editing Details
+        - [X] Changing Name
+        - [X] Changing Password
     * Posts
       - [x] Creating a Post
-      - [ ] Editing a Post:
-        - [ ] Changing Title
-        - [ ] Editing Tags
-          - [ ] Adding Tags
-          - [ ] Removing Tags
-      - [ ] Deleting a Post
-      - [ ] Viewing Posts:
+      - [X] Editing a Post:
+        - [X] Changing Title
+        - [X] Editing Tags
+          - [X] Adding Tags
+          - [X] Removing Tags
+      - [X] Deleting a Post
+      - [X] Viewing Posts:
         - [x] Default View
-        - [ ] User View
-        - [ ] Tag View
-        - [ ] Search View
+        - [X] User View
+        - [X] Tag View
+        - [X] Search View
