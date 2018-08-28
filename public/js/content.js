@@ -182,7 +182,7 @@ function parsePost(data) {
   $(image_dheader).append("<span>" + ((pliked) ? "Liked!" : "Like!") + "</span>");
 
   var img = document.createElement("img"); // post image
-  img.src = (pcont.charAt(0) === '/') ? pcont : '/' + pcont;
+  img.src = pcont;
 
   var heart = document.createElement("span");
   heart.className = "right floated like icon";

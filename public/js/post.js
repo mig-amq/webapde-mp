@@ -45,6 +45,7 @@ $("#shareForm form").form({
         "X-CSRF-TOKEN": fields._csrf
       },
       success: (status) => {
+        $("#shareForm form").form("clear");
         $("#shareForm button[type=submit]").removeClass("loading");
         $("#shareForm button[type=submit]").attr("disabled", false);
 

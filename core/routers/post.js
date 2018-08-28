@@ -134,12 +134,14 @@ router.post('/post/share/', (req, res) => {
   let data = {
     title: req.body.title,
     user: req.session.user,
-    post: req.files[0].path.replace("public", ""),
+    post: path.join('/', req.files[0].path.replace("public", "")),
     tags: [],
     private: (req.body.private && req.body.private === "on") ? true : false,
-    viewers: req.body.viewers,
+    viewers: (typeof req.body.viewers === "string") ? [req.body.viewers] : req.body.viewers,
   }
 
+  console.log(data);
+  
   if ((typeof req.body.tags).toLowerCase() === "string") {
     req.body.tags.split(',').forEach(elem => {
       data.tags.push(elem.trim().replace(/\s+/, ''))
@@ -198,7 +200,7 @@ function add_props(post, user) {
   if (user) {
     for (i = 0; i < post.length; i++) {
       delete post.comments
-      
+          
       let viewable = false
       let deleted = false
 
@@ -236,6 +238,8 @@ function add_props(post, user) {
     }
 
   }
+
+  console.log(post);
 }
 
 module.exports.router = router

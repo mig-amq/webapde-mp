@@ -88,7 +88,7 @@ app.use("*", (req, res, next) => {
 app.get('/uploads/:post', (req, res, next) => {
   if (req.params.post && req.params.post !== "profile") {
     post.get_posts({
-      post: path.join(settings.multer.path, req.params.post)
+      post: path.join("/", settings.multer.path, req.params.post)
     }).then((result) => {
       require("./core/routers/post").add_props(result, req.session.user)
 
